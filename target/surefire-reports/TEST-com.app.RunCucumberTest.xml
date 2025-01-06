@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite tests="7" failures="0" name="com.app.RunCucumberTest" time="0.431" errors="0" skipped="0">
+<testsuite tests="7" failures="0" name="com.app.RunCucumberTest" time="0.416" errors="0" skipped="0">
   <properties>
     <property name="jansi.mode" value="force"/>
     <property name="java.runtime.name" value="OpenJDK Runtime Environment"/>
@@ -57,11 +57,11 @@
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
     <property name="sun.cpu.endian" value="little"/>
   </properties>
-  <testcase classname="String Calculator" name="Adding no numbers" time="0.395"/>
-  <testcase classname="String Calculator" name="Adding one number" time="0.005"/>
+  <testcase classname="String Calculator" name="Adding no numbers" time="0.37"/>
+  <testcase classname="String Calculator" name="Adding one number" time="0.007"/>
   <testcase classname="String Calculator" name="Adding two numbers" time="0.006"/>
-  <testcase classname="String Calculator" name="Adding unknown amount of numbers" time="0.005"/>
+  <testcase classname="String Calculator" name="Adding unknown amount of numbers" time="0.006"/>
   <testcase classname="String Calculator" name="Adding numbers with newlines" time="0.006"/>
-  <testcase classname="String Calculator" name="Adding numbers with custom delimiter" time="0.007"/>
-  <testcase classname="String Calculator" name="Adding negative numbers throws exception" time="0.007"/>
+  <testcase classname="String Calculator" name="Adding numbers with custom delimiter" time="0.009"/>
+  <testcase classname="String Calculator" name="Adding negative numbers throws exception" time="0.012"/>
 </testsuite>
