@@ -1,0 +1,4 @@
+features:
+  - src/test/resources/features
+glue:
+  - com.example
