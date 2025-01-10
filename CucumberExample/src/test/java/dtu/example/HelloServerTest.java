@@ -2,6 +2,7 @@ package dtu.example;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import dtu.example.services.HelloService;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 

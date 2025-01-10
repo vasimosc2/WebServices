@@ -2,6 +2,9 @@ package org.acme;
 
 import java.util.List;
 
+import org.acme.models.Payment;
+import org.acme.services.PaymentService;
+
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.PUT;

@@ -3,6 +3,9 @@ package dtu.example;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import dtu.example.models.Customer;
+import dtu.example.models.Merchant;
+import dtu.example.services.SimpleDtuPayService;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;

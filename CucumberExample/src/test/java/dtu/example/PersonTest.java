@@ -2,6 +2,8 @@ package dtu.example;
 
 import static org.junit.Assert.assertEquals;
 
+import dtu.example.models.Person;
+import dtu.example.services.PersonService;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 

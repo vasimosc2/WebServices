@@ -1,5 +1,8 @@
 package org.acme;
 
+import org.acme.models.Person;
+import org.acme.services.PersonService;
+
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.PUT;

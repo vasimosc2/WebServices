@@ -1,5 +1,8 @@
 package org.acme;
 
+import org.acme.models.Merchant;
+import org.acme.services.MerchantService;
+
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.PUT;
