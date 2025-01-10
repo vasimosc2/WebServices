@@ -13,4 +13,4 @@ http://localhost:8081/customer: It will display the Final Customer in your featu
 http://localhost:8081/merchant: It will display the Final Merchant in your features
 
 http://localhost:8081/person: It will display the Final Person (The tests here check if the updates are done correctly)
-http://localhost:8081/hello: Hello RestApi
+http://localhost:8081/hello: Hello RestApi standart
