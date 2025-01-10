@@ -1,18 +1,16 @@
-To start the application please do:
+Clone the repository
 
-cd <ClonedArea>
-java -jar target/quarkus-app/quarkus-run.jar
+cd code-with-quarkus
+run : mvn quarkus:dev
 
-The application will run at :
-http://localhost:8081/person
+In another Terminal
 
-Testing: (This is already done, but if you want to test it yourself)
-cd <ClonedArea>
-mvn test
+cd CucumberExample
+run: mvn test
 
+http://localhost:8081/payment: It will display all the payments done it your feature (If you run test many items it will add more in the array)
+http://localhost:8081/customer: It will display the Final Customer in your features
+http://localhost:8081/merchant: It will display the Final Merchant in your features
 
-# Ensure that nothing else is running at localhost 8081
-
-To do so :
-sudo lsof -i :8081 // To Find the PID that runs inside the port 8081
-sudo kill -9 <PID> // To kill this process
+http://localhost:8081/person: It will display the Final Person (The tests here check if the updates are done correctly)
+http://localhost:8081/hello: Hello RestApi
