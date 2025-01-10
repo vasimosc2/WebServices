@@ -1,17 +1,23 @@
 package org.acme.services;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.acme.models.Customer;
 
 public class CustomerService {
-
-   Customer customer = new Customer("Vasilis");
-    public Customer getCustomer() {
-        return customer;
+private List<Customer> customers = new ArrayList<>();
+    public List<Customer> getCustomers() {
+        return customers;
     }
 
-    public void setCustomer(Customer customer) {
-        this.customer.setName(customer.getName());
-        this.customer.setId(customer.getId());
+    public void setCustomer(Customer given_customer) {
+        Customer newCustomer = new Customer(
+                given_customer.getName()
+        );
+        newCustomer.setId(given_customer.getId());
+        customers.add(newCustomer);  // Adds the new payment to the list
     }
-
 }
+
+

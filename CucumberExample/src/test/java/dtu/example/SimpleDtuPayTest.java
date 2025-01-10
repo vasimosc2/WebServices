@@ -43,9 +43,36 @@ public class SimpleDtuPayTest {
         assertNotNull(merchantId, "Merchant registration failed");
     }
 
+    @Given("a customer with name {string}, who is registered with Simple DTU Pay")
+    public void aCustomerWithNameWhoIsRegisteredWithSimpleDTUPay(String string) {
+        aCustomerWithName(string);
+        theCustomerIsRegisteredWithSimpleDTUPay();
+    }
+
+    @Given("a merchant with name {string}, who is registered with Simple DTU Pay")
+    public void aMerchantWithNameWhoIsRegisteredWithSimpleDTUPay(String string) {
+        aMerchantWithName(string);
+        theMerchantIsRegisteredWithSimpleDTUPay();
+    }
+
+    @Given("a successful payment of {string} kr from the customer to the merchant")
+    public void aSuccessfulPaymentOfKrFromTheCustomerToTheMerchant(String string) { 
+        int number = Integer.parseInt(string);
+        theMerchantInitiatesAPaymentForKrByTheCustomer(number);
+    }
+
+
+
     @When("the merchant initiates a payment for {int} kr by the customer")
     public void theMerchantInitiatesAPaymentForKrByTheCustomer(Integer amount) {
         successful = dtupay.pay(amount, customerId, merchantId);
+    }
+
+    @When("the manager asks for a list of paymentsThen the list contains a payments where customer {string} paid {string} kr to merchant {string}")
+    public void theManagerAsksForAListOfPaymentsThenTheListContainsAPaymentsWhereCustomerPaidKrToMerchantDanie(String customerName, String amountPaid, String merchantName) {
+        int paymentAmount = Integer.parseInt(amountPaid); 
+        successful = dtupay.searchForPayment(customerName, paymentAmount, merchantName);
+        assertTrue(successful, "Payment was not successful");
     }
 
     @Then("the payment is successful")

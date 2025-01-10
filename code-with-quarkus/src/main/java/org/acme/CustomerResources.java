@@ -1,5 +1,7 @@
 package org.acme;
 
+import java.util.List;
+
 import org.acme.models.Customer;
 import org.acme.services.CustomerService;
 
@@ -16,8 +18,8 @@ public class CustomerResources {
     CustomerService service = new CustomerService();
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Customer customer() {
-        return service.getCustomer();
+    public List<Customer> customer() {
+        return service.getCustomers();
     }
 
     @PUT

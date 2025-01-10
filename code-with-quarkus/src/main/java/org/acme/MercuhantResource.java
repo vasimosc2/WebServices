@@ -1,5 +1,7 @@
 package org.acme;
 
+import java.util.List;
+
 import org.acme.models.Merchant;
 import org.acme.services.MerchantService;
 
@@ -15,8 +17,8 @@ public class MercuhantResource {
     MerchantService service = new MerchantService();
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Merchant Merchant() {
-        return service.getMerchant();
+    public List<Merchant> Merchant() {
+        return service.getMerchants();
     }
 
     @PUT
