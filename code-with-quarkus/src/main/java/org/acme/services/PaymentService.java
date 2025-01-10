@@ -17,11 +17,10 @@ public class PaymentService {
 
     // Adds a new payment to the list
     public void setPayment(Payment given_payment) {
-        Payment newPayment = new Payment(
-                given_payment.getAmount(),
-                given_payment.getCustomerId(),
-                given_payment.getMerchantId()
-        );
+        Payment newPayment = new Payment();
+        newPayment.setAmount(given_payment.getAmount());
+        newPayment.setCustomerId(given_payment.getCustomerId());
+        newPayment.setMerchantId(given_payment.getMerchantId());       
         payments.add(newPayment);  // Adds the new payment to the list
     }
 }

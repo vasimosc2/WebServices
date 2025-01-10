@@ -13,10 +13,15 @@ public class MerchantService {
     }
 
     public void setMerchant(Merchant given_merchant) {
-        Merchant newMerchant = new Merchant(
-                given_merchant.getName()
-        );
+        Merchant newMerchant = new Merchant();
+
         newMerchant.setId(given_merchant.getId());
+        newMerchant.setId(given_merchant.getId());
+        newMerchant.setFirstName(given_merchant.getFirstName());
+        newMerchant.setLastName(given_merchant.getLastName());
+        newMerchant.setCprNumber(given_merchant.getCprNumber());
+        newMerchant.setBankAccount(given_merchant.getBankAccount());
+
         merchants.add(newMerchant);  // Adds the new merchant to the list
     }
 }

@@ -19,6 +19,7 @@
 		<failOnMissingWebXml>false</failOnMissingWebXml>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
+
 	<build>
 		<plugins>
 			<!-- The Surefire Plugin is needed to run JUnit 5 tests with Maven -->
@@ -30,6 +31,8 @@
 			</plugin>
 		</plugins>
 	</build>
+
+
 	<dependencies>
 		<dependency>
 			<groupId>io.cucumber</groupId>
@@ -73,24 +76,22 @@
 			<scope>test</scope>
 		</dependency>
 		<!-- General REST framework--> 
-	<dependency> 
-		<groupId>org.jboss.resteasy</groupId> 
-		<artifactId>resteasy-client</artifactId> 
-		<version>6.2.11.Final</version> 
-	</dependency> 
+		<dependency> 
+			<groupId>org.jboss.resteasy</groupId> 
+			<artifactId>resteasy-client</artifactId> 
+			<version>6.2.11.Final</version> 
+		</dependency> 
 	<!-- Serializer to and from JSON--> 
-	<dependency> 
-		<groupId>io.quarkus</groupId> 
-		<artifactId>quarkus-resteasy-jsonb</artifactId> 
-		<version>3.17.2</version> 
-	</dependency> 
+		<dependency> 
+			<groupId>io.quarkus</groupId> 
+			<artifactId>quarkus-resteasy-jsonb</artifactId> 
+			<version>3.17.2</version> 
+		</dependency> 
 	<!-- Serializer to and from XML--> 
-	<dependency> 
-		<groupId>io.quarkus</groupId> 
-		<artifactId>quarkus-resteasy-jaxb</artifactId> 
-		<version>3.17.1</version> 
-	</dependency>
+		<dependency> 
+			<groupId>io.quarkus</groupId> 
+			<artifactId>quarkus-resteasy-jaxb</artifactId> 
+			<version>3.17.1</version> 
+		</dependency>
 	</dependencies>
-
-	
 </project>

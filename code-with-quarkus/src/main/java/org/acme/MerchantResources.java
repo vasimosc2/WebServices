@@ -3,8 +3,8 @@ package org.acme;
 import java.math.BigDecimal;
 import java.util.List;
 
-import org.acme.models.Customer;
-import org.acme.services.CustomerService;
+import org.acme.models.Merchant;
+import org.acme.services.MerchantService;
 
 import dtu.ws.fastmoney.Account;
 import dtu.ws.fastmoney.BankService;
@@ -20,42 +20,43 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 
 
-@Path("/customer")
-public class CustomerResources {
+    
+    
+@Path("/merchant")
+public class MerchantResources{
     private BankService bankService = new BankServiceService().getBankServicePort();
-    CustomerService service = new CustomerService();
+    MerchantService service = new MerchantService();
 
-    public record CustInt(Customer customer, int value) {}
-
-
+    public record MerchInt(Merchant merchant, int value) {}
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Customer> customer() {
-        return service.getCustomers();
+    public List<Merchant> customer() {
+        return service.getMerchants();
     }
 
     // With this I am trying to put the Customer to the Bank  and then Put him in /customer
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public void setCustomerBank(CustInt cInt) throws BankServiceException_Exception{
-        Customer customer = cInt.customer ;
+    public void setMerchantBank(MerchInt merchInt) throws BankServiceException_Exception{
         User user = new User();
-        user.setFirstName(customer.getFirstName());
-        user.setLastName(customer.getLastName());
-        user.setCprNumber(customer.getCprNumber());
-        String account = bankService.createAccountWithBalance(user, BigDecimal.valueOf(cInt.value)); 
-        customer.setBankAccount(account);
+        user.setFirstName(merchInt.merchant.getFirstName());
+        user.setLastName(merchInt.merchant.getLastName());
+        user.setCprNumber(merchInt.merchant.getCprNumber());
+        String account = bankService.createAccountWithBalance(user, BigDecimal.valueOf(merchInt.value)); 
+        merchInt.merchant.setBankAccount(account);
+        
     }
 
     // With this I am trying to put the Customer to SimpleDTUPay with the App
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
-    public void setCustomerDtu(Customer customer) throws BankServiceException_Exception{
-        Account account = bankService.getAccountByCprNumber(customer.getCprNumber());
+    public void setCustomerBank(Merchant merchant) throws BankServiceException_Exception{
+        Account account = bankService.getAccountByCprNumber(merchant.getCprNumber());
         if (account != null){
-            service.setCustomer(customer);
+            service.setMerchant(merchant);
         }
         
     }
+  
 }

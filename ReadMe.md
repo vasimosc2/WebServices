@@ -6,11 +6,8 @@ run : mvn quarkus:dev
 In another Terminal
 
 cd CucumberExample
-run: mvn test
+Run: mvn test
 
-http://localhost:8081/payment: It will display all the payments done it your feature (If you run test many items it will add more in the array)
-http://localhost:8081/customer: It will display the Final Customer in your features
-http://localhost:8081/merchant: It will display the Final Merchant in your features
-
-http://localhost:8081/person: It will display the Final Person (The tests here check if the updates are done correctly)
-http://localhost:8081/hello: Hello RestApi standart
+http://localhost:8081/payment: You can see all the Transactions
+http://localhost:8081/customer: You can see all the Customers
+http://localhost:8081/merchant: You can see all the Merchants

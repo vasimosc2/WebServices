@@ -37,10 +37,4 @@ public class Payment {
         this.merchantId = merchantId;
     }
 
-    // Constructor with parameters
-    public Payment(int amount, String customerId, String merchantId) {
-        this.amount = amount;
-        this.customerId = customerId;
-        this.merchantId = merchantId;
-    }
 }
