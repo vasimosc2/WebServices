@@ -59,6 +59,9 @@ public class SimpleDtuPayService {
         target.path("bank").request().post(Entity.entity(merchant, MediaType.APPLICATION_JSON));
         return target.path("bank").request().get(BigDecimal.class);
     }
-   
+    public void delete() {
+        target.path("customer").request().delete();
+        target.path("merchant").request().delete();
+    }
     
 }

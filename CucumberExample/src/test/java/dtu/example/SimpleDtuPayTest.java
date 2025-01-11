@@ -17,6 +17,7 @@ public class SimpleDtuPayTest {
     
     private Customer customer;
     private Merchant merchant;
+    @SuppressWarnings("unused")
     private String customerId, merchantId;
     private SimpleDtuPayService dtupay = new SimpleDtuPayService();
     private boolean successful = false;
@@ -84,5 +85,9 @@ public class SimpleDtuPayTest {
     @And("the balance of the merchant at the bank is {int} kr")
     public void merchantBalance(int money){
         assertEquals(dtupay.Money(merchant), BigDecimal.valueOf(money));
+    }
+    @Then("delete the customer and merchant")
+    public void Angelos(){
+        dtupay.delete();
     }
 }

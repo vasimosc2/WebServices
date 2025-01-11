@@ -12,6 +12,7 @@ import dtu.ws.fastmoney.BankServiceException_Exception;
 import dtu.ws.fastmoney.BankServiceService;
 import dtu.ws.fastmoney.User;
 import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.PUT;
@@ -26,7 +27,7 @@ import jakarta.ws.rs.core.MediaType;
 public class MerchantResources{
     private BankService bankService = new BankServiceService().getBankServicePort();
     MerchantService service = new MerchantService();
-
+    String accountID;
     public record MerchInt(Merchant merchant, int value) {}
 
     @GET
@@ -43,9 +44,15 @@ public class MerchantResources{
         user.setFirstName(merchInt.merchant.getFirstName());
         user.setLastName(merchInt.merchant.getLastName());
         user.setCprNumber(merchInt.merchant.getCprNumber());
-        String account = bankService.createAccountWithBalance(user, BigDecimal.valueOf(merchInt.value)); 
-        merchInt.merchant.setBankAccount(account);
+        accountID = bankService.createAccountWithBalance(user, BigDecimal.valueOf(merchInt.value)); 
+        merchInt.merchant.setBankAccount(accountID);
         
+    }
+
+    @DELETE
+    @Consumes(MediaType.APPLICATION_JSON)
+    public void setAngelos() throws BankServiceException_Exception{
+        bankService.retireAccount(accountID);
     }
 
     // With this I am trying to put the Customer to SimpleDTUPay with the App
