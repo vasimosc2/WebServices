@@ -1,9 +1,9 @@
 Feature: Payment
   Scenario: Successful Payment
-    Given a customer with name "Vasilis", last name "Moschou", and CPR "magkaas12"
+    Given a customer with name "Vasilis", last name "Moschou", and CPR "sss12"
     And the customer is registered with the bank with an initial balance of 1000 kr
     And the customer is registered with Simple DTU Pay using their bank account
-    And a merchant with name "Pantelis", last name "Aggelos", and CPR "Pantelis212"
+    And a merchant with name "Susan", last name "Pounaxero", and CPR "tttaaa"
     And the merchant is registered with the bank with an initial balance of 1000 kr
     And the merchant is registered with Simple DTU Pay using their bank account
     When the merchant initiates a payment for 15 kr by the customer
