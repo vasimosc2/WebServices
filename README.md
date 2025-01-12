@@ -25,7 +25,7 @@ mvn test
 To start the server do:
 ```
 cd code-with-quarkus
-run : mvn quarkus:dev
+mvn quarkus:dev
 ```
 
 **Ensure** that ```./CucumberExample/src/test/java/dtu/example/services/SimpleDtuPayService.java``` is configured to localhost:8080/ (ensure that '/' is appended).
