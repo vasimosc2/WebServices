@@ -14,7 +14,8 @@ import jakarta.ws.rs.core.MediaType;
 public class SimpleDtuPayService {
 
     Client c = ClientBuilder.newClient();
-    WebTarget target = c.target("http://localhost:8081/");
+    WebTarget target = c.target("http://fm-11.compute.dtu.dk:8080/");
+    
 
     public record CustInt(Customer customer, int value) {}
     public record MerchInt(Merchant merchant, int value) {}
