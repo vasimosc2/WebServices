@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 
 import dtu.example.models.Customer;
 import dtu.example.models.Merchant;
-import dtu.example.models.Payment;
 import jakarta.ws.rs.client.Client;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
@@ -14,7 +13,7 @@ import jakarta.ws.rs.core.MediaType;
 public class SimpleDtuPayService {
 
     Client c = ClientBuilder.newClient();
-    WebTarget target = c.target("http://fm-11.compute.dtu.dk:8080/");
+    WebTarget target = c.target("http://localhost:8081/");
     
 
     public record CustInt(Customer customer, int value) {}
@@ -43,9 +42,7 @@ public class SimpleDtuPayService {
 
 
     public boolean maketransfer(int money,Customer customer, Merchant merchant) {
-        Payment payment = new Payment(money,customer.getId(),merchant.getId());
         target.path("payment").request().post(Entity.entity(new BankPay(money, customer, merchant), MediaType.APPLICATION_JSON));
-        target.path("payment").request().put(Entity.entity(payment, MediaType.APPLICATION_JSON));
         return true;
     }
 
