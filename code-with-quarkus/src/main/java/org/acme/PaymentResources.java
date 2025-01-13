@@ -15,7 +15,6 @@ import dtu.ws.fastmoney.BankServiceService;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
-import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
@@ -41,14 +40,15 @@ public class PaymentResources{
         Merchant merchant = bankPay.merchant;
         int money = bankPay.money;
 
+        Payment payment = new Payment();
+        payment.setAmount(money);
+        payment.setCustomerId(customer.getId());
+        payment.setMerchantId(merchant.getId());
         Account customerAccount = bankService.getAccountByCprNumber(customer.getCprNumber());
         Account merchantAccount = bankService.getAccountByCprNumber(merchant.getCprNumber());
 
         bankService.transferMoneyFromTo(customerAccount.getId(), merchantAccount.getId(), BigDecimal.valueOf(money), "Random Reason");
-    }
-    @PUT
-    @Consumes(MediaType.APPLICATION_JSON)
-    public void setPayment(Payment payment){
         service.setPayment(payment);
     }
+
 }
