@@ -1,9 +1,6 @@
 package dtu.example.models;
 
-import java.util.UUID;
-
 public class Customer {
-    private String id;
     private String firstName;
     private String lastName;
     private String cprNumber;
@@ -11,18 +8,6 @@ public class Customer {
 
    
     public Customer() {}
-
-    public String getId(){
-        return id;
-    }
-
-    public void setId(String id){
-        this.id = id;
-    }
-
-    public void setId(){
-        this.id = UUID.randomUUID().toString();
-    }
 
     public String getFirstName(){
         return firstName;

@@ -1,26 +1,23 @@
 package org.acme.services;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import org.acme.models.Customer;
+import dtu.ws.fastmoney.User;
 
 public class CustomerService {
 private List<Customer> customers = new ArrayList<>();
+
     public List<Customer> getCustomers() {
         return customers;
     }
 
-    public void setCustomer(Customer given_customer) {
+    public void setCustomer(User user, String accountId) {
         Customer newCustomer = new Customer();
 
-        newCustomer.setId(given_customer.getId());
-        newCustomer.setFirstName(given_customer.getFirstName());
-        newCustomer.setLastName(given_customer.getLastName());
-        newCustomer.setCprNumber(given_customer.getCprNumber());
-        newCustomer.setBankAccount(given_customer.getBankAccount());
+        newCustomer.setFirstName(user.getFirstName());
+        newCustomer.setLastName(user.getLastName());
+        newCustomer.setCprNumber(user.getCprNumber());
+        newCustomer.setBankAccount(accountId);
         customers.add(newCustomer);  // Adds the new payment to the list
     }
 }
-
-

@@ -1,9 +1,8 @@
 package org.acme.services;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import org.acme.models.Merchant;
+import dtu.ws.fastmoney.User;
 
 public class MerchantService {
     private List<Merchant> merchants = new ArrayList<>();
@@ -12,16 +11,13 @@ public class MerchantService {
         return merchants;
     }
 
-    public void setMerchant(Merchant given_merchant) {
+    public void setMerchant(User user, String accountId) {
         Merchant newMerchant = new Merchant();
 
-        newMerchant.setId(given_merchant.getId());
-        newMerchant.setId(given_merchant.getId());
-        newMerchant.setFirstName(given_merchant.getFirstName());
-        newMerchant.setLastName(given_merchant.getLastName());
-        newMerchant.setCprNumber(given_merchant.getCprNumber());
-        newMerchant.setBankAccount(given_merchant.getBankAccount());
-
+        newMerchant.setFirstName(user.getFirstName());
+        newMerchant.setLastName(user.getLastName());
+        newMerchant.setCprNumber(user.getCprNumber());
+        newMerchant.setBankAccount(accountId);
         merchants.add(newMerchant);  // Adds the new merchant to the list
     }
 }

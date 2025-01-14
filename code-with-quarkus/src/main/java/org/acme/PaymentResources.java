@@ -42,12 +42,13 @@ public class PaymentResources{
 
         Payment payment = new Payment();
         payment.setAmount(money);
-        payment.setCustomerId(customer.getId());
-        payment.setMerchantId(merchant.getId());
+    
         Account customerAccount = bankService.getAccountByCprNumber(customer.getCprNumber());
         Account merchantAccount = bankService.getAccountByCprNumber(merchant.getCprNumber());
 
         bankService.transferMoneyFromTo(customerAccount.getId(), merchantAccount.getId(), BigDecimal.valueOf(money), "Random Reason");
+        payment.setCustomerId(customerAccount.getId());
+        payment.setMerchantId(merchantAccount.getId());
         service.setPayment(payment);
     }
 
