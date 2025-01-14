@@ -9,7 +9,6 @@ import java.math.BigDecimal;
 import dtu.example.models.Customer;
 import dtu.example.models.Merchant;
 import dtu.example.services.SimpleDtuPayService;
-import dtu.ws.fastmoney.Account;
 import dtu.ws.fastmoney.BankService;
 import dtu.ws.fastmoney.BankServiceException_Exception;
 import dtu.ws.fastmoney.BankServiceService;
@@ -22,7 +21,7 @@ public class SimpleDtuPaySteps {
     
     private Customer customer;
     private Merchant merchant;
-    private String customerAccountId, merchantAccountId;
+    private String customerId, merchantId, customerBankAccountId, merchantBankAccountId;
     private SimpleDtuPayService dtupay = new SimpleDtuPayService();
 
 
@@ -45,16 +44,15 @@ public class SimpleDtuPaySteps {
         user.setFirstName(customer.getFirstName());
         user.setLastName(customer.getLastName());
         user.setCprNumber(customer.getCprNumber());
-        customerAccountId = bankService.createAccountWithBalance(user,BigDecimal.valueOf(money));
-        customer.setBankAccount(customerAccountId);
+        customerBankAccountId = bankService.createAccountWithBalance(user,BigDecimal.valueOf(money));
+        customer.setBankAccount(customerBankAccountId);
     }
 
     @Given("the customer is registered with Simple DTU Pay using their bank account")
-    public void theCustomerIsRegisteredWithSimpleDTUPayUsingTheirBankAccount() throws BankServiceException_Exception {
-        assertNotNull(customer.getCprNumber());
-        Account account = bankService.getAccount(customer.getBankAccount());
-        dtupay.registerUser(account.getUser(),account.getId(),"customers");
-       
+    public void theCustomerIsRegisteredWithSimpleDTUPayUsingTheirBankAccount() {
+        assertNotNull(customer.getCprNumber()); //maybe not needed
+        customerId = dtupay.registerUser(customer,"customers");
+        System.out.println("SANTI customerId: " + customerId);
     }
 
 
@@ -74,16 +72,17 @@ public class SimpleDtuPaySteps {
         user.setFirstName(merchant.getFirstName());
         user.setLastName(merchant.getLastName());
         user.setCprNumber(merchant.getCprNumber());
-        merchantAccountId = bankService.createAccountWithBalance(user,BigDecimal.valueOf(money));
-        merchant.setBankAccount(merchantAccountId);
+        merchantBankAccountId = bankService.createAccountWithBalance(user,BigDecimal.valueOf(money));
+        merchant.setBankAccount(merchantBankAccountId);
     }
 
 
     @Given("the merchant is registered with Simple DTU Pay using their bank account")
-    public void theMerchantIsRegisteredWithSimpleDTUPayUsingTheirBankAccount() throws BankServiceException_Exception {
-        assertNotNull(merchant.getCprNumber());
-        Account account = bankService.getAccount(merchant.getBankAccount());
-        dtupay.registerUser(account.getUser(),account.getId(),"merchants");
+    public void theMerchantIsRegisteredWithSimpleDTUPayUsingTheirBankAccount() {
+        assertNotNull(merchant.getCprNumber()); //maybe not needed
+
+        merchantId = dtupay.registerUser(merchant,"merchants");
+        System.out.println("SANTI merchantId: " + merchantId);
     }
     
     @When("the merchant initiates a payment for {int} kr by the customer")

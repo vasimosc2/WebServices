@@ -1,47 +1,14 @@
 package dtu.example.models;
 
-public class Merchant {
-   
-    private String firstName;
-    private String lastName;
-    private String cprNumber;
-    private String bankAccount;
+import lombok.Getter;
 
-    
-    public Merchant(){}
 
-    public String getFirstName(){
-        return firstName;
+public class Merchant extends Stakeholder {
+
+    public Merchant() {}
+
+    public Merchant(String firstName, String lastName, String cprNumber, String bankAccount) {
+        super(firstName, lastName, cprNumber, bankAccount);
     }
-
-    public void setFirstName(String firstName){
-        this.firstName = firstName;
-    }
-
-    public String getLastName(){
-        return lastName;
-    }
-
-    public void setLastName(String lastName){
-        this.lastName = lastName;
-    }
-
-    public String getCprNumber() {
-        return cprNumber;
-    }
-    
-    public void setCprNumber(String cprNumber) {
-        this.cprNumber = cprNumber;
-    }
-
-    public String getBankAccount(){
-        return bankAccount;
-    }
-
-    public void setBankAccount(String bankAccount){
-        this.bankAccount = bankAccount;
-    }
-
-
 
 }

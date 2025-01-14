@@ -1,45 +1,12 @@
 package dtu.example.models;
 
-public class Customer {
-    private String firstName;
-    private String lastName;
-    private String cprNumber;
-    private String bankAccount;
+public class Customer extends Stakeholder {
 
    
     public Customer() {}
 
-    public String getFirstName(){
-        return firstName;
-    }
-
-    public void setFirstName(String firstName){
-        this.firstName = firstName;
-    }
-
-    public String getLastName(){
-        return lastName;
-    }
-
-    public void setLastName(String lastName){
-        this.lastName = lastName;
-    }
-
-    public String getCprNumber() {
-        return cprNumber;
-    }
-    
-    public void setCprNumber(String cprNumber) {
-        this.cprNumber = cprNumber;
-    }
-
-
-    public String getBankAccount(){
-        return bankAccount;
-    }
-
-    public void setBankAccount(String bankAccount){
-        this.bankAccount = bankAccount;
+    public Customer(String firstName, String lastName, String cprNumber, String bankAccount) {
+        super(firstName, lastName, cprNumber, bankAccount);
     }
 
 }

@@ -2,22 +2,29 @@ package dtu.example.services;
 
 import dtu.example.models.Customer;
 import dtu.example.models.Merchant;
-import dtu.ws.fastmoney.User;
+import dtu.example.models.Stakeholder;
 import jakarta.ws.rs.client.Client;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.client.WebTarget;
 import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
 
 public class SimpleDtuPayService {
 
-    Client c = ClientBuilder.newClient();
-    WebTarget target = c.target("http://localhost:8081/");
+    Client client = ClientBuilder.newClient();
+
+    String baseUrl = "http://localhost:8081/";
+    WebTarget target = client.target(baseUrl);
     
-    public record BankPay(int money,Customer customer, Merchant merchant) {}
-    public record UserAccountId(User user, String accountId) {}
-    public void registerUser(User user, String accountId, String path) {
-        target.path(path).request().put(Entity.entity(new UserAccountId(user, accountId), MediaType.APPLICATION_JSON));
+    public record BankPay(int money, Customer customer, Merchant merchant) {}
+    public String registerUser(Stakeholder stakeholder, String path) {
+
+        Response response = target.path(path)
+                .request()
+                .post(Entity.entity(stakeholder, MediaType.APPLICATION_JSON));
+
+        return response.readEntity(String.class);
     }
 
 

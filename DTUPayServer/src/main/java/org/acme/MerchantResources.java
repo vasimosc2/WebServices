@@ -1,13 +1,10 @@
 package org.acme;
 import java.util.List;
+
+import jakarta.ws.rs.*;
 import org.acme.models.Merchant;
 import org.acme.services.MerchantService;
 import dtu.ws.fastmoney.User;
-import jakarta.ws.rs.Consumes;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.PUT;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 
 @Path("/merchants")
@@ -21,11 +18,10 @@ public class MerchantResources{
         return service.getMerchants();
     }
 
-    @PUT
+    @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public void setCustomerBank(UserAccountId userAccountId){
-        User user = userAccountId.user;
-        String accountId = userAccountId.accountId;
-        service.setMerchant(user,accountId);
+    @Produces(MediaType.TEXT_PLAIN)
+    public String addMerchant(Merchant merchant){
+        return service.setMerchant(merchant);
     }
 }

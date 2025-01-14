@@ -3,6 +3,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.acme.models.Customer;
 import dtu.ws.fastmoney.User;
+import org.apache.commons.lang3.RandomStringUtils;
 
 public class CustomerService {
 private List<Customer> customers = new ArrayList<>();
@@ -11,13 +12,25 @@ private List<Customer> customers = new ArrayList<>();
         return customers;
     }
 
-    public void setCustomer(User user, String accountId) {
-        Customer newCustomer = new Customer();
+    public String setCustomer(Customer customer) {
+        String customerId;
+        do {
+            customerId = "CUST-" + RandomStringUtils.randomNumeric(8);
+        } while (isCustomerIdPresent(customerId));
 
-        newCustomer.setFirstName(user.getFirstName());
-        newCustomer.setLastName(user.getLastName());
-        newCustomer.setCprNumber(user.getCprNumber());
-        newCustomer.setBankAccount(accountId);
-        customers.add(newCustomer);  // Adds the new payment to the list
+        customer.setId(customerId);
+        customers.add(customer); // Add the customer to the list
+
+        return customerId; // Return the unique customerId
+    }
+
+    private boolean isCustomerIdPresent(String customerId) {
+        // Check if any customer in the list has the same customerId
+        for (Customer c : customers) {
+            if (c.getId().equals(customerId)) {
+                return true;
+            }
+        }
+        return false;
     }
 }
