@@ -16,13 +16,13 @@ public class SimpleDtuPayService {
     
     public record BankPay(int money,Customer customer, Merchant merchant) {}
     public record UserAccountId(User user, String accountId) {}
-    public void register(User user,String accountId, String path) {
+    public void registerUser(User user, String accountId, String path) {
         target.path(path).request().put(Entity.entity(new UserAccountId(user, accountId), MediaType.APPLICATION_JSON));
     }
 
 
-    public boolean maketransfer(int money,Customer customer, Merchant merchant) {
-        target.path("payment").request().post(Entity.entity(new BankPay(money, customer, merchant), MediaType.APPLICATION_JSON));
+    public boolean makeTransfer(int money,Customer customer, Merchant merchant) {
+        target.path("payments").request().post(Entity.entity(new BankPay(money, customer, merchant), MediaType.APPLICATION_JSON));
         return true;
     }
 

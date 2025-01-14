@@ -10,14 +10,14 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 
-@Path("/merchant")
+@Path("/merchants")
 public class MerchantResources{
     MerchantService service = new MerchantService();
     public record UserAccountId(User user, String accountId) {}
     
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Merchant> customer() {
+    public List<Merchant> getMerchants() {
         return service.getMerchants();
     }
 

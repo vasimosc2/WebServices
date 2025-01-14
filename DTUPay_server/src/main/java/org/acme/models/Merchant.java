@@ -1,14 +1,28 @@
-package dtu.example.models;
+package org.acme.models;
+
+import java.util.UUID;
 
 public class Merchant {
-   
+     private String id;
     private String firstName;
     private String lastName;
     private String cprNumber;
     private String bankAccount;
 
-    
-    public Merchant(){}
+   
+    public Merchant() {}
+
+    public String getId(){
+        return id;
+    }
+
+    public void setId(String id){
+        this.id = id;
+    }
+
+    public void setId(){
+        this.id = UUID.randomUUID().toString();
+    }
 
     public String getFirstName(){
         return firstName;
@@ -34,6 +48,7 @@ public class Merchant {
         this.cprNumber = cprNumber;
     }
 
+
     public String getBankAccount(){
         return bankAccount;
     }
@@ -41,7 +56,5 @@ public class Merchant {
     public void setBankAccount(String bankAccount){
         this.bankAccount = bankAccount;
     }
-
-
 
 }

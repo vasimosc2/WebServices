@@ -18,7 +18,7 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-public class SimpleDtuPayTest {
+public class SimpleDtuPaySteps {
     
     private Customer customer;
     private Merchant merchant;
@@ -53,7 +53,7 @@ public class SimpleDtuPayTest {
     public void theCustomerIsRegisteredWithSimpleDTUPayUsingTheirBankAccount() throws BankServiceException_Exception {
         assertNotNull(customer.getCprNumber());
         Account account = bankService.getAccount(customer.getBankAccount());
-        dtupay.register(account.getUser(),account.getId(),"customer");
+        dtupay.registerUser(account.getUser(),account.getId(),"customers");
        
     }
 
@@ -64,7 +64,7 @@ public class SimpleDtuPayTest {
         merchant.setFirstName(string);
         merchant.setLastName(string2);
         merchant.setCprNumber(string3);
-        assertNotNull(merchant, "Customer creation failed");
+        assertNotNull(merchant, "Merchant creation failed");
 
     }
 
@@ -83,16 +83,16 @@ public class SimpleDtuPayTest {
     public void theMerchantIsRegisteredWithSimpleDTUPayUsingTheirBankAccount() throws BankServiceException_Exception {
         assertNotNull(merchant.getCprNumber());
         Account account = bankService.getAccount(merchant.getBankAccount());
-        dtupay.register(account.getUser(),account.getId(),"merchant");
+        dtupay.registerUser(account.getUser(),account.getId(),"merchants");
     }
     
     @When("the merchant initiates a payment for {int} kr by the customer")
     public void TransferMoney(int money){
-        successful = dtupay.maketransfer(money,customer,merchant);
+        successful = dtupay.makeTransfer(money,customer,merchant);
     }
 
     @Then("the payment is successful")
-    public void sucess(){
+    public void success(){
         assertTrue(successful);
     }
 

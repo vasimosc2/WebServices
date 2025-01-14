@@ -10,14 +10,14 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 
-@Path("/customer")
+@Path("/customers")
 public class CustomerResources {
     CustomerService service = new CustomerService();
     public record UserAccountId(User user, String accountId) {}
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Customer> customer() {
+    public List<Customer> getCustomers() {
         return service.getCustomers();
     }
     
