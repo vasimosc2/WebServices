@@ -14,7 +14,7 @@ public class SimpleDtuPayService {
 
     Client client = ClientBuilder.newClient();
 
-    String baseUrl = "http://localhost:8081/";
+    String baseUrl = "http://fm-11.compute.dtu.dk:8080/";
     WebTarget target = client.target(baseUrl);
     
     public record BankPay(int money, Customer customer, Merchant merchant) {}
