@@ -28,7 +28,7 @@ cd code-with-quarkus
 mvn quarkus:dev
 ```
 
-**Ensure** that ```./CucumberExample/src/test/java/dtu/example/services/SimpleDtuPayService.java``` is configured to localhost:8080/ (ensure that '/' is appended).
+**Ensure** that ```./CucumberExample/src/test/java/dtu/example/services/SimpleDtuPayService.java``` is configured to localhost:8081/ (ensure that '/' is appended).
 
 Then, open another terminal and do:
 ```
@@ -37,6 +37,6 @@ mvn test
 ```
 
 ### Logs:
-- http://localhost:8080/payment: You can see all the Transactions
-- http://localhost:8080/customer: You can see all the Customers
-- http://localhost:8080/merchant: You can see all the Merchants
+- http://localhost:8081/payment: You can see all the Transactions
+- http://localhost:8081/customer: You can see all the Customers
+- http://localhost:8081/merchant: You can see all the Merchants
