@@ -1,25 +1,14 @@
 #!/bin/bash
 set -e  # Exit immediately if a command exits with a non-zero status
 
-cd DTUPayServer
+echo "Current directory: $(pwd)"
 
-# Step 1: Build the Docker image using docker-compose
-echo "Building Docker image..."
-docker compose build
-
-# Step 2: Run the Docker containers
-echo "Starting Docker containers..."
-docker compose up -d
-
-echo "Cleaning up unused Docker resources..."
-docker system prune -f
-
-echo "Build and deployment successful!"
+./DTUPayServer/launch_server.sh
+./DTUPayClient/launch_client.sh
 
 
+# echo "running tests..."
 
-echo "running tests..."
-cd ..
-cd DTUPayClient
+# ./DTUPayServer/launch_client.sh
 
-mvn clean test
+# mvn clean test
