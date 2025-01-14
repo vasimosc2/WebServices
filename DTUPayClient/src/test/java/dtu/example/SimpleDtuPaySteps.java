@@ -52,6 +52,7 @@ public class SimpleDtuPaySteps {
     public void theCustomerIsRegisteredWithSimpleDTUPayUsingTheirBankAccount() {
         assertNotNull(customer.getCprNumber()); //maybe not needed
         customerId = dtupay.registerUser(customer,"customers");
+        customer.setId(customerId);
         System.out.println("SANTI customerId: " + customerId);
     }
 
@@ -82,6 +83,7 @@ public class SimpleDtuPaySteps {
         assertNotNull(merchant.getCprNumber()); //maybe not needed
 
         merchantId = dtupay.registerUser(merchant,"merchants");
+        merchant.setId(merchantId);
         System.out.println("SANTI merchantId: " + merchantId);
     }
     
