@@ -47,8 +47,8 @@ public class PaymentResources{
         Account merchantAccount = bankService.getAccountByCprNumber(merchant.getCprNumber());
 
         bankService.transferMoneyFromTo(customerAccount.getId(), merchantAccount.getId(), BigDecimal.valueOf(money), "Random Reason");
-        payment.setCustomerId(customerAccount.getId());
-        payment.setMerchantId(merchantAccount.getId());
+        payment.setCustomerId(customer.getId());
+        payment.setMerchantId(merchant.getId());
         service.setPayment(payment);
     }
 
