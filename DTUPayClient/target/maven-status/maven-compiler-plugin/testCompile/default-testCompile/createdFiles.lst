@@ -1,0 +1,8 @@
+dtu/example/CucumberTest.class
+dtu/example/models/Customer.class
+dtu/example/models/Stakeholder.class
+dtu/example/SimpleDtuPaySteps.class
+dtu/example/models/Payment.class
+dtu/example/models/Merchant.class
+dtu/example/services/SimpleDtuPayService.class
+dtu/example/services/SimpleDtuPayService$BankPay.class

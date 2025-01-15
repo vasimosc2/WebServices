@@ -14,11 +14,19 @@ public class SimpleDtuPayService {
 
     Client client = ClientBuilder.newClient();
 
-    String baseUrl = "http://fm-11.compute.dtu.dk:8080/";
+    String baseUrl = "http://localhost:8080/";
     WebTarget target = client.target(baseUrl);
     
-    public record BankPay(int money, Customer customer, Merchant merchant) {}
-    public String registerUser(Stakeholder stakeholder, String path) {
+    public record BankPay(int money, String customerId, String merchantId) {}
+
+    public String registerCustomer(Stakeholder stakeholder) {
+        return registerUser(stakeholder, "customers");
+    }
+
+    public String registerMerchant(Stakeholder stakeholder) {
+        return registerUser(stakeholder, "merchants");
+    }
+    private String registerUser(Stakeholder stakeholder, String path) {
 
         Response response = target.path(path)
                 .request()
@@ -28,8 +36,10 @@ public class SimpleDtuPayService {
     }
 
 
-    public boolean makeTransfer(int money,Customer customer, Merchant merchant) {
-        target.path("payments").request().post(Entity.entity(new BankPay(money, customer, merchant), MediaType.APPLICATION_JSON));
+    public boolean makeTransfer(int money,String customerId, String merchantId) {
+        target.path("payments").
+                request().
+                post(Entity.entity(new BankPay(money, customerId, merchantId), MediaType.APPLICATION_JSON));
         return true;
     }
 

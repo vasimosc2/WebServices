@@ -13,6 +13,7 @@ import dtu.ws.fastmoney.BankService;
 import dtu.ws.fastmoney.BankServiceException_Exception;
 import dtu.ws.fastmoney.BankServiceService;
 import dtu.ws.fastmoney.User;
+import io.cucumber.java.After;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -51,7 +52,7 @@ public class SimpleDtuPaySteps {
     @Given("the customer is registered with Simple DTU Pay using their bank account")
     public void theCustomerIsRegisteredWithSimpleDTUPayUsingTheirBankAccount() {
         assertNotNull(customer.getCprNumber()); //maybe not needed
-        customerId = dtupay.registerUser(customer,"customers");
+        customerId = dtupay.registerCustomer(customer);
         customer.setId(customerId);
         System.out.println("SANTI customerId: " + customerId);
     }
@@ -82,14 +83,14 @@ public class SimpleDtuPaySteps {
     public void theMerchantIsRegisteredWithSimpleDTUPayUsingTheirBankAccount() {
         assertNotNull(merchant.getCprNumber()); //maybe not needed
 
-        merchantId = dtupay.registerUser(merchant,"merchants");
+        merchantId = dtupay.registerMerchant(merchant);
         merchant.setId(merchantId);
         System.out.println("SANTI merchantId: " + merchantId);
     }
     
     @When("the merchant initiates a payment for {int} kr by the customer")
     public void TransferMoney(int money){
-        successful = dtupay.makeTransfer(money,customer,merchant);
+        successful = dtupay.makeTransfer(money, customer.getId(), merchant.getId());
     }
 
     @Then("the payment is successful")
@@ -99,12 +100,12 @@ public class SimpleDtuPaySteps {
 
     @And("the balance of the customer at the bank is {int} kr")
     public void customerBalance(int money) throws BankServiceException_Exception{
-        assertEquals(bankService.getAccount(customer.getBankAccount()).getBalance(), BigDecimal.valueOf(money));
+        assertEquals(BigDecimal.valueOf(money), bankService.getAccount(customer.getBankAccount()).getBalance());
     }
 
     @And("the balance of the merchant at the bank is {int} kr")
     public void merchantBalance(int money) throws BankServiceException_Exception{
-        assertEquals(bankService.getAccount(merchant.getBankAccount()).getBalance(), BigDecimal.valueOf(money));
+        assertEquals(BigDecimal.valueOf(money), bankService.getAccount(merchant.getBankAccount()).getBalance());
     }
 
     @Then("delete the customer and merchant")
@@ -112,4 +113,11 @@ public class SimpleDtuPaySteps {
         bankService.retireAccount(customer.getBankAccount());
         bankService.retireAccount(merchant.getBankAccount());
     }
+
+    @After
+    public void cleanupBankAccounts() throws BankServiceException_Exception {
+        bankService.retireAccount(customer.getBankAccount());
+        bankService.retireAccount(merchant.getBankAccount());
+    }
+
 }

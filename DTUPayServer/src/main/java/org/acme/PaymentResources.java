@@ -3,6 +3,7 @@ package org.acme;
 import java.math.BigDecimal;
 import java.util.List;
 
+import org.acme.models.BankPay;
 import org.acme.models.Customer;
 import org.acme.models.Merchant;
 import org.acme.models.Payment;
@@ -23,10 +24,6 @@ import jakarta.ws.rs.core.MediaType;
 public class PaymentResources{
     PaymentService service = new PaymentService();
 
-    private BankService bankService = new BankServiceService().getBankServicePort();
-
-    public record BankPay(int money,Customer customer, Merchant merchant) {}
-
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public List<Payment> Payment() {
@@ -36,20 +33,7 @@ public class PaymentResources{
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public void setBankPayment(BankPay bankPay) throws BankServiceException_Exception{
-        Customer customer = bankPay.customer;
-        Merchant merchant = bankPay.merchant;
-        int money = bankPay.money;
-
-        Payment payment = new Payment();
-        payment.setAmount(money);
-    
-        Account customerAccount = bankService.getAccountByCprNumber(customer.getCprNumber());
-        Account merchantAccount = bankService.getAccountByCprNumber(merchant.getCprNumber());
-
-        bankService.transferMoneyFromTo(customerAccount.getId(), merchantAccount.getId(), BigDecimal.valueOf(money), "Random Reason");
-        payment.setCustomerId(customer.getId());
-        payment.setMerchantId(merchant.getId());
-        service.setPayment(payment);
+        service.setPayment(bankPay);
     }
 
 }

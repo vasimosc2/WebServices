@@ -1,7 +1,7 @@
-/home/spaceman/IdeaProjects/week1-final/WebServices/DTUPayClient/src/test/java/dtu/example/CucumberTest.java
-/home/spaceman/IdeaProjects/week1-final/WebServices/DTUPayClient/src/test/java/dtu/example/SimpleDtuPaySteps.java
-/home/spaceman/IdeaProjects/week1-final/WebServices/DTUPayClient/src/test/java/dtu/example/models/Customer.java
-/home/spaceman/IdeaProjects/week1-final/WebServices/DTUPayClient/src/test/java/dtu/example/models/Merchant.java
-/home/spaceman/IdeaProjects/week1-final/WebServices/DTUPayClient/src/test/java/dtu/example/models/Payment.java
-/home/spaceman/IdeaProjects/week1-final/WebServices/DTUPayClient/src/test/java/dtu/example/models/Stakeholder.java
-/home/spaceman/IdeaProjects/week1-final/WebServices/DTUPayClient/src/test/java/dtu/example/services/SimpleDtuPayService.java
+/Users/santiago/Desktop/WebServices/DTUPayClient/src/test/java/dtu/example/CucumberTest.java
+/Users/santiago/Desktop/WebServices/DTUPayClient/src/test/java/dtu/example/SimpleDtuPaySteps.java
+/Users/santiago/Desktop/WebServices/DTUPayClient/src/test/java/dtu/example/models/Customer.java
+/Users/santiago/Desktop/WebServices/DTUPayClient/src/test/java/dtu/example/models/Merchant.java
+/Users/santiago/Desktop/WebServices/DTUPayClient/src/test/java/dtu/example/models/Payment.java
+/Users/santiago/Desktop/WebServices/DTUPayClient/src/test/java/dtu/example/models/Stakeholder.java
+/Users/santiago/Desktop/WebServices/DTUPayClient/src/test/java/dtu/example/services/SimpleDtuPayService.java

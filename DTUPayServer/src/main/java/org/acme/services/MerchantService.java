@@ -2,14 +2,16 @@ package org.acme.services;
 import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.enterprise.context.ApplicationScoped;
 import org.acme.models.Customer;
 import org.acme.models.Merchant;
 import dtu.ws.fastmoney.User;
 import org.apache.commons.lang3.RandomStringUtils;
 
+@ApplicationScoped
 public class MerchantService {
-    private List<Merchant> merchants = new ArrayList<>();
 
+    private List<Merchant> merchants = new ArrayList<>();
     public List<Merchant> getMerchants() {
         return merchants;
     }
@@ -34,6 +36,15 @@ public class MerchantService {
             }
         }
         return false;
+    }
+
+    public Merchant getMerchant(String merchantId) {
+        for (Merchant m : merchants) {
+            if (m.getId().equals(merchantId)) {
+                return m;
+            }
+        }
+        return null;
     }
 
 }
