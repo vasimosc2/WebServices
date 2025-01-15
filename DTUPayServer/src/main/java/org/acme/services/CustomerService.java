@@ -39,15 +39,7 @@ public class CustomerService {
     }
 
     public Customer getCustomer(String customerId) {
-        System.out.println("SANTI list of customers in list: " + customers.size());
-        System.out.println("SANTI customer name: " + customers.get(0).getFirstName());
-        System.out.println("SANTI customer ID: " + customers.get(0).getId());
-        System.out.println("SANTI customer bank account: " + customers.get(0).getBankAccount());
-
-
-        System.out.println("SANTI Searching for customer with ID: " + customerId);
         for (Customer c : customers) {
-            System.out.println("SANTI Checking customer with ID: " + c.getId());
             if (c.getId().equals(customerId)) {
                 return c;
             }

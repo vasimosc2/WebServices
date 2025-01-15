@@ -37,5 +37,4 @@ public class PaymentResources{
     public void setBankPayment(BankPay bankPay) throws BankServiceException_Exception{
         service.setPayment(bankPay);
     }
-
 }

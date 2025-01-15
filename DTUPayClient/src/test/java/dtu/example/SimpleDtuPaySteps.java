@@ -84,7 +84,6 @@ public class SimpleDtuPaySteps {
 
         merchantId = dtupay.registerMerchant(merchant);
         merchant.setId(merchantId);
-        System.out.println("SANTI merchantId: " + merchantId);
     }
     
     @When("the merchant initiates a payment for {int} kr by the customer")
