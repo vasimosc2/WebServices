@@ -3,6 +3,7 @@ package org.acme;
 import java.math.BigDecimal;
 import java.util.List;
 
+import jakarta.inject.Inject;
 import org.acme.models.BankPay;
 import org.acme.models.Customer;
 import org.acme.models.Merchant;
@@ -22,7 +23,8 @@ import jakarta.ws.rs.core.MediaType;
 
 @Path("/payments")
 public class PaymentResources{
-    PaymentService service = new PaymentService();
+    @Inject
+    PaymentService service;
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)

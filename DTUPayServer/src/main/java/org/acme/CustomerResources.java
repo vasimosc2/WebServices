@@ -1,6 +1,7 @@
 package org.acme;
 import java.util.List;
 
+import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import org.acme.models.Customer;
 import org.acme.services.CustomerService;
@@ -9,7 +10,8 @@ import jakarta.ws.rs.core.MediaType;
 
 @Path("/customers")
 public class CustomerResources {
-    CustomerService service = new CustomerService();
+    @Inject
+    CustomerService service;
 
 
     @GET

@@ -108,11 +108,11 @@ public class SimpleDtuPaySteps {
         assertEquals(BigDecimal.valueOf(money), bankService.getAccount(merchant.getBankAccount()).getBalance());
     }
 
-    @Then("delete the customer and merchant")
-    public void DeleteTests() throws BankServiceException_Exception{
-        bankService.retireAccount(customer.getBankAccount());
-        bankService.retireAccount(merchant.getBankAccount());
-    }
+//    @Then("delete the customer and merchant")
+//    public void DeleteTests() throws BankServiceException_Exception{
+//        bankService.retireAccount(customer.getBankAccount());
+//        bankService.retireAccount(merchant.getBankAccount());
+//    }
 
     @After
     public void cleanupBankAccounts() throws BankServiceException_Exception {

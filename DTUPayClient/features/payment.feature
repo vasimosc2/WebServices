@@ -10,4 +10,4 @@ Feature: Payment
     Then the payment is successful
     And the balance of the customer at the bank is 985 kr
     And the balance of the merchant at the bank is 1015 kr
-    Then delete the customer and merchant
+#    Then delete the customer and merchant

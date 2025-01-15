@@ -1,7 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: dtu.example.CucumberTest
 -------------------------------------------------------------------------------
-Tests run: 1, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 1.12 s <<< FAILURE! - in dtu.example.CucumberTest
-Successful Payment  Time elapsed: 1.102 s  <<< FAILURE!
-java.lang.AssertionError: expected:<985> but was:<1000>
-
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.787 s - in dtu.example.CucumberTest

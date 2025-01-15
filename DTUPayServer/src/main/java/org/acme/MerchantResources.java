@@ -1,6 +1,7 @@
 package org.acme;
 import java.util.List;
 
+import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import org.acme.models.Merchant;
 import org.acme.services.MerchantService;
@@ -9,8 +10,9 @@ import jakarta.ws.rs.core.MediaType;
 
 @Path("/merchants")
 public class MerchantResources{
-    MerchantService service = new MerchantService();
-    public record UserAccountId(User user, String accountId) {}
+
+    @Inject
+    MerchantService service;
     
     @GET
     @Produces(MediaType.APPLICATION_JSON)
