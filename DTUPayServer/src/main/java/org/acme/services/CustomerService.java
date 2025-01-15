@@ -4,7 +4,6 @@ import java.util.List;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import org.acme.models.Customer;
-import dtu.ws.fastmoney.User;
 import org.apache.commons.lang3.RandomStringUtils;
 
 @ApplicationScoped
@@ -17,7 +16,7 @@ public class CustomerService {
         return customers;
     }
 
-    public String setCustomer(Customer customer) {
+    public String registerCustomer(Customer customer) {
         String customerId;
         do {
             customerId = "CUST-" + RandomStringUtils.randomNumeric(8);
@@ -25,10 +24,6 @@ public class CustomerService {
 
         customer.setId(customerId);
         customers.add(customer); // Add the customer to the list
-
-        //Customer customerTEST = getCustomer(customerId);
-
-        //System.out.println("SANTI Just added the following customer: " + customerTEST.getId() + " with the bank account: " + customerTEST.getBankAccount());
 
         return customerId; // Return the unique customerId
     }

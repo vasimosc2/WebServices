@@ -3,9 +3,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.enterprise.context.ApplicationScoped;
-import org.acme.models.Customer;
 import org.acme.models.Merchant;
-import dtu.ws.fastmoney.User;
 import org.apache.commons.lang3.RandomStringUtils;
 
 @ApplicationScoped
@@ -16,7 +14,7 @@ public class MerchantService {
         return merchants;
     }
 
-    public String setMerchant(Merchant merchant) {
+    public String registerMerchant(Merchant merchant) {
         String merchantId;
         do {
             merchantId = "MERC-" + RandomStringUtils.randomNumeric(8);

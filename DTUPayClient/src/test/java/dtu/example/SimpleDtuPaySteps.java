@@ -54,7 +54,6 @@ public class SimpleDtuPaySteps {
         assertNotNull(customer.getCprNumber()); //maybe not needed
         customerId = dtupay.registerCustomer(customer);
         customer.setId(customerId);
-        System.out.println("SANTI customerId: " + customerId);
     }
 
 

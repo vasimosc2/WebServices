@@ -5,7 +5,6 @@ import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import org.acme.models.Customer;
 import org.acme.services.CustomerService;
-import dtu.ws.fastmoney.User;
 import jakarta.ws.rs.core.MediaType;
 
 @Path("/customers")
@@ -24,6 +23,6 @@ public class CustomerResources {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
     public String addCustomer(Customer customer){
-        return service.setCustomer(customer);
+        return service.registerCustomer(customer);
     }
 }

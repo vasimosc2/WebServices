@@ -5,7 +5,6 @@ import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import org.acme.models.Merchant;
 import org.acme.services.MerchantService;
-import dtu.ws.fastmoney.User;
 import jakarta.ws.rs.core.MediaType;
 
 @Path("/merchants")
@@ -24,6 +23,6 @@ public class MerchantResources{
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
     public String addMerchant(Merchant merchant){
-        return service.setMerchant(merchant);
+        return service.registerMerchant(merchant);
     }
 }

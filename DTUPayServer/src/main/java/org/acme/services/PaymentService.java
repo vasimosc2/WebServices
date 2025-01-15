@@ -37,17 +37,10 @@ public class PaymentService {
 
     // Adds a new payment to the list
     public void setPayment(BankPay bankPay) throws BankServiceException_Exception {
-
         int money = bankPay.money();
-
-        System.out.println("PaymentService: CUST ID:" + bankPay.customerId() + ", MERCH ID:" + bankPay.merchantId() + ", AMOUNT:" + money);
-
-//        System.out.println("the customer BANK ACCOUNT from customer service is" + CustomerService.getInstance().getCustomer(bankPay.customerId()).getBankAccount());
-
 
         Customer customer = customerService.getCustomer(bankPay.customerId());
         Merchant merchant = merchantService.getMerchant(bankPay.merchantId());
-
 
         bankService.transferMoneyFromTo(customer.getBankAccount(), merchant.getBankAccount(), BigDecimal.valueOf(money), "Random Reason");
         //add try-catch
