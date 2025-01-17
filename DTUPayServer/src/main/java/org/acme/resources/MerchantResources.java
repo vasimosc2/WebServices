@@ -1,4 +1,4 @@
-package org.acme;
+package org.acme.resources;
 import java.util.List;
 
 import jakarta.inject.Inject;

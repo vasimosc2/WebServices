@@ -1,19 +1,19 @@
-package org.acme;
+package org.acme.resources;
 
-import java.math.BigDecimal;
+// import java.math.BigDecimal;
 import java.util.List;
 
 import jakarta.inject.Inject;
 import org.acme.models.BankPay;
-import org.acme.models.Customer;
-import org.acme.models.Merchant;
+// import org.acme.models.Customer;
+// import org.acme.models.Merchant;
 import org.acme.models.Payment;
 import org.acme.services.PaymentService;
 
-import dtu.ws.fastmoney.Account;
-import dtu.ws.fastmoney.BankService;
+// import dtu.ws.fastmoney.Account;
+// import dtu.ws.fastmoney.BankService;
 import dtu.ws.fastmoney.BankServiceException_Exception;
-import dtu.ws.fastmoney.BankServiceService;
+// import dtu.ws.fastmoney.BankServiceService;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
