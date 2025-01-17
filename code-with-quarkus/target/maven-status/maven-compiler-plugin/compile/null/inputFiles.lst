@@ -20,6 +20,7 @@
 /mnt/c/Users/mosho/OneDrive/Υπολογιστής/WebServices/code-with-quarkus/src/main/java/org/acme/CustomerResources.java
 /mnt/c/Users/mosho/OneDrive/Υπολογιστής/WebServices/code-with-quarkus/src/main/java/org/acme/MerchantResources.java
 /mnt/c/Users/mosho/OneDrive/Υπολογιστής/WebServices/code-with-quarkus/src/main/java/org/acme/PaymentResources.java
+/mnt/c/Users/mosho/OneDrive/Υπολογιστής/WebServices/code-with-quarkus/src/main/java/org/acme/RabbitMQUtil.java
 /mnt/c/Users/mosho/OneDrive/Υπολογιστής/WebServices/code-with-quarkus/src/main/java/org/acme/models/Customer.java
 /mnt/c/Users/mosho/OneDrive/Υπολογιστής/WebServices/code-with-quarkus/src/main/java/org/acme/models/Merchant.java
 /mnt/c/Users/mosho/OneDrive/Υπολογιστής/WebServices/code-with-quarkus/src/main/java/org/acme/models/Payment.java

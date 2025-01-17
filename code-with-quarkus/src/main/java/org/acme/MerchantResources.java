@@ -10,6 +10,11 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 
+
+import com.rabbitmq.client.Channel;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+
 @Path("/merchant")
 public class MerchantResources{
     MerchantService service = new MerchantService();
@@ -27,5 +32,26 @@ public class MerchantResources{
         User user = userAccountId.user;
         String accountId = userAccountId.accountId;
         service.setMerchant(user,accountId);
+        try {
+            // Convert UserAccountId to JSON
+            ObjectMapper objectMapper = new ObjectMapper();
+            String message = objectMapper.writeValueAsString(userAccountId);
+    
+            // Get RabbitMQ channel
+            Channel channel = RabbitMQUtil.getChannel();
+    
+            // Declare the queue
+            channel.queueDeclare(RabbitMQUtil.getQueueName(), true, false, false, null);
+    
+            // Publish the message to the queue
+            channel.basicPublish("", RabbitMQUtil.getQueueName(), null, message.getBytes());
+            System.out.println(" [x] Sent '" + message + "'");
+    
+            // Close the channel
+            channel.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Failed to add customer to RabbitMQ", e);
+        }
     }
 }
