@@ -45,7 +45,7 @@ public class CustomersList implements ICustomers {
     @Override
     public Customer getByCpr(String cpr) {
         return Customers.stream()
-                .filter(a -> a.getCpr().equals(cpr))
+                .filter(a -> a.getCprNumber().equals(cpr))
                 .findAny()
                 .orElse(null);
     }

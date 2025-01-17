@@ -1,7 +1,3 @@
-/**
- * @author Kasper (s141250)
- * @author Sebastian (s135243)
- */
 
 package interfaces.rabbitmq;
 
@@ -9,8 +5,6 @@ import com.google.gson.Gson;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
-import infrastructure.ConfigService;
-import infrastructure.IConfigService;
 import messaging.Event;
 import messaging.EventSender;
 
@@ -29,8 +23,9 @@ public class CustomerSender implements EventSender {
     @Override
     public void sendEvent(Event event) throws Exception {
         ConnectionFactory factory = new ConnectionFactory();
-        IConfigService config = new ConfigService();
-        factory.setHost(config.getProp("rabbitmq.host"));
+        factory.setHost("rabbitMq");
+		factory.setUsername("vasimosc");
+    	factory.setPassword("bncvcxff3");
         try (Connection connection = factory.newConnection(); Channel channel = connection.createChannel()) {
             channel.exchangeDeclare(EXCHANGE_NAME, QUEUE_TYPE);
             String message = new Gson().toJson(event);

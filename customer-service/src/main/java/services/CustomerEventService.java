@@ -2,7 +2,7 @@ package services;
 
 import com.google.gson.Gson;
 
-import dto.Customer;
+import models.Customer;
 import messaging.Event;
 import messaging.EventReceiver;
 import messaging.EventSender;
@@ -30,8 +30,11 @@ public class CustomerEventService implements EventReceiver {
         switch (eventIn.getEventType()) {
             case "Register":
                 try {
-                    Customer customer = gson.fromJson(gson.toJson(eventIn.getArguments()[0]), UserRegistrationDTO.class);
-                    String internalId = service.register(customer);
+                    Customer customer = gson.fromJson(gson.toJson(eventIn.getArguments()[0]), Customer.class);
+
+                    int money = 50;
+
+                    String internalId = service.register(customer,money);
                     Event eventOut = new Event("RegisterSuccessful", new Object[]{internalId});
                     eventSender.sendEvent(eventOut);
                 } catch (Exception e) {

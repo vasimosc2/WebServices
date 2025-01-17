@@ -5,8 +5,7 @@ import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 import com.rabbitmq.client.DeliverCallback;
-import infrastructure.ConfigService;
-import infrastructure.IConfigService;
+
 import messaging.Event;
 import messaging.EventReceiver;
 
@@ -30,10 +29,14 @@ public class CustomerListener {
 
 	public void listen() throws Exception {
 		ConnectionFactory factory = new ConnectionFactory();
-		IConfigService config = new ConfigService();
-		String rabbitMQhost = config.getProp("rabbitmq.host");
-        LOGGER.info("CONNECTING TO RABBITMQ HOST: " + rabbitMQhost);
-        factory.setHost(rabbitMQhost);
+	
+
+        LOGGER.info("CONNECTING TO RABBITMQ HOST: " );
+
+		factory.setHost("rabbitMq");
+		factory.setUsername("vasimosc");
+    	factory.setPassword("bncvcxff3");
+
 		Connection connection = factory.newConnection();
 		Channel channel = connection.createChannel();
 		channel.exchangeDeclare(EXCHANGE_NAME, QUEUE_TYPE);

@@ -1,15 +1,13 @@
 package services;
 
-import dtu.ws.fastmoney.Account;
-import dtu.ws.fastmoney.BankService;
-import dtu.ws.fastmoney.BankServiceException_Exception;
-import dtu.ws.fastmoney.BankServiceService;
-import dtu.ws.fastmoney.User;
+import dtu.ws.fastmoney.*;
+
+
 import exceptions.account.AccountExistsException;
 import exceptions.account.AccountNotFoundException;
 import exceptions.account.AccountRegistrationException;
 import exceptions.account.BankAccountException;
-import infrastructure.bank.*;
+
 import infrastructure.repositories.CustomersList;
 import infrastructure.repositories.interfaces.ICustomers;
 import models.Customer;
@@ -38,30 +36,35 @@ public class CustomerService implements ICustomerService {
             throws AccountExistsException {
 
         if (isRegistered(customer)) {// This function is initialized later it just returns a bool of whether this user is registered
-            throw new AccountExistsException("Account with cpr (" + creationRequest.getCprNumber() + ") already exists!");
+            throw new AccountExistsException("Account with cpr (" + customer.getCprNumber() + ") already exists!");
         }
 
 
         String accountId = null;
         
         // Here we will try to fetch the account, if the account do exist the we must not register this Customer in the Bank
-
-        Account potentialAccount = getBankAccountByCpr(customer.getCprNumber());
-        if(potentialAccount == null){
-            // If I get in here it means , that the account was not created and we must create it
-            accountId =  registerBankAccount(customer,money);
-            customer.setBankAccount(accountId);
-            customer.setId(UUID.randomUUID().toString());
-            repo.add(customer);
-            return customer.getId();
-        }
-
-        else{
-            //This means that the account exist
-            customer.setBankAccount(potentialAccount.getId());
-            customer.setId(UUID.randomUUID().toString());
-            repo.add(customer);
-            return customer.getId();
+        try {
+            Account potentialAccount = getBankAccountByCpr(customer.getCprNumber());
+            
+            if (potentialAccount == null) {
+                // If I get in here it means that the account was not created and we must create it
+                accountId = registerBankAccount(customer, money);
+                customer.setBankAccount(accountId);
+                customer.setId(UUID.randomUUID().toString());
+                repo.add(customer);
+                return customer.getId();
+            } else {
+                // This means the account exists
+                customer.setBankAccount(potentialAccount.getId());
+                customer.setId(UUID.randomUUID().toString());
+                repo.add(customer);
+                return customer.getId();
+            }
+        } catch (BankAccountException e) {
+            // Handle the exception appropriately here
+            System.out.println("Error occurred while processing the bank account: " + e.getMessage());
+            // Optionally, rethrow it or handle further if needed
+            throw new RuntimeException("Failed to process bank account", e);
         }
  
     }
@@ -85,11 +88,7 @@ public class CustomerService implements ICustomerService {
             throw new AccountNotFoundException("Account with cpr (" + cpr + ") is not found!");
         }
 
-        try {
-            return getUserAccountFromInfo(customer);
-        } catch (BankAccountException e) {
-            throw new AccountNotFoundException("Account with cpr (" + cpr + ") is not found!");
-        }
+       return customer;
     }
 
     @Override
@@ -154,9 +153,9 @@ public class CustomerService implements ICustomerService {
             throws BankAccountException {
 
         User user = new User();
-        user.setCprNumber(userRegistrationDTO.getCprNumber());
-        user.setFirstName(userRegistrationDTO.getFirstName());
-        user.setLastName(userRegistrationDTO.getLastName());
+        user.setCprNumber(customer.getCprNumber());
+        user.setFirstName(customer.getFirstName());
+        user.setLastName(customer.getLastName());
 
         // try to create a bank account for the user
         String bankId;
@@ -164,7 +163,7 @@ public class CustomerService implements ICustomerService {
             bankId = bankService.createAccountWithBalance(user, BigDecimal.valueOf(money));
         } catch (BankServiceException_Exception e) {
             throw new BankAccountException("Failed to create bank account" +
-                    " for account with cpr (" + userRegistrationDTO.getCprNumber() + ")");
+                    " for account with cpr (" + customer.getCprNumber() + ")");
         }
 
         return bankId;
