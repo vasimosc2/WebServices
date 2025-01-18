@@ -23,9 +23,10 @@ public class CustomerSender implements EventSender {
     @Override
     public void sendEvent(Event event) throws Exception {
         ConnectionFactory factory = new ConnectionFactory();
-        factory.setHost("rabbitMq");
-		factory.setUsername("vasimosc");
-    	factory.setPassword("bncvcxff3");
+        factory.setHost("172.20.0.6");
+        factory.setUsername("vasimosc");
+        factory.setPassword("bncvcxff3");
+		
         try (Connection connection = factory.newConnection(); Channel channel = connection.createChannel()) {
             channel.exchangeDeclare(EXCHANGE_NAME, QUEUE_TYPE);
             String message = new Gson().toJson(event);

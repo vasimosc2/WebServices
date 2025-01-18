@@ -33,9 +33,10 @@ public class CustomerListener {
 
         LOGGER.info("CONNECTING TO RABBITMQ HOST: " );
 
-		factory.setHost("rabbitMq");
+		factory.setHost("172.20.0.6");
 		factory.setUsername("vasimosc");
-    	factory.setPassword("bncvcxff3");
+		factory.setPassword("bncvcxff3");
+		
 
 		Connection connection = factory.newConnection();
 		Channel channel = connection.createChannel();

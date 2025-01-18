@@ -1,5 +1,6 @@
 package dtu.example.services;
 
+import dtu.example.models.CustInt;
 import dtu.example.models.Customer;
 import dtu.example.models.Merchant;
 import dtu.ws.fastmoney.User;
@@ -15,7 +16,16 @@ public class SimpleDtuPayService {
     WebTarget target = c.target("http://localhost:8081/");
     
     public record BankPay(int money,Customer customer, Merchant merchant) {}
+    
     public record UserAccountId(User user, String accountId) {}
+
+    public void register(Customer customer,int money){
+        CustInt custInt = new CustInt();
+        custInt.setCustomer(customer);
+        custInt.setMoney(money);
+        target.path("customer").request().post(Entity.entity(custInt, MediaType.APPLICATION_JSON));
+    }
+
     public void register(User user,String accountId, String path) {
         target.path(path).request().put(Entity.entity(new UserAccountId(user, accountId), MediaType.APPLICATION_JSON));
     }

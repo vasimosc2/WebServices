@@ -10,16 +10,16 @@ import exceptions.account.BankAccountException;
 
 import infrastructure.repositories.CustomersList;
 import infrastructure.repositories.interfaces.ICustomers;
+import models.CustInt;
 import models.Customer;
 import services.interfaces.ICustomerService;
 
-import javax.enterprise.context.ApplicationScoped;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-@ApplicationScoped
+@jakarta.enterprise.context.ApplicationScoped
 public class CustomerService implements ICustomerService {
 
     private final BankService bankService = new BankServiceService().getBankServicePort();
@@ -32,41 +32,34 @@ public class CustomerService implements ICustomerService {
     }
 
     @Override
-    public String register(Customer customer, int money )
-            throws AccountExistsException {
+    public String register(CustInt custInt) throws BankServiceException_Exception,AccountExistsException, BankAccountException {
 
-        if (isRegistered(customer)) {// This function is initialized later it just returns a bool of whether this user is registered
-            throw new AccountExistsException("Account with cpr (" + customer.getCprNumber() + ") already exists!");
+        if (isRegistered(custInt.getCustomer())) {// This function is initialized later it just returns a bool of whether this user is registered
+            throw new AccountExistsException("Account with cpr (" + custInt.getCustomer().getCprNumber() + ") already exists!");
         }
 
 
         String accountId = null;
         
         // Here we will try to fetch the account, if the account do exist the we must not register this Customer in the Bank
-        try {
-            Account potentialAccount = getBankAccountByCpr(customer.getCprNumber());
+        
+        Account potentialAccount = bankService.getAccountByCprNumber(custInt.getCustomer().getCprNumber());
             
             if (potentialAccount == null) {
                 // If I get in here it means that the account was not created and we must create it
-                accountId = registerBankAccount(customer, money);
-                customer.setBankAccount(accountId);
-                customer.setId(UUID.randomUUID().toString());
-                repo.add(customer);
-                return customer.getId();
+                accountId = registerBankAccount(custInt.getCustomer(), custInt.getMoney());
+                custInt.getCustomer().setBankAccount(accountId);
+                custInt.getCustomer().setId(UUID.randomUUID().toString());
+                repo.add(custInt.getCustomer());
+                return custInt.getCustomer().getId();
             } else {
                 // This means the account exists
-                customer.setBankAccount(potentialAccount.getId());
-                customer.setId(UUID.randomUUID().toString());
-                repo.add(customer);
-                return customer.getId();
+                custInt.getCustomer().setBankAccount(potentialAccount.getId());
+                custInt.getCustomer().setId(UUID.randomUUID().toString());
+                repo.add(custInt.getCustomer());
+                return custInt.getCustomer().getId();
             }
-        } catch (BankAccountException e) {
-            // Handle the exception appropriately here
-            System.out.println("Error occurred while processing the bank account: " + e.getMessage());
-            // Optionally, rethrow it or handle further if needed
-            throw new RuntimeException("Failed to process bank account", e);
-        }
- 
+        
     }
 
     @Override

@@ -2,6 +2,7 @@ package services;
 
 import com.google.gson.Gson;
 
+import models.CustInt;
 import models.Customer;
 import messaging.Event;
 import messaging.EventReceiver;
@@ -30,13 +31,12 @@ public class CustomerEventService implements EventReceiver {
         switch (eventIn.getEventType()) {
             case "Register":
                 try {
-                    Customer customer = gson.fromJson(gson.toJson(eventIn.getArguments()[0]), Customer.class);
+                    CustInt custInt = gson.fromJson(gson.toJson(eventIn.getArguments()[0]), CustInt.class);
 
-                    int money = 50;
-
-                    String internalId = service.register(customer,money);
+                    String internalId = service.register(custInt);
                     Event eventOut = new Event("RegisterSuccessful", new Object[]{internalId});
-                    eventSender.sendEvent(eventOut);
+
+                    eventSender.sendEvent(eventOut); // Implementation of RabbitMQ
                 } catch (Exception e) {
                     Event eventOut = new Event("RegisterFailed", new Object[]{e.getMessage()});
                     eventSender.sendEvent(eventOut);

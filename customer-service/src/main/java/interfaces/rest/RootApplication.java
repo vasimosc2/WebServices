@@ -6,18 +6,17 @@ import io.quarkus.runtime.StartupEvent;
 import org.eclipse.microprofile.openapi.annotations.OpenAPIDefinition;
 import org.eclipse.microprofile.openapi.annotations.info.Info;
 
-import javax.enterprise.event.Observes;
-import javax.ws.rs.ApplicationPath;
-import javax.ws.rs.core.Application;
+import jakarta.enterprise.event.Observes;
+import jakarta.ws.rs.ApplicationPath;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
 import java.util.logging.Logger;
 
-@OpenAPIDefinition(
-        info = @Info(
-                title = "Group 11 - account-service API",
-                version = "3.0.3"
-        ))
-@ApplicationPath("/api/v1")
-public class RootApplication extends Application {
+@ApplicationPath("/")
+public class RootApplication extends jakarta.ws.rs.core.Application {
 
     private final static Logger LOGGER = Logger.getLogger(RootApplication.class.getName());
 
@@ -38,5 +37,16 @@ public class RootApplication extends Application {
 
     void onStop(@Observes ShutdownEvent ev) {
         LOGGER.info("The application is stopping...");
+    }
+
+    // New REST endpoint for "Hello World"
+    @Path("/hello")
+    public static class HelloWorldResource {
+
+        @GET
+        @Produces(MediaType.TEXT_PLAIN)
+        public String sayHello() {
+            return "Hello World from Customer Service";
+        }
     }
 }

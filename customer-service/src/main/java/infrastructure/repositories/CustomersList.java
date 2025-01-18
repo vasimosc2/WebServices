@@ -3,11 +3,10 @@ package infrastructure.repositories;
 import models.Customer;
 import infrastructure.repositories.interfaces.ICustomers;
 
-import javax.enterprise.context.ApplicationScoped;
 import java.util.ArrayList;
 import java.util.List;
 
-@ApplicationScoped
+@jakarta.enterprise.context.ApplicationScoped
 public class CustomersList implements ICustomers {
 
     private static CustomersList instance = null;

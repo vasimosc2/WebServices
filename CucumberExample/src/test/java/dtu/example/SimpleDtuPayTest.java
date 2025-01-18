@@ -41,12 +41,7 @@ public class SimpleDtuPayTest {
        
     @Given("the customer is registered with the bank with an initial balance of {int} kr")
     public void theCustomerIsRegisteredWithTheBankWithAnInitialBalanceOfKr(int money) throws BankServiceException_Exception {
-        User user = new User();
-        user.setFirstName(customer.getFirstName());
-        user.setLastName(customer.getLastName());
-        user.setCprNumber(customer.getCprNumber());
-        customerAccountId = bankService.createAccountWithBalance(user,BigDecimal.valueOf(money));
-        customer.setBankAccount(customerAccountId);
+        customerAccountId = dtupay.register(customer,money);
     }
 
     @Given("the customer is registered with Simple DTU Pay using their bank account")
