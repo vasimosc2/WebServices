@@ -16,8 +16,9 @@ import java.util.logging.Logger;
 public class CustomerEventService implements EventReceiver {
 
     private final static Logger LOGGER = Logger.getLogger(CustomerEventService.class.getName());
-    private final EventSender eventSender;
 
+    private final EventSender eventSender;
+    
     private final ICustomerService service;
     private final Gson gson = new Gson();
 
@@ -29,12 +30,15 @@ public class CustomerEventService implements EventReceiver {
     @Override
     public void receiveEvent(Event eventIn) throws Exception {
         switch (eventIn.getEventType()) {
-            case "Register":
+            case "RegisterCustomer":
                 try {
+                    System.out.println("Hello");
                     CustInt custInt = gson.fromJson(gson.toJson(eventIn.getArguments()[0]), CustInt.class);
-
-                    String internalId = service.register(custInt);
-                    Event eventOut = new Event("RegisterSuccessful", new Object[]{internalId});
+                    System.out.println(custInt.getMoney());
+                    System.out.println(custInt.getCustomer().getFirstName());
+                    String customerId = service.register(custInt);
+                    System.out.println(customerId);
+                    Event eventOut = new Event("RegisterSuccessful", new Object[]{customerId}); // this must be caught again at the SimpleDtuPay
 
                     eventSender.sendEvent(eventOut); // Implementation of RabbitMQ
                 } catch (Exception e) {

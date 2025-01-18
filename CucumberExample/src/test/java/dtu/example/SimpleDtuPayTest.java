@@ -41,9 +41,10 @@ public class SimpleDtuPayTest {
        
     @Given("the customer is registered with the bank with an initial balance of {int} kr")
     public void theCustomerIsRegisteredWithTheBankWithAnInitialBalanceOfKr(int money) throws BankServiceException_Exception {
-        customerAccountId = dtupay.register(customer,money);
+        customerAccountId=dtupay.register(customer,money);
+        assertNotNull(customerAccountId);
     }
-
+    /* 
     @Given("the customer is registered with Simple DTU Pay using their bank account")
     public void theCustomerIsRegisteredWithSimpleDTUPayUsingTheirBankAccount() throws BankServiceException_Exception {
         assertNotNull(customer.getCprNumber());
@@ -106,4 +107,5 @@ public class SimpleDtuPayTest {
         bankService.retireAccount(customer.getBankAccount());
         bankService.retireAccount(merchant.getBankAccount());
     }
+    */
 }

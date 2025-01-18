@@ -1,4 +1,4 @@
-package interfaces.rabbitmq;
+package messaging.rabbitmq;
 
 import com.google.gson.Gson;
 import com.rabbitmq.client.Channel;
@@ -10,8 +10,8 @@ import messaging.Event;
 import messaging.EventReceiver;
 
 import java.nio.charset.StandardCharsets;
-import java.util.logging.Logger;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class CustomerListener {
 
@@ -21,50 +21,49 @@ public class CustomerListener {
 	private static final String QUEUE_TYPE = "topic";
 	private static final String TOPIC = "events";
 
-	EventReceiver service;
+    EventReceiver receiver;
 
-	public CustomerListener(EventReceiver service) {
-		this.service = service;
-	}
+    public CustomerListener(EventReceiver receiver) {
+        this.receiver = receiver;
+    }
 
-	public void listen() throws Exception {
-		ConnectionFactory factory = new ConnectionFactory();
-	
-
-        LOGGER.info("CONNECTING TO RABBITMQ HOST: " );
-
-		factory.setHost("172.20.0.6");
+    public void listen() throws Exception {
+        ConnectionFactory factory = new ConnectionFactory();
+        
+        
+        factory.setHost("172.20.0.6");
 		factory.setUsername("vasimosc");
 		factory.setPassword("bncvcxff3");
-		
 
-		Connection connection = factory.newConnection();
-		Channel channel = connection.createChannel();
-		channel.exchangeDeclare(EXCHANGE_NAME, QUEUE_TYPE);
-		String queueName = channel.queueDeclare().getQueue();
-		channel.queueBind(queueName, EXCHANGE_NAME, TOPIC);
 
-		DeliverCallback deliverCallback = (consumerTag, delivery) -> {
-			String message = new String(delivery.getBody(), StandardCharsets.UTF_8);
+        Connection connection = factory.newConnection();
+        Channel channel = connection.createChannel();
+        channel.exchangeDeclare(EXCHANGE_NAME, QUEUE_TYPE);
+        String queueName = channel.queueDeclare().getQueue();
+        channel.queueBind(queueName, EXCHANGE_NAME, TOPIC);
+
+        DeliverCallback deliverCallback = (consumerTag, delivery) -> {
+            String message = new String(delivery.getBody(), StandardCharsets.UTF_8);
             LOGGER.log(Level.INFO, "RABBITMQ: Received raw message: " + message);
 
             Event event;
 
-			try {
+            try {
                 event = new Gson().fromJson(message, Event.class);
-			} catch (Exception e) {
+            } catch (Exception e) {
                 LOGGER.log(Level.WARNING, "RABBITMQ: Failed to parse message to JSON: " + message);
                 return;
-			}
+            }
 
             try {
-                service.receiveEvent(event);
+                receiver.receiveEvent(event);
             } catch (Exception e) {
                 LOGGER.log(Level.WARNING, "RABBITMQ: Receive event error: " + e.getMessage());
             }
-		};
-		channel.basicConsume(queueName, true, deliverCallback, consumerTag -> {
-		});
-	}
+        };
+
+        channel.basicConsume(queueName, true, deliverCallback, consumerTag -> {
+        });
+    }
 
 }

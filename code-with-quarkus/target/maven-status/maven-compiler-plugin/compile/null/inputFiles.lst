@@ -20,8 +20,9 @@
 /mnt/c/Users/mosho/OneDrive/Υπολογιστής/WebServices/code-with-quarkus/src/main/java/messaging/Event.java
 /mnt/c/Users/mosho/OneDrive/Υπολογιστής/WebServices/code-with-quarkus/src/main/java/messaging/EventReceiver.java
 /mnt/c/Users/mosho/OneDrive/Υπολογιστής/WebServices/code-with-quarkus/src/main/java/messaging/EventSender.java
-/mnt/c/Users/mosho/OneDrive/Υπολογιστής/WebServices/code-with-quarkus/src/main/java/messaging/rabbitmq/RabbitMqListener.java
-/mnt/c/Users/mosho/OneDrive/Υπολογιστής/WebServices/code-with-quarkus/src/main/java/messaging/rabbitmq/RabbitMqSender.java
+/mnt/c/Users/mosho/OneDrive/Υπολογιστής/WebServices/code-with-quarkus/src/main/java/messaging/rabbitmq/CustomerFactory.java
+/mnt/c/Users/mosho/OneDrive/Υπολογιστής/WebServices/code-with-quarkus/src/main/java/messaging/rabbitmq/CustomerListener.java
+/mnt/c/Users/mosho/OneDrive/Υπολογιστής/WebServices/code-with-quarkus/src/main/java/messaging/rabbitmq/CustomerSender.java
 /mnt/c/Users/mosho/OneDrive/Υπολογιστής/WebServices/code-with-quarkus/src/main/java/org/acme/CustomerResources.java
 /mnt/c/Users/mosho/OneDrive/Υπολογιστής/WebServices/code-with-quarkus/src/main/java/org/acme/MerchantResources.java
 /mnt/c/Users/mosho/OneDrive/Υπολογιστής/WebServices/code-with-quarkus/src/main/java/org/acme/PaymentResources.java

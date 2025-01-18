@@ -39,16 +39,23 @@ public class CustomerService implements ICustomerService {
         }
 
 
-        String accountId = null;
+        String bankaccountId = null;
         
         // Here we will try to fetch the account, if the account do exist the we must not register this Customer in the Bank
+        System.out.println("I am here");
+        Account potentialAccount = null;
+        try{
+            potentialAccount = bankService.getAccountByCprNumber(custInt.getCustomer().getCprNumber());
+        } catch (BankServiceException_Exception e) {
+                System.out.println("Account not found, creating a new one.");
+            }
         
-        Account potentialAccount = bankService.getAccountByCprNumber(custInt.getCustomer().getCprNumber());
-            
-            if (potentialAccount == null) {
+        System.out.println(potentialAccount);
+        
+        if (potentialAccount == null) {
                 // If I get in here it means that the account was not created and we must create it
-                accountId = registerBankAccount(custInt.getCustomer(), custInt.getMoney());
-                custInt.getCustomer().setBankAccount(accountId);
+                bankaccountId = registerBankAccount(custInt.getCustomer(), custInt.getMoney());
+                custInt.getCustomer().setBankAccount(bankaccountId);
                 custInt.getCustomer().setId(UUID.randomUUID().toString());
                 repo.add(custInt.getCustomer());
                 return custInt.getCustomer().getId();
