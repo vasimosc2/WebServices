@@ -18,6 +18,10 @@ public class TokenService {
     @Inject
     TokenRepository tokenRepository;
 
+    public List<Token> getAllTokens(){
+        return tokenRepository.findAllTokens();
+    }
+
     public List<Token> generateToken(String customerId, int count){
 
         if (count < 1 || count > 5) {
