@@ -10,6 +10,8 @@ public class Token {
     private String customerId;
     private boolean used;
 
+    public Token(){}
+
     public Token(String tokenId, String customerId, boolean used){
         this.tokenId = tokenId;
         this.customerId = customerId;

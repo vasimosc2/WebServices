@@ -112,10 +112,26 @@ public class SimpleDtuPaySteps {
 //        bankService.retireAccount(merchant.getBankAccount());
 //    }
 
+    // @After
+    // public void cleanupBankAccounts() throws BankServiceException_Exception {
+    //     bankService.retireAccount(customer.getBankAccount());
+    //     bankService.retireAccount(merchant.getBankAccount());
+    // }
+
+    // Added this because the @After conflicts with a second step definition
+    // Cucumber executes all @After hooks after every scenario
+    // Since TokenRetireSteps.java doesn't create customer
+    // We get a null pointer.
+    // if statements are here for safeguarding.
+
     @After
     public void cleanupBankAccounts() throws BankServiceException_Exception {
-        bankService.retireAccount(customer.getBankAccount());
-        bankService.retireAccount(merchant.getBankAccount());
+        if (customer != null && customer.getBankAccount() != null) {
+            bankService.retireAccount(customer.getBankAccount());
+        }
+        if (merchant != null && merchant.getBankAccount() != null) {
+            bankService.retireAccount(merchant.getBankAccount());
+        }
     }
 
 }
