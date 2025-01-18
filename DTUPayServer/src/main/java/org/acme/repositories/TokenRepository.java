@@ -19,6 +19,10 @@ public class TokenRepository {
 
     private Map<String, Token> tokensById = new HashMap<>();
 
+    public List<Token> findAllTokens(){
+        return new ArrayList<>(tokensById.values());
+    }
+
     public void save(Token token){
         String customerId = token.getCustomerId();
         String tokenId = token.getTokenId();
