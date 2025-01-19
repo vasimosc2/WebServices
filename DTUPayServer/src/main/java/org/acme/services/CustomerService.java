@@ -4,6 +4,7 @@ import java.util.List;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import org.acme.models.Customer;
+import org.acme.models.StakeholderId;
 import org.apache.commons.lang3.RandomStringUtils;
 
 @ApplicationScoped
@@ -22,7 +23,7 @@ public class CustomerService {
             customerId = "CUST-" + RandomStringUtils.randomNumeric(8);
         } while (isCustomerIdPresent(customerId));
 
-        customer.setId(customerId);
+        customer.setId(new StakeholderId(customerId));
         customers.add(customer); // Add the customer to the list
 
         return customerId; // Return the unique customerId

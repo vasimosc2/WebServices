@@ -6,18 +6,18 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Stakeholder {
-    private String id;
+    private StakeholderId id;
     private String firstName;
     private String lastName;
-    private String cprNumber;
-    private String bankAccount;
+    private CPRNumber cprNumber;
+    private BankAccount bankAccount;
 
     public Stakeholder() {}
 
     public Stakeholder(String firstName, String lastName, String cprNumber, String bankAccount) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.cprNumber = cprNumber;
-        this.bankAccount = bankAccount;
+        this.cprNumber = new CPRNumber(cprNumber);
+        this.bankAccount = new BankAccount(bankAccount);
     }
 }

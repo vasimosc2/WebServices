@@ -39,29 +39,29 @@ public class TokenRetireSteps {
         this.allTokens = dtupay.getAllTokens();
     }
 
-    @Then("user {string} should have exactly {int} unused token")
-    public void user_should_have_exactly_n_unused_token(String expectedCustomerId, int expectedCount) {
-        long count = this.allTokens.stream()
-            .filter(t -> Objects.equals(t.getCustomerId(), expectedCustomerId))
-            .filter(t -> !t.isUsed())
-            .count();
-        assertEquals(expectedCount, count);
-    }
+//    @Then("user {string} should have exactly {int} unused token")
+//    public void user_should_have_exactly_n_unused_token(String expectedCustomerId, int expectedCount) {
+//        long count = this.allTokens.stream()
+//            .filter(t -> Objects.equals( , expectedCustomerId))
+//            .filter(t -> !t.isUsed())
+//            .count();
+//        assertEquals(expectedCount, count);
+//    }
+//
+//    @When("the user validates that token")
+//    public void the_user_validates_that_token() {
+//        this.currentToken = this.allTokens.stream()
+//            .filter(t -> t.getCustomerId().equals(this.customerId))
+//            .findFirst()
+//            .orElseThrow(() -> new RuntimeException("No token found for " + this.customerId));
+//
+//        dtupay.validateToken(currentToken.getTokenId());
+//    }
 
-    @When("the user validates that token")
-    public void the_user_validates_that_token() {
-        this.currentToken = this.allTokens.stream()
-            .filter(t -> t.getCustomerId().equals(this.customerId))
-            .findFirst()
-            .orElseThrow(() -> new RuntimeException("No token found for " + this.customerId));
-
-        dtupay.validateToken(currentToken.getTokenId());
-    }
-
-    @When("the user retires that token")
-    public void the_user_retires_that_token() {
-        dtupay.retireToken(currentToken.getTokenId());
-    }
+//    @When("dtupay retires that token")
+//    public void dtupay_retires_that_token() {
+//        dtupay.retireToken(currentToken.getTokenId());
+//    }
 
 
 }

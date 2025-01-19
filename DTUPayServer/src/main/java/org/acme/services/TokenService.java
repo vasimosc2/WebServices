@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.acme.models.StakeholderId;
 import org.acme.models.Token;
 import org.acme.repositories.TokenRepository;
 
@@ -22,14 +23,14 @@ public class TokenService {
         return tokenRepository.findAllTokens();
     }
 
-    public List<Token> generateToken(String customerId, int count){
+    public List<Token> generateToken(StakeholderId customerId, int count){
 
         if (count < 1 || count > 5) {
             throw new IllegalArgumentException("You can only request 1 to 5 tokens");
         }
 
-        List<Token> unused = tokenRepository.findAllUnusedTokensByCustomerId(customerId);
-        if (unused.size() > 6) {
+        List<Token> unusedTokens = tokenRepository.findAllUnusedTokensByCustomerId(customerId);
+        if (unusedTokens.size() > 6) {
             throw new IllegalArgumentException("You can only have a maximum of 6 tokens");
         }
 
@@ -38,8 +39,8 @@ public class TokenService {
         
         for(int i = 0; i < count; i++){
             String tokenId = UUID.randomUUID().toString();
-            Token token = new Token(tokenId, customerId, false);
-            tokenRepository.save(token);
+            Token token = new Token(tokenId, false);
+            tokenRepository.saveToken(customerId, token);
             tokens.add(token);
         }
         return tokens;
@@ -48,7 +49,7 @@ public class TokenService {
     public Token validateToken(String tokenId){
         Optional<Token> tokenOption = tokenRepository.findByTokenId(tokenId);
         if (tokenOption.isEmpty()){
-            throw new IllegalArgumentException("Token is not empty");
+            throw new IllegalArgumentException("TokenID is not found");
         }
 
         Token token = tokenOption.get();
@@ -58,15 +59,15 @@ public class TokenService {
         return token;
     }
 
-    public void markToken(String tokenId){
+    public void markTokenAsUsed(StakeholderId customerId, String tokenId){
         Optional<Token> tokenOption = tokenRepository.findByTokenId(tokenId);
         if (tokenOption.isEmpty()){
-            throw new IllegalArgumentException("Token is not empty");
+            throw new IllegalArgumentException("TokenID is not found");
         }
         
         Token token = tokenOption.get();
         token.setUsed(true);
-        tokenRepository.update(token);
+        tokenRepository.updateToken(customerId, token);
     }
 
 }

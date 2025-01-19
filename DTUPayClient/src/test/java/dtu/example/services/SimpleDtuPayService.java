@@ -41,20 +41,24 @@ public class SimpleDtuPayService {
 
 
     public boolean makeTransfer(int money,String customerId, String merchantId) {
-        target.path("payments").
-                request().
-                post(Entity.entity(new BankPay(money, customerId, merchantId), MediaType.APPLICATION_JSON));
+        target.path("payments")
+                    .request()
+                    .post(Entity.entity(new BankPay(money, customerId, merchantId), MediaType.APPLICATION_JSON));
         return true;
     }
 
     public record TokenRequest(String customerId, int count){}
 
     public void generateTokens(String customerId, int count){
-        Response response = target.path("tokens").request().post(Entity.entity(new TokenRequest(customerId, count), MediaType.APPLICATION_JSON));
+        Response response = target.path("tokens")
+                                    .request()
+                                    .post(Entity.entity(new TokenRequest(customerId, count), MediaType.APPLICATION_JSON));
     }
    
     public List<Token> getAllTokens(){
-        Response response = target.path("tokens").request().get();
+        Response response = target.path("tokens")
+                                    .request()
+                                    .get();
         if (response.getStatus() == 200) {
             return response.readEntity(new GenericType<List<Token>>(){});
         }else{
@@ -62,13 +66,13 @@ public class SimpleDtuPayService {
         }
     }
 
-    public boolean retireToken(String tokenId) {
-        Response response = target.path("tokens")
-                                  .path(tokenId)
-                                  .request()
-                                  .delete();
-        return response.getStatus() == 204;
-    }
+//    public boolean retireToken(String tokenId) {
+//        Response response = target.path("tokens")
+//                                  .path(tokenId)
+//                                  .request()
+//                                  .delete();
+//        return response.getStatus() == 204;
+//    }
 
     public Token validateToken(String tokenId) {
         Response response = target.path("tokens")

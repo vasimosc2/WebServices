@@ -5,6 +5,5 @@ Feature: Token Usage
     When the user requests 1 token
     And the user retrieves the list of all tokens
     Then user "C123" should have exactly 1 unused token
-
     When the user validates that token
-    When the user retires that token
+    When dtupay retires that token

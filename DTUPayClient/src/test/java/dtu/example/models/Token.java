@@ -7,22 +7,14 @@ import lombok.Setter;
 @Setter
 public class Token {
     private String tokenId;
-    private String customerId;
+//    private String customerId;
     private boolean used;
 
     public Token(){}
 
-    public Token(String tokenId, String customerId, boolean used){
+    public Token(String tokenId, boolean used){
         this.tokenId = tokenId;
-        this.customerId = customerId;
-        this.used = used;
-    }
-
-    public boolean isUsed(){
-        return used;
-    }
-
-    public void setUsed(boolean used){
+//        this.customerId = customerId;
         this.used = used;
     }
 }

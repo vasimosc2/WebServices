@@ -4,6 +4,7 @@ import java.util.List;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import org.acme.models.Merchant;
+import org.acme.models.StakeholderId;
 import org.apache.commons.lang3.RandomStringUtils;
 
 @ApplicationScoped
@@ -20,7 +21,7 @@ public class MerchantService {
             merchantId = "MERC-" + RandomStringUtils.randomNumeric(8);
         } while (isMerchantIdPresent(merchantId));
 
-        merchant.setId(merchantId);
+        merchant.setId(new StakeholderId(merchantId));
         merchants.add(merchant); // Add the merchant to the list
 
         return merchantId; // Return the unique merchantId

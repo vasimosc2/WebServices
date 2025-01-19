@@ -42,7 +42,7 @@ public class PaymentService {
         Customer customer = customerService.getCustomer(bankPay.customerId());
         Merchant merchant = merchantService.getMerchant(bankPay.merchantId());
 
-        bankService.transferMoneyFromTo(customer.getBankAccount(), merchant.getBankAccount(), BigDecimal.valueOf(money), "Random Reason");
+        bankService.transferMoneyFromTo(customer.getBankAccount().getBankAccountId(), merchant.getBankAccount().getBankAccountId(), BigDecimal.valueOf(money), "Random Reason");
         //add try-catch
 
         Payment payment = new Payment();

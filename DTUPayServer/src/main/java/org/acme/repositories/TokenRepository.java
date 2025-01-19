@@ -1,5 +1,6 @@
 package org.acme.repositories;
 
+import org.acme.models.StakeholderId;
 import org.acme.models.Token;
 
 import io.quarkus.runtime.Startup;
@@ -15,20 +16,19 @@ import java.util.stream.Collectors;
 @ApplicationScoped
 @Startup // (optional) ensures it's created eagerly at startup rather than lazy
 public class TokenRepository {
-    private Map<String, List<Token>> tokensByCustomer = new HashMap<>();
-
+    private Map<StakeholderId, List<Token>> tokensByCustomer = new HashMap<>();
     private Map<String, Token> tokensById = new HashMap<>();
 
     public List<Token> findAllTokens(){
-        return new ArrayList<>(tokensById.values());
+        return new ArrayList<>(
+                tokensById.values());
     }
 
-    public void save(Token token){
-        String customerId = token.getCustomerId();
+    public void saveToken(StakeholderId stakeholderId, Token token){
         String tokenId = token.getTokenId();
 
-        tokensByCustomer.putIfAbsent(customerId, new ArrayList<>());
-        tokensByCustomer.get(customerId).add(token);
+        tokensByCustomer.putIfAbsent(stakeholderId, new ArrayList<>());
+        tokensByCustomer.get(stakeholderId).add(token);
 
         tokensById.put(tokenId, token);
     }
@@ -37,7 +37,7 @@ public class TokenRepository {
         return Optional.ofNullable(tokensById.get(tokenId));
     }
 
-    public List<Token> findAllUnusedTokensByCustomerId(String customerId){
+    public List<Token> findAllUnusedTokensByCustomerId(StakeholderId customerId){
         return tokensByCustomer
             .getOrDefault(customerId, List.of())   // either the real list, or an empty list
             .stream()
@@ -46,10 +46,10 @@ public class TokenRepository {
         // return tokensByCustomer.getOrDefault(customerId, List.<Token>of().stream().filter(t -> !t.isUsed()).collect(Collectors.toList()));
     }
 
-    public void update(Token token){
+    public void updateToken(StakeholderId customerId, Token token){
         tokensById.put(token.getTokenId(), token);
 
-        List<Token> list = tokensByCustomer.get(token.getCustomerId());
+        List<Token> list = tokensByCustomer.get(customerId);
         if(list != null){
             list.removeIf(t -> t.getTokenId().equals(token.getTokenId()));
             list.add(token);

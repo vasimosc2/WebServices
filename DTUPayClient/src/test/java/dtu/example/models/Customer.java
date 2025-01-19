@@ -9,4 +9,9 @@ public class Customer extends Stakeholder {
         super(firstName, lastName, cprNumber, bankAccount);
     }
 
+    public void getTokens() {
+        // TODO implement me
+
+    }
+
 }
