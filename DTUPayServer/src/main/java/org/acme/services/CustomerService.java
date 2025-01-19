@@ -23,7 +23,7 @@ public class CustomerService {
             customerId = "CUST-" + RandomStringUtils.randomNumeric(8);
         } while (isCustomerIdPresent(customerId));
 
-        customer.setId(new StakeholderId(customerId));
+        customer.setStakeholderId(new StakeholderId(customerId));
         customers.add(customer); // Add the customer to the list
 
         return customerId; // Return the unique customerId
@@ -32,7 +32,7 @@ public class CustomerService {
     private boolean isCustomerIdPresent(String customerId) {
         // Check if any customer in the list has the same customerId
         for (Customer c : customers) {
-            if (c.getId().equals(customerId)) {
+            if (c.getStakeholderId().equals(customerId)) {
                 return true;
             }
         }
@@ -41,7 +41,7 @@ public class CustomerService {
 
     public Customer getCustomer(String customerId) {
         for (Customer c : customers) {
-            if (c.getId().equals(customerId)) {
+            if (c.getStakeholderId().equals(customerId)) {
                 return c;
             }
         }

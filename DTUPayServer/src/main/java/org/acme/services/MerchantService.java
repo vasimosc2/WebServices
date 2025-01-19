@@ -21,7 +21,7 @@ public class MerchantService {
             merchantId = "MERC-" + RandomStringUtils.randomNumeric(8);
         } while (isMerchantIdPresent(merchantId));
 
-        merchant.setId(new StakeholderId(merchantId));
+        merchant.setStakeholderId(new StakeholderId(merchantId));
         merchants.add(merchant); // Add the merchant to the list
 
         return merchantId; // Return the unique merchantId
@@ -30,7 +30,7 @@ public class MerchantService {
     private boolean isMerchantIdPresent(String merchantId) {
         // Check if any merchant in the list has the same maerchantId
         for (Merchant m : merchants) {
-            if (m.getId().equals(merchantId)) {
+            if (m.getStakeholderId().equals(merchantId)) {
                 return true;
             }
         }
@@ -39,7 +39,7 @@ public class MerchantService {
 
     public Merchant getMerchant(String merchantId) {
         for (Merchant m : merchants) {
-            if (m.getId().equals(merchantId)) {
+            if (m.getStakeholderId().equals(merchantId)) {
                 return m;
             }
         }

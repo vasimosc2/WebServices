@@ -10,10 +10,7 @@ import dtu.ws.fastmoney.BankServiceException_Exception;
 import dtu.ws.fastmoney.BankServiceService;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import org.acme.models.BankPay;
-import org.acme.models.Customer;
-import org.acme.models.Merchant;
-import org.acme.models.Payment;
+import org.acme.models.*;
 
 @ApplicationScoped
 public class PaymentService {
@@ -48,8 +45,8 @@ public class PaymentService {
         Payment payment = new Payment();
         payment.setAmount(money);
 
-        payment.setCustomerId(customer.getId());
-        payment.setMerchantId(merchant.getId());
+        payment.setCustomerId(customer.getStakeholderId().getId());
+        payment.setMerchantId(merchant.getStakeholderId().getId());
 
         payments.add(payment);  // Adds the new payment to the list
     }

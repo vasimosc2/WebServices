@@ -6,7 +6,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Stakeholder {
-    private StakeholderId id;
+    private StakeholderId stakeholderId;
     private String firstName;
     private String lastName;
     private CPRNumber cprNumber;
