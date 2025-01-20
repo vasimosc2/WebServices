@@ -10,6 +10,7 @@ import dtu.ws.fastmoney.BankServiceException_Exception;
 import dtu.ws.fastmoney.BankServiceService;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import org.acme.exceptions.PaymentException;
 import org.acme.exceptions.StakeholderException;
 import org.acme.models.*;
 
@@ -34,15 +35,17 @@ public class PaymentService {
     }
 
     // Adds a new payment to the list
-    public void setPayment(BankPay bankPay) throws BankServiceException_Exception, StakeholderException {
+    public void setPayment(BankPay bankPay) throws StakeholderException, PaymentException {
         int money = bankPay.money();
-
         Customer customer = customerService.getCustomer(bankPay.customerId());
         Merchant merchant = merchantService.getMerchant(bankPay.merchantId());
 
-
-        bankService.transferMoneyFromTo(customer.getBankAccount(), merchant.getBankAccount(), BigDecimal.valueOf(money), "Random Reason");
-        //add try-catch
+        try {
+            bankService.transferMoneyFromTo(customer.getBankAccount(), merchant.getBankAccount(), BigDecimal.valueOf(money), "Random Reason");
+        } catch (BankServiceException_Exception e) {
+            e.printStackTrace();
+            throw new PaymentException("Payment failed because of: " + e.getMessage());
+        }
 
         Payment payment = new Payment();
         payment.setAmount(money);
