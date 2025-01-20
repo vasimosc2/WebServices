@@ -42,7 +42,7 @@ public class PaymentService {
     public void setPayment(BankPay bankPay) throws StakeholderException, PaymentException, TokenException {
         int money = bankPay.money();
 
-        Customer customer = customerService.getCustomer(tokenService.getCustomerIdByTokenId(bankPay.tokenId()));
+        Customer customer = customerService.getCustomer(tokenService.getCustomerIdByTokenIdForPayment(bankPay.tokenId()));
         Merchant merchant = merchantService.getMerchant(bankPay.merchantId());
 
         try {
@@ -51,6 +51,8 @@ public class PaymentService {
             e.printStackTrace();
             throw new PaymentException("Payment failed because of: " + e.getMessage());
         }
+
+        tokenService.markTokenAsUsed(customer.getStakeholderId(), bankPay.tokenId());
 
         Payment payment = new Payment();
         payment.setAmount(money);

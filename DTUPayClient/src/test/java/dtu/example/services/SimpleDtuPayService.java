@@ -2,6 +2,7 @@ package dtu.example.services;
 
 import java.util.List;
 
+import dtu.example.exceptions.PaymentException;
 import dtu.example.models.Token;
 import dtu.example.models.Stakeholder;
 import dtu.example.models.TokenRequest;
@@ -39,10 +40,16 @@ public class SimpleDtuPayService {
     }
 
 
-    public boolean makeTransfer(int money, String tokenId, String merchantId) {
-        target.path("payments")
+    public boolean makeTransfer(int money, String tokenId, String merchantId) throws PaymentException {
+
+        Response response = target.path("payments")
                     .request()
                     .post(Entity.entity(new BankPay(money, tokenId, merchantId), MediaType.APPLICATION_JSON));
+        if (response.getStatus() == Response.Status.BAD_REQUEST.getStatusCode()) {
+//            throw new PaymentException(response.readEntity(String.class));
+            return false;
+        }
+
         return true;
     }
 

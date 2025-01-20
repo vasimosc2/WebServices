@@ -13,12 +13,7 @@ public class Token {
 
     public Token(String tokenId, boolean used){
         this.tokenId = tokenId;
-//        this.tokenId = tokenId;
         this.used = used;
-    }
-
-    public boolean isUsed(){
-        return used;
     }
 
     public void setUsed(boolean used){

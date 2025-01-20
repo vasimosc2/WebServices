@@ -7,7 +7,6 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.acme.exceptions.TokenException;
-import org.acme.models.StakeholderId;
 import org.acme.models.Token;
 import org.acme.repositories.TokenRepository;
 
@@ -71,12 +70,8 @@ public class TokenService {
         tokenRepository.updateToken(customerId, token);
     }
 
-    public String getCustomerIdByTokenId(String tokenId) throws TokenException {
-        Optional<Token> tokenOption = tokenRepository.findByTokenId(tokenId);
-        if (tokenOption.isEmpty()){
-            throw new TokenException("TokenID is not found");
-        }
-
+    public String getCustomerIdByTokenIdForPayment(String tokenId) throws TokenException {
+        validateToken(tokenId);
         return tokenRepository.findCustomerIdByTokenId(tokenId);
 
     }

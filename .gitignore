@@ -1,3 +1,5 @@
 .mvn
 .vscode
 target/
+DTUPayServer/target/*
+DTUPayClient/target/*

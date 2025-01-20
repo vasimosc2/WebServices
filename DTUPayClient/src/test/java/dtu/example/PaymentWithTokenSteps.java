@@ -1,5 +1,6 @@
 package dtu.example;
 
+import dtu.example.exceptions.PaymentException;
 import dtu.example.models.Customer;
 import dtu.example.models.Merchant;
 import dtu.example.models.Token;
@@ -19,8 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class PaymentWithTokenSteps {
     
@@ -41,7 +41,6 @@ public class PaymentWithTokenSteps {
         customer.setLastName(string2);
         customer.setCprNumber(string3);
         assertNotNull(customer, "Customer creation failed");
-
     }
        
     @Given("the customer is registered with the bank with an initial balance of {int} kr")
@@ -65,10 +64,6 @@ public class PaymentWithTokenSteps {
     @And("the customer asks for {int} new tokens")
     public void theCustomerAsksForNewTokens(int arg0) {
         tokens = dtupay.generateTokens(customerId, arg0);
-
-        for (Token token : tokens) {
-            System.out.println("SANTI token: " + token.getTokenId());
-        }
     }
 
 
@@ -101,9 +96,8 @@ public class PaymentWithTokenSteps {
     }
 
     @When("the merchant initiates a payment for {int} kr given the token in position {int}")
-    public void theMerchantInitiatesAPaymentForKrGivenTheTokenInPosition(int money, int tokenPosition) {
-        System.out.println("SANTI token to use: " + tokens.get(tokenPosition).getTokenId());
-        successful = dtupay.makeTransfer(money, tokens.get(tokenPosition).getTokenId(), merchantId);
+    public void theMerchantInitiatesAPaymentForKrGivenTheTokenInPosition(int money, int tokenPosition) throws PaymentException {
+        successful = dtupay.makeTransfer(money, tokens.get(tokenPosition-1).getTokenId(), merchantId);
     }
 
     @Then("the payment is successful")
@@ -121,17 +115,11 @@ public class PaymentWithTokenSteps {
         assertEquals(BigDecimal.valueOf(money), bankService.getAccount(merchant.getBankAccount()).getBalance());
     }
 
-//    @Then("delete the customer and merchant")
-//    public void DeleteTests() throws BankServiceException_Exception{
-//        bankService.retireAccount(customer.getBankAccount());
-//        bankService.retireAccount(merchant.getBankAccount());
-//    }
-
-    // @After
-    // public void cleanupBankAccounts() throws BankServiceException_Exception {
-    //     bankService.retireAccount(customer.getBankAccount());
-    //     bankService.retireAccount(merchant.getBankAccount());
-    // }
+    @Then("delete customerBankAccount and merchantBankAccount")
+    public void deleteCustomerBankAccountAndMerchantBankAccount() throws BankServiceException_Exception {
+        bankService.retireAccount(customer.getBankAccount());
+        bankService.retireAccount(merchant.getBankAccount());
+    }
 
     // Added this because the @After conflicts with a second step definition
     // Cucumber executes all @After hooks after every scenario
@@ -148,4 +136,10 @@ public class PaymentWithTokenSteps {
             bankService.retireAccount(merchant.getBankAccount());
         }
     }
+
+    @Then("the payment is unsuccessful")
+    public void thePaymentIsUnsuccessful() {
+        assertFalse(successful);
+    }
+
 }

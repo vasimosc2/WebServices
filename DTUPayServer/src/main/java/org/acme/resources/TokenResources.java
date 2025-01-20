@@ -39,19 +39,6 @@ public class TokenResources {
         return service.generateToken(request.getCustomerId(), request.getCount());
     }
 
-//    @DELETE
-//    @Path("/{tokenId}")
-//    public Response retireToken(@PathParam("tokenId") String tokenId) {
-//        try {
-//            service.markTokenAsUsed(tokenId);
-//            return Response.noContent().build();
-//        } catch (IllegalArgumentException e) {
-//            return Response.status(Response.Status.BAD_REQUEST)
-//                        .entity(e.getMessage())
-//                        .build();
-//        }
-//    }
-
     @GET
     @Path("/{tokenId}/validate")
     public Response validateToken(@PathParam("tokenId") String tokenId) throws TokenException {
