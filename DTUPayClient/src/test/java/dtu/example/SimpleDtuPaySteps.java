@@ -81,7 +81,6 @@ public class SimpleDtuPaySteps {
     @Given("the merchant is registered with Simple DTU Pay using their bank account")
     public void theMerchantIsRegisteredWithSimpleDTUPayUsingTheirBankAccount() {
         assertNotNull(merchant.getCprNumber()); //maybe not needed
-
         merchantId = dtupay.registerMerchant(merchant);
         merchant.setStakeholderId(merchantId);
     }
