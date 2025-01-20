@@ -9,7 +9,6 @@ import messaging.EventReceiver;
 import messaging.EventSender;
 import services.interfaces.ICustomerService;
 
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -32,71 +31,45 @@ public class CustomerEventService implements EventReceiver {
         switch (eventIn.getEventType()) {
             case "RegisterCustomer":
                 try {
-                    System.out.println("Hello");
+                    System.out.println("Hello from RegisterCustomer");
                     CustInt custInt = gson.fromJson(gson.toJson(eventIn.getArguments()[0]), CustInt.class);
                     System.out.println(custInt.getMoney());
                     System.out.println(custInt.getCustomer().getFirstName());
                     String customerId = service.register(custInt);
                     System.out.println(customerId);
-                    Event eventOut = new Event("RegisterSuccessful", new Object[]{customerId}); // this must be caught again at the SimpleDtuPay
+                    Event eventOut = new Event("RegisterCustomerSuccessfull", new Object[]{customerId});
 
-                    eventSender.sendEvent(eventOut); // Implementation of RabbitMQ
+                    eventSender.sendEvent(eventOut);
                 } catch (Exception e) {
-                    Event eventOut = new Event("RegisterFailed", new Object[]{e.getMessage()});
+                    Event eventOut = new Event("RegisterCustomerFailed", new Object[]{e.getMessage()});
                     eventSender.sendEvent(eventOut);
                 }
                 break;
-            case "GetAccount":
+            case "GetCustomer":
                 try {
-                    String id = (String) eventIn.getArguments()[0];
-                    Customer Customer = service.get(id);
-                    Event eventOut = new Event("GetAccountSuccessful", new Object[]{Customer});
+                    System.out.println("Hello from GetCustomer");
+                    String cprNumber = gson.fromJson(gson.toJson(eventIn.getArguments()[0]), String.class);
+                    System.out.println(String.format("I am at CustomerEventService: %s", cprNumber));
+
+                    Customer Customer = service.get(cprNumber);
+                    Event eventOut = new Event("GetCustomerSuccessfull", new Object[]{Customer});
                     eventSender.sendEvent(eventOut);
                 } catch (Exception e) {
-                    Event eventOut = new Event("GetAccountFailed", new Object[]{e.getMessage()});
+                    Event eventOut = new Event("GetCustomerFailed", new Object[]{e.getMessage()});
                     eventSender.sendEvent(eventOut);
                 }
                 break;
-            case "GetAccountByCpr":
+            
+            case "RetireCustomer":
                 try {
-                    String cpr = (String) eventIn.getArguments()[0];
-                    Customer Customer = service.getByCpr(cpr);
-                    Event eventOut = new Event("GetAccountByCprSuccessful", new Object[]{Customer});
-                    eventSender.sendEvent(eventOut);
-                } catch (Exception e) {
-                    Event eventOut = new Event("GetAccountByCprFailed", new Object[]{e.getMessage()});
-                    eventSender.sendEvent(eventOut);
-                }
-                break;
-            case "RetireAccount":
-                try {
-                    String id = (String) eventIn.getArguments()[0];
-                    service.retireAccount(id);
-                    Event eventOut = new Event("RetireAccountSuccessful");
-                    eventSender.sendEvent(eventOut);
-                } catch (Exception e) {
-                    Event eventOut = new Event("RetireAccountFailed", new Object[]{e.getMessage()});
-                    eventSender.sendEvent(eventOut);
-                }
-                break;
-            case "RetireAccountByCpr":
-                try {
+                    System.out.println("Hello from RetireCustomer");
                     String cpr = (String) eventIn.getArguments()[0];
                     service.retireAccountByCpr(cpr);
-                    Event eventOut = new Event("RetireAccountByCprSuccessful");
+
+                    Event eventOut = new Event("RetireCustomerByCprSuccessfull", new Object[]{cpr});
                     eventSender.sendEvent(eventOut);
                 } catch (Exception e) {
-                    Event eventOut = new Event("RetireAccountByCprFailed", new Object[]{e.getMessage()});
-                    eventSender.sendEvent(eventOut);
-                }
-                break;
-            case "GetAllAccounts":
-                try {
-                    List<Customer> Customers = service.getAll();
-                    Event eventOut = new Event("GetAllAccountsSuccessful", new Object[]{Customers});
-                    eventSender.sendEvent(eventOut);
-                } catch (Exception e) {
-                    Event eventOut = new Event("GetAllAccountsFailed", new Object[]{e.getMessage()});
+                    Event eventOut = new Event("RetireCustomerByCprFailed", new Object[]{e.getMessage()});
                     eventSender.sendEvent(eventOut);
                 }
                 break;

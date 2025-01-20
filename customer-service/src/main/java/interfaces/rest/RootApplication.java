@@ -3,8 +3,7 @@ package interfaces.rest;
 import interfaces.rabbitmq.CustomerFactory;
 import io.quarkus.runtime.ShutdownEvent;
 import io.quarkus.runtime.StartupEvent;
-import org.eclipse.microprofile.openapi.annotations.OpenAPIDefinition;
-import org.eclipse.microprofile.openapi.annotations.info.Info;
+
 
 import jakarta.enterprise.event.Observes;
 import jakarta.ws.rs.ApplicationPath;
@@ -12,7 +11,6 @@ import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
-import jakarta.ws.rs.core.Response;
 import java.util.logging.Logger;
 
 @ApplicationPath("/")

@@ -1,4 +1,3 @@
-
 package interfaces.rabbitmq;
 
 import com.google.gson.Gson;
@@ -23,7 +22,7 @@ public class CustomerSender implements EventSender {
     @Override
     public void sendEvent(Event event) throws Exception {
         ConnectionFactory factory = new ConnectionFactory();
-        factory.setHost("172.20.0.6");
+        factory.setHost("172.20.0.3");
         factory.setUsername("vasimosc");
         factory.setPassword("bncvcxff3");
 		

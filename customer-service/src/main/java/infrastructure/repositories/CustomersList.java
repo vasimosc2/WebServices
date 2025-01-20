@@ -1,5 +1,5 @@
 package infrastructure.repositories;
-// TODO add a remove for name and last name
+
 import models.Customer;
 import infrastructure.repositories.interfaces.ICustomers;
 
@@ -33,13 +33,7 @@ public class CustomersList implements ICustomers {
         Customers.add(Customer);
     }
 
-    @Override
-    public Customer getById(String id) {
-        return Customers.stream()
-                .filter(a -> a.getId().equals(id))
-                .findAny()
-                .orElse(null);
-    }
+
 
     @Override
     public Customer getByCpr(String cpr) {
@@ -50,8 +44,8 @@ public class CustomersList implements ICustomers {
     }
 
     @Override
-    public void remove(String id) {
-        Customer Customer = getById(id);
+    public void remove(String cpr) {
+        Customer Customer = getByCpr(cpr);
         if (Customer != null) {
             Customers.remove(Customer);
         }

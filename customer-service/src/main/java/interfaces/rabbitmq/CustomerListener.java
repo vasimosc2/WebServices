@@ -33,7 +33,7 @@ public class CustomerListener {
 
         LOGGER.info("CONNECTING TO RABBITMQ HOST: " );
 
-		factory.setHost("172.20.0.6");
+		factory.setHost("172.20.0.3");
 		factory.setUsername("vasimosc");
 		factory.setPassword("bncvcxff3");
 		

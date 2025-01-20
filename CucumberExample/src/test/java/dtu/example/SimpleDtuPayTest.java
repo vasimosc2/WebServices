@@ -1,23 +1,19 @@
 package dtu.example;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.math.BigDecimal;
 
 import dtu.example.models.Customer;
 import dtu.example.models.Merchant;
 import dtu.example.services.SimpleDtuPayService;
-import dtu.ws.fastmoney.Account;
 import dtu.ws.fastmoney.BankService;
 import dtu.ws.fastmoney.BankServiceException_Exception;
 import dtu.ws.fastmoney.BankServiceService;
-import dtu.ws.fastmoney.User;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
-import io.cucumber.java.en.When;
+import jakarta.ws.rs.core.Response;
 public class SimpleDtuPayTest {
     
     private Customer customer;
@@ -36,7 +32,6 @@ public class SimpleDtuPayTest {
         customer.setLastName(string2);
         customer.setCprNumber(string3);
         assertNotNull(customer, "Customer creation failed");
-
     }
        
     @Given("the customer is registered with the bank with an initial balance of {int} kr")
@@ -44,6 +39,62 @@ public class SimpleDtuPayTest {
         customerAccountId=dtupay.register(customer,money);
         assertNotNull(customerAccountId);
     }
+
+    @And("get Customer with CPR {string}")
+    public void getCustomerWithCPR(String cprNumber){
+        Customer getCustomer =null;
+        getCustomer = dtupay.getCustomer(cprNumber);
+        assertNotNull(getCustomer);
+    }
+
+    @Then("delete customer with CPR {string}")
+    public void deleteCustomer(String cprNumber){
+        System.out.println("I am on the retire");
+        Response response = dtupay.deleteCustomer(cprNumber);
+        assertEquals(200, response.getStatus(), "Expected status code 200, but got " + response.getStatus());
+    }
+
+
+
+
+
+
+    @Given("a merchant with name {string}, last name {string}, and CPR {string}")
+    public void createrMerchant(String firstname,String lastname, String cpr){
+        System.out.println("I start the merchant test");
+        merchant = new Merchant();
+        merchant.setFirstName(firstname);
+        merchant.setLastName(lastname);
+        merchant.setCprNumber(cpr);
+        assertNotNull(merchant, "Merchant creation failed");
+    }
+    @And("the merchant is registered with the bank with an initial balance of {int} kr")
+    public void registerMerchant(int money){
+        System.out.println("I Register the Merchant");
+        merchantAccountId = dtupay.register(merchant, money);
+        assertNotNull(merchantAccountId);
+    }
+
+    @And("get Merchant with CPR {string}")
+    public void getMerchantrWithCPR(String cprNumber){
+        System.out.println("I get the Merchant");
+        Merchant getMerchant =null;
+        getMerchant = dtupay.getMerchant(cprNumber);
+        assertNotNull(getMerchant);
+    }
+    @Then("delete merchant with CPR {string}")
+    public void deleteMerchant(String cprNumber){
+        System.out.println("I am on the retire for merchant");
+        Response response = dtupay.deleteMerchant(cprNumber);
+        assertEquals(200, response.getStatus(), "Expected status code 200, but got " + response.getStatus());
+    }
+
+
+
+
+
+
+
     /* 
     @Given("the customer is registered with Simple DTU Pay using their bank account")
     public void theCustomerIsRegisteredWithSimpleDTUPayUsingTheirBankAccount() throws BankServiceException_Exception {

@@ -1,3 +1,4 @@
 .mvn
 .vscode
 code-with-quarkus/target/*
+env.sh

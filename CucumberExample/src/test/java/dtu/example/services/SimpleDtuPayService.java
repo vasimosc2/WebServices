@@ -2,6 +2,7 @@ package dtu.example.services;
 
 import dtu.example.models.CustInt;
 import dtu.example.models.Customer;
+import dtu.example.models.MerchInt;
 import dtu.example.models.Merchant;
 import dtu.ws.fastmoney.User;
 import jakarta.ws.rs.client.Client;
@@ -35,15 +36,65 @@ public class SimpleDtuPayService {
         return null;
     }
 
-    public void register(User user,String accountId, String path) {
-        target.path(path).request().put(Entity.entity(new UserAccountId(user, accountId), MediaType.APPLICATION_JSON));
+
+    public String register(Merchant merchant,int money){
+        MerchInt merchInt = new MerchInt();
+        merchInt.setMerchant(merchant);
+        merchInt.setMoney(money);
+        Response response = target.path("merchant").request().post(Entity.entity(merchInt, MediaType.APPLICATION_JSON));
+        if (response.getStatus() == 200) {
+            String result = response.readEntity(new GenericType<>() {
+            });
+
+            return result.length() == 0 ? null : result;
+        }
+        return null;
     }
+
+
+
+
+
+
+
+    public Customer getCustomer(String cprNumber){
+        Response response = target.path("customer/" + cprNumber).request().get();
+        if (response.getStatus() == 200) {
+            return response.readEntity(new GenericType<>() {
+            });
+        }
+
+        return null;
+    }
+
+    public Response deleteCustomer(String cprNumber) {
+        return target.path("customer/deleted/"+ cprNumber).request().delete();
+    }
+
+
+
+    public Merchant getMerchant(String cprNumber){
+        Response response = target.path("merchant/" + cprNumber).request().get();
+        if (response.getStatus() == 200) {
+            return response.readEntity(new GenericType<>() {
+            });
+        }
+
+        return null;
+    }
+
+    public Response deleteMerchant(String cprNumber) {
+        return target.path("merchant/deleted/"+ cprNumber).request().delete();
+    }
+
 
 
     public boolean maketransfer(int money,Customer customer, Merchant merchant) {
         target.path("payment").request().post(Entity.entity(new BankPay(money, customer, merchant), MediaType.APPLICATION_JSON));
         return true;
     }
+
+
 
 
    
