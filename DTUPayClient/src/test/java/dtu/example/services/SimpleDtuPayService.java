@@ -40,7 +40,7 @@ public class SimpleDtuPayService {
     }
 
 
-    public boolean makeTransfer(int money,String customerId, String merchantId) {
+    public boolean makeTransfer(int money, String customerId, String merchantId) {
         target.path("payments")
                     .request()
                     .post(Entity.entity(new BankPay(money, customerId, merchantId), MediaType.APPLICATION_JSON));

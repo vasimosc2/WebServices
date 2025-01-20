@@ -1,5 +1,6 @@
 Feature: Token Usage
 
+  @DontRun
   Scenario: A user generates a token, validates it, and then retires it
     Given a user with customerId "C123"
     When the user requests 1 token

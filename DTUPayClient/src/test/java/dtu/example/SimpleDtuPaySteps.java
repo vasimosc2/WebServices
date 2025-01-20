@@ -6,8 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.math.BigDecimal;
 
-import dtu.example.models.Customer;
-import dtu.example.models.Merchant;
+import dtu.example.models.*;
 import dtu.example.services.SimpleDtuPayService;
 import dtu.ws.fastmoney.BankService;
 import dtu.ws.fastmoney.BankServiceException_Exception;
@@ -52,8 +51,9 @@ public class SimpleDtuPaySteps {
     @Given("the customer is registered with Simple DTU Pay using their bank account")
     public void theCustomerIsRegisteredWithSimpleDTUPayUsingTheirBankAccount() {
         assertNotNull(customer.getCprNumber()); //maybe not needed
+        assertNotNull(customer.getBankAccount()); //maybe not needed
         customerId = dtupay.registerCustomer(customer);
-        customer.setId(customerId);
+        customer.setStakeholderId(customerId);
     }
 
 
@@ -83,12 +83,12 @@ public class SimpleDtuPaySteps {
         assertNotNull(merchant.getCprNumber()); //maybe not needed
 
         merchantId = dtupay.registerMerchant(merchant);
-        merchant.setId(merchantId);
+        merchant.setStakeholderId(merchantId);
     }
     
     @When("the merchant initiates a payment for {int} kr by the customer")
     public void TransferMoney(int money){
-        successful = dtupay.makeTransfer(money, customer.getId(), merchant.getId());
+        successful = dtupay.makeTransfer(money, customerId, merchantId);
     }
 
     @Then("the payment is successful")

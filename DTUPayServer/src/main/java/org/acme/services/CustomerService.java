@@ -3,6 +3,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.enterprise.context.ApplicationScoped;
+import org.acme.exceptions.StakeholderException;
 import org.acme.models.Customer;
 import org.acme.models.StakeholderId;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -18,12 +19,17 @@ public class CustomerService {
     }
 
     public String registerCustomer(Customer customer) {
+        if (customer.getBankAccount() == null) {
+            throw new IllegalArgumentException("Customer must have a valid BankAccount before registration");
+        }
+
         String customerId;
         do {
             customerId = "CUST-" + RandomStringUtils.randomNumeric(8);
         } while (isCustomerIdPresent(customerId));
 
-        customer.setStakeholderId(new StakeholderId(customerId));
+        customer.setStakeholderId(customerId);
+
         customers.add(customer); // Add the customer to the list
 
         return customerId; // Return the unique customerId
@@ -39,12 +45,12 @@ public class CustomerService {
         return false;
     }
 
-    public Customer getCustomer(String customerId) {
+    public Customer getCustomer(String customerId) throws StakeholderException {
         for (Customer c : customers) {
             if (c.getStakeholderId().equals(customerId)) {
                 return c;
             }
         }
-        return null;
+        throw new StakeholderException("Customer not found");
     }
 }

@@ -3,6 +3,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.enterprise.context.ApplicationScoped;
+import org.acme.exceptions.StakeholderException;
 import org.acme.models.Merchant;
 import org.acme.models.StakeholderId;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -21,7 +22,7 @@ public class MerchantService {
             merchantId = "MERC-" + RandomStringUtils.randomNumeric(8);
         } while (isMerchantIdPresent(merchantId));
 
-        merchant.setStakeholderId(new StakeholderId(merchantId));
+        merchant.setStakeholderId(merchantId);
         merchants.add(merchant); // Add the merchant to the list
 
         return merchantId; // Return the unique merchantId
@@ -37,13 +38,13 @@ public class MerchantService {
         return false;
     }
 
-    public Merchant getMerchant(String merchantId) {
+    public Merchant getMerchant(String merchantId) throws StakeholderException {
         for (Merchant m : merchants) {
             if (m.getStakeholderId().equals(merchantId)) {
                 return m;
             }
         }
-        return null;
+        throw new StakeholderException("Merchant not found");
     }
 
 }

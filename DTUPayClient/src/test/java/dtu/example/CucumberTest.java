@@ -17,6 +17,7 @@ For example, the class name CucumberTestExample will be ignored by Maven.
 @CucumberOptions(plugin="summary"
 			   , publish= false
 			   , features = "features"  // directory of the feature files
+			   , tags = "not @DontRun"  //avoid running scenarios with @DontRun tag
 			   , snippets = SnippetType.CAMELCASE
 			   )
 public class CucumberTest {

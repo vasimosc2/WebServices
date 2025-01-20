@@ -2,6 +2,7 @@ package org.acme.resources;
 
 import java.util.List;
 
+import org.acme.exceptions.TokenException;
 import org.acme.models.Token;
 import org.acme.resources.dto.GenerateTokenRequest;
 import org.acme.services.TokenService;
@@ -33,7 +34,7 @@ public class TokenResources {
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public void generateTokens(GenerateTokenRequest request){
+    public void generateTokens(GenerateTokenRequest request) throws TokenException {
         service.generateToken(request.getCustomerId(), request.getCount());
     }
 
@@ -52,14 +53,8 @@ public class TokenResources {
 
     @GET
     @Path("/{tokenId}/validate")
-    public Response validateToken(@PathParam("tokenId") String tokenId) {
-        try {
+    public Response validateToken(@PathParam("tokenId") String tokenId) throws TokenException {
             Token token = service.validateToken(tokenId);
             return Response.ok(token).build();   // 200 with token data
-        } catch (IllegalArgumentException e) {
-            return Response.status(Response.Status.BAD_REQUEST)
-                        .entity(e.getMessage())
-                        .build();
-        }
     }
 }

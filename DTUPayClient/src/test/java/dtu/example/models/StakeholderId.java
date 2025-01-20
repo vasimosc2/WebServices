@@ -1,4 +1,4 @@
-package org.acme.models;
+package dtu.example.models;
 
 import lombok.Getter;
 import lombok.Value;

@@ -4,6 +4,7 @@ package org.acme.resources;
 import java.util.List;
 
 import jakarta.inject.Inject;
+import org.acme.exceptions.StakeholderException;
 import org.acme.models.BankPay;
 // import org.acme.models.Customer;
 // import org.acme.models.Merchant;
@@ -34,7 +35,7 @@ public class PaymentResources{
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public void setBankPayment(BankPay bankPay) throws BankServiceException_Exception{
+    public void setBankPayment(BankPay bankPay) throws BankServiceException_Exception, StakeholderException {
         service.setPayment(bankPay);
     }
 }

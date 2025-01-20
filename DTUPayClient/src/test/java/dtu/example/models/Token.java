@@ -7,7 +7,6 @@ import lombok.Setter;
 @Setter
 public class Token {
     private String tokenId;
-//    private String customerId;
     private boolean used;
 
     public Token(){}
