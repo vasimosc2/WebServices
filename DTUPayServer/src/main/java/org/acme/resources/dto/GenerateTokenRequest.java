@@ -7,7 +7,7 @@ import org.acme.models.StakeholderId;
 @Getter
 @Setter
 public class GenerateTokenRequest {
-    private StakeholderId customerId;
+    private String customerId;
     private int count;
 
     public GenerateTokenRequest(){}

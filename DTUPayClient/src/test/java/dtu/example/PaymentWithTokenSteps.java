@@ -1,12 +1,8 @@
 package dtu.example;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import java.math.BigDecimal;
-
-import dtu.example.models.*;
+import dtu.example.models.Customer;
+import dtu.example.models.Merchant;
+import dtu.example.models.Token;
 import dtu.example.services.SimpleDtuPayService;
 import dtu.ws.fastmoney.BankService;
 import dtu.ws.fastmoney.BankServiceException_Exception;
@@ -17,13 +13,23 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-public class SimpleDtuPaySteps {
+
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+public class PaymentWithTokenSteps {
     
     private Customer customer;
     private Merchant merchant;
     private String customerId, merchantId, customerBankAccountId, merchantBankAccountId;
-    private SimpleDtuPayService dtupay = new SimpleDtuPayService();
 
+    private List<Token> tokens = new ArrayList<>();
+    private SimpleDtuPayService dtupay = new SimpleDtuPayService();
 
     private BankService bankService = new BankServiceService().getBankServicePort();
     private boolean successful = false;
@@ -56,6 +62,15 @@ public class SimpleDtuPaySteps {
         customer.setStakeholderId(customerId);
     }
 
+    @And("the customer asks for {int} new tokens")
+    public void theCustomerAsksForNewTokens(int arg0) {
+        tokens = dtupay.generateTokens(customerId, arg0);
+
+        for (Token token : tokens) {
+            System.out.println("SANTI token: " + token.getTokenId());
+        }
+    }
+
 
     @Given("a merchant with name {string}, last name {string}, and CPR {string}")
     public void aMerchantWithNameLastNameAndCPR(String string, String string2, String string3) {
@@ -84,10 +99,11 @@ public class SimpleDtuPaySteps {
         merchantId = dtupay.registerMerchant(merchant);
         merchant.setStakeholderId(merchantId);
     }
-    
-    @When("the merchant initiates a payment for {int} kr by the customer")
-    public void TransferMoney(int money){
-        successful = dtupay.makeTransfer(money, customerId, merchantId);
+
+    @When("the merchant initiates a payment for {int} kr given the token in position {int}")
+    public void theMerchantInitiatesAPaymentForKrGivenTheTokenInPosition(int money, int tokenPosition) {
+        System.out.println("SANTI token to use: " + tokens.get(tokenPosition).getTokenId());
+        successful = dtupay.makeTransfer(money, tokens.get(tokenPosition).getTokenId(), merchantId);
     }
 
     @Then("the payment is successful")
@@ -132,5 +148,4 @@ public class SimpleDtuPaySteps {
             bankService.retireAccount(merchant.getBankAccount());
         }
     }
-
 }

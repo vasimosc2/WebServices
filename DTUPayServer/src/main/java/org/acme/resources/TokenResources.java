@@ -26,16 +26,17 @@ public class TokenResources {
     @Inject
     TokenService service;
 
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    public List<Token> getAllTokens() {
-        return service.getAllTokens();
-    }
+//    @GET
+//    @Produces(MediaType.APPLICATION_JSON)
+//    public List<Token> getAllTokens() {
+//        return service.getAllTokens();
+//    }
 
     @POST
+    @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public void generateTokens(GenerateTokenRequest request) throws TokenException {
-        service.generateToken(request.getCustomerId(), request.getCount());
+    public List<Token> generateTokens(GenerateTokenRequest request) throws TokenException {
+        return service.generateToken(request.getCustomerId(), request.getCount());
     }
 
 //    @DELETE

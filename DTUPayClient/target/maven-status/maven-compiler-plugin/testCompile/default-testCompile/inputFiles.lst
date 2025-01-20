@@ -1,4 +1,5 @@
 /Users/santiago/Desktop/WebServices/DTUPayClient/src/test/java/dtu/example/CucumberTest.java
+/Users/santiago/Desktop/WebServices/DTUPayClient/src/test/java/dtu/example/PaymentWithTokenSteps.java
 /Users/santiago/Desktop/WebServices/DTUPayClient/src/test/java/dtu/example/SimpleDtuPaySteps.java
 /Users/santiago/Desktop/WebServices/DTUPayClient/src/test/java/dtu/example/TokenRetireSteps.java
 /Users/santiago/Desktop/WebServices/DTUPayClient/src/test/java/dtu/example/models/BankAccount.java
@@ -9,4 +10,5 @@
 /Users/santiago/Desktop/WebServices/DTUPayClient/src/test/java/dtu/example/models/Stakeholder.java
 /Users/santiago/Desktop/WebServices/DTUPayClient/src/test/java/dtu/example/models/StakeholderId.java
 /Users/santiago/Desktop/WebServices/DTUPayClient/src/test/java/dtu/example/models/Token.java
+/Users/santiago/Desktop/WebServices/DTUPayClient/src/test/java/dtu/example/models/TokenRequest.java
 /Users/santiago/Desktop/WebServices/DTUPayClient/src/test/java/dtu/example/services/SimpleDtuPayService.java

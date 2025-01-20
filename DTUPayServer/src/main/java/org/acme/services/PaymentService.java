@@ -12,10 +12,14 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import org.acme.exceptions.PaymentException;
 import org.acme.exceptions.StakeholderException;
+import org.acme.exceptions.TokenException;
 import org.acme.models.*;
 
 @ApplicationScoped
 public class PaymentService {
+
+    @Inject
+    TokenService tokenService;
 
     @Inject
     CustomerService customerService;
@@ -35,9 +39,10 @@ public class PaymentService {
     }
 
     // Adds a new payment to the list
-    public void setPayment(BankPay bankPay) throws StakeholderException, PaymentException {
+    public void setPayment(BankPay bankPay) throws StakeholderException, PaymentException, TokenException {
         int money = bankPay.money();
-        Customer customer = customerService.getCustomer(bankPay.customerId());
+
+        Customer customer = customerService.getCustomer(tokenService.getCustomerIdByTokenId(bankPay.tokenId()));
         Merchant merchant = merchantService.getMerchant(bankPay.merchantId());
 
         try {

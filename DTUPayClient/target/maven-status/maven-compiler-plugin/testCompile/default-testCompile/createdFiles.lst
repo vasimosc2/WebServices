@@ -1,13 +1,14 @@
-dtu/example/services/SimpleDtuPayService$TokenRequest.class
 dtu/example/CucumberTest.class
 dtu/example/models/Customer.class
 dtu/example/models/Stakeholder.class
-dtu/example/SimpleDtuPaySteps.class
 dtu/example/models/StakeholderId.class
+dtu/example/models/TokenRequest.class
 dtu/example/models/Payment.class
 dtu/example/models/BankAccount.class
 dtu/example/services/SimpleDtuPayService$BankPay.class
 dtu/example/models/CPRNumber.class
+dtu/example/PaymentWithTokenSteps.class
+dtu/example/services/SimpleDtuPayService$2.class
 dtu/example/TokenRetireSteps.class
 dtu/example/models/Merchant.class
 dtu/example/services/SimpleDtuPayService.class

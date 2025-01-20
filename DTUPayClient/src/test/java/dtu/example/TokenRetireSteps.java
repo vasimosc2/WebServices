@@ -24,7 +24,7 @@ public class TokenRetireSteps {
     private SimpleDtuPayService dtupay = new SimpleDtuPayService();
 
 
-    @Given("a user with customerId {string}")
+    @Given("a user with tokenId {string}")
     public void a_user_with_customerId(String cid) {
         this.customerId = cid;
     }
@@ -51,9 +51,9 @@ public class TokenRetireSteps {
 //    @When("the user validates that token")
 //    public void the_user_validates_that_token() {
 //        this.currentToken = this.allTokens.stream()
-//            .filter(t -> t.getCustomerId().equals(this.customerId))
+//            .filter(t -> t.getCustomerId().equals(this.tokenId))
 //            .findFirst()
-//            .orElseThrow(() -> new RuntimeException("No token found for " + this.customerId));
+//            .orElseThrow(() -> new RuntimeException("No token found for " + this.tokenId));
 //
 //        dtupay.validateToken(currentToken.getTokenId());
 //    }

@@ -32,11 +32,11 @@ public class CustomerService {
 
         customers.add(customer); // Add the customer to the list
 
-        return customerId; // Return the unique customerId
+        return customerId; // Return the unique tokenId
     }
 
     private boolean isCustomerIdPresent(String customerId) {
-        // Check if any customer in the list has the same customerId
+        // Check if any customer in the list has the same tokenId
         for (Customer c : customers) {
             if (c.getStakeholderId().equals(customerId)) {
                 return true;

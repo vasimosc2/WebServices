@@ -13,7 +13,7 @@ public class Token {
 
     public Token(String tokenId, boolean used){
         this.tokenId = tokenId;
-//        this.customerId = customerId;
+//        this.tokenId = tokenId;
         this.used = used;
     }
 

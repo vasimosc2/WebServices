@@ -24,7 +24,7 @@ public class TokenService {
         return tokenRepository.findAllTokens();
     }
 
-    public List<Token> generateToken(StakeholderId customerId, int count) throws TokenException {
+    public List<Token> generateToken(String customerId, int count) throws TokenException {
 
         if (count < 1 || count > 5) {
             throw new TokenException("You can only request 1 to 5 tokens");
@@ -60,7 +60,7 @@ public class TokenService {
         return token;
     }
 
-    public void markTokenAsUsed(StakeholderId customerId, String tokenId) throws TokenException {
+    public void markTokenAsUsed(String customerId, String tokenId) throws TokenException {
         Optional<Token> tokenOption = tokenRepository.findByTokenId(tokenId);
         if (tokenOption.isEmpty()){
             throw new TokenException("TokenID is not found");
@@ -69,6 +69,16 @@ public class TokenService {
         Token token = tokenOption.get();
         token.setUsed(true);
         tokenRepository.updateToken(customerId, token);
+    }
+
+    public String getCustomerIdByTokenId(String tokenId) throws TokenException {
+        Optional<Token> tokenOption = tokenRepository.findByTokenId(tokenId);
+        if (tokenOption.isEmpty()){
+            throw new TokenException("TokenID is not found");
+        }
+
+        return tokenRepository.findCustomerIdByTokenId(tokenId);
+
     }
 
 }
