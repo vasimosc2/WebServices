@@ -1,7 +1,14 @@
 Feature: Payment
   Scenario: Successful Payment
-    Given a customer with name "Vasilis", last name "Moschou", and CPR "1312144"
-    Given the customer is registered with the bank with an initial balance of 30 kr
-    Then the customer requests 5 tokens
-    When the merchant initiates a payment for 50 by the customer
-    And the merchant asks for a token from the customer
+    Given a customer with name "Vasilis", last name "Moschou", and CPR "CPRNUM17"
+    And the customer is registered with the bank with an initial balance of 1000 kr
+    And the customer is registered with Simple DTU Pay using their bank account
+    And the customer generates 5 tokens
+    And a merchant with name "Susan", last name "Pounaxero", and CPR "CPRNUM27"
+    And the merchant is registered with the bank with an initial balance of 1000 kr
+    And the merchant is registered with Simple DTU Pay using their bank account
+    And the customer retrieves a token
+    When the merchant initiates a payment for 15 kr given the token in position 2
+    Then the payment is successful
+    And the balance of the customer at the bank is 985 kr
+    And the balance of the merchant at the bank is 1015 kr

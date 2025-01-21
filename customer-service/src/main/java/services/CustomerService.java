@@ -29,37 +29,14 @@ public class CustomerService implements ICustomerService {
     }
 
     @Override
-    public String register(CustInt custInt) throws BankServiceException_Exception,AccountExistsException, BankAccountException {
+    public String register(Customer customer) throws BankServiceException_Exception,AccountExistsException, BankAccountException {
 
-        if (isRegistered(custInt.getCustomer())) {
-            throw new AccountExistsException("Customer with cpr (" + custInt.getCustomer().getCprNumber() + ") already exists!");
+        if (isRegistered(customer)) {
+            throw new AccountExistsException("Customer with cpr (" + customer.getCprNumber() + ") already exists!");
         }
-
-
-        String bankaccountId = null;
-
-        System.out.println("I am here");
-        Account potentialAccount = null;
-        try{
-            potentialAccount = bankService.getAccountByCprNumber(custInt.getCustomer().getCprNumber());
-        } catch (BankServiceException_Exception e) {
-                System.out.println("Customer not found, creating a new one.");
-            }
-        
-        System.out.println(potentialAccount);
-        
-        if (potentialAccount == null) {
-                bankaccountId = registerBankAccount(custInt.getCustomer(), custInt.getMoney());
-                custInt.getCustomer().setBankAccount(bankaccountId);
-                custInt.getCustomer().setId(UUID.randomUUID().toString());
-                repo.add(custInt.getCustomer());
-                return custInt.getCustomer().getId();
-            } else {
-                custInt.getCustomer().setBankAccount(potentialAccount.getId());
-                custInt.getCustomer().setId(UUID.randomUUID().toString());
-                repo.add(custInt.getCustomer());
-                return custInt.getCustomer().getId();
-            }
+        customer.setId("CUST-"+ UUID.randomUUID());
+        repo.add(customer);
+        return customer.getId();
         
     }
 

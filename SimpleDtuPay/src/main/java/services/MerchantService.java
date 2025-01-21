@@ -8,11 +8,10 @@ import jakarta.ws.rs.core.Response;
 import messaging.Event;
 import messaging.EventReceiver;
 import messaging.EventSender;
-import models.MerchInt;
 import models.Merchant;
 
 public class MerchantService implements EventReceiver  {
-    private List<Merchant> merchants = new ArrayList<>();
+    private List<String> merchantIds = new ArrayList<>();
 
     private CompletableFuture<String> registerResult;
     private CompletableFuture<Merchant> GetMerchantResult;
@@ -26,17 +25,17 @@ public class MerchantService implements EventReceiver  {
         this.eventSender = eventSender;
     }
 
-    public List<Merchant> getMerchants() {
-        return merchants;
+    public List<String> getMerchantIds() {
+        return merchantIds;
     }
 
 
     public void receiveEvent(Event eventIn) {
         switch (eventIn.getEventType()) {
             case "RegisterMerchantSuccessful":
-                System.out.println("I got a merchant success");
-                String MerchnatId = (String) eventIn.getArguments()[0];
-                registerResult.complete(MerchnatId); 
+                System.out.println("I got a RegisterMerchantSuccessful");
+                String merchantId = (String) eventIn.getArguments()[0];
+                registerResult.complete(merchantId);
                 break;
 
             case "RegisterMerchantFailed":
@@ -45,15 +44,17 @@ public class MerchantService implements EventReceiver  {
 
             case "GetMerchantSuccessfull":
                 System.out.println("I got a GetMerchantSucessfull");
-                Merchant Merchnat = gson.fromJson(gson.toJson(eventIn.getArguments()[0]), Merchant.class);
-                GetMerchantResult.complete(Merchnat);
+                Merchant merchant = gson.fromJson(gson.toJson(eventIn.getArguments()[0]), Merchant.class);
+                GetMerchantResult.complete(merchant);
                 break;
+
             case "GetMerchantFailed":
                 GetMerchantResult.complete(null);
                 break;
+
             case "RetiremerchantByCprSuccessful":
                 System.out.println("I got a RetiremerchantByCprSuccessful");
-                boolean removed = merchants.removeIf(c -> c.getCprNumber().equals((String) eventIn.getArguments()[0]));
+                boolean removed = merchantIds.removeIf(c -> c.equals((String) eventIn.getArguments()[0]));
 
                 if (!removed) {
                     System.out.println("No Merchnat found with CPR: " + eventIn.getArguments()[0]);
@@ -61,9 +62,11 @@ public class MerchantService implements EventReceiver  {
 
                 retireMerchant.complete(Response.status(200).entity("Delete successful").build());
                 break;
+
             case "RetiremerchantByCprFailed":
                 retireMerchant.complete(Response.status(404).entity("Delete successful").build());
                 break;
+
             default:
                 System.out.println("Ignored event in Rest with type: " + eventIn.getEventType() + ". Event: " + eventIn.toString());
                 break;
@@ -75,21 +78,19 @@ public class MerchantService implements EventReceiver  {
 
 
 
-    public String sendRegisterEvent(MerchInt merchInt) throws Exception{
+    public String sendRegisterEvent(Merchant merchant) throws Exception{
         String eventType = "RegisterMerchant";
-        Object[] arguments = new Object[]{merchInt};
+        Object[] arguments = new Object[]{merchant};
         Event event = new Event(eventType, arguments);
         registerResult = new CompletableFuture<>();
 
         eventSender.sendEvent(event);
 
-        String MerchnatId = registerResult.join();
-        
-        Merchant newMerchnat = merchInt.getMerchant();
-        if(MerchnatId!=null){
-            newMerchnat.setId(MerchnatId);
-            merchants.add(newMerchnat);
-            return MerchnatId;
+        String merchantId = registerResult.join();
+
+        if(merchantId!=null){
+            merchantIds.add(merchantId);
+            return merchantId;
         }
         return null;
     }

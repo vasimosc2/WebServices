@@ -31,10 +31,9 @@ public class MerchantEventService implements EventReceiver {
             case "RegisterMerchant":
                 try {
                     System.out.println("Hello from RegisterMerchant");
-                    MerchInt merchInt = gson.fromJson(gson.toJson(eventIn.getArguments()[0]), MerchInt.class);
-                    System.out.println(merchInt.getMoney());
-                    System.out.println(merchInt.getMerchant().getFirstName());
-                    String merchantId = service.register(merchInt);
+                    Merchant merchant = gson.fromJson(gson.toJson(eventIn.getArguments()[0]), Merchant.class);
+                    System.out.println(merchant.getFirstName());
+                    String merchantId = service.register(merchant);
                     System.out.println(merchantId);
                     Event eventOut = new Event("RegisterMerchantSuccessful", new Object[]{merchantId});
 

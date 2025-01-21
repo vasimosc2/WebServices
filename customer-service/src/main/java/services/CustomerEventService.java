@@ -32,10 +32,9 @@ public class CustomerEventService implements EventReceiver {
             case "RegisterCustomer":
                 try {
                     System.out.println("Hello from RegisterCustomer");
-                    CustInt custInt = gson.fromJson(gson.toJson(eventIn.getArguments()[0]), CustInt.class);
-                    System.out.println(custInt.getMoney());
-                    System.out.println(custInt.getCustomer().getFirstName());
-                    String customerId = service.register(custInt);
+                    Customer customer = gson.fromJson(gson.toJson(eventIn.getArguments()[0]), Customer.class);
+                    System.out.println(customer.getFirstName());
+                    String customerId = service.register(customer);
                     System.out.println(customerId);
                     Event eventOut = new Event("RegisterCustomerSuccessfull", new Object[]{customerId});
 

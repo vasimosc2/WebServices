@@ -15,7 +15,6 @@ import jakarta.ws.rs.core.Response;
 public class CustomerService implements EventReceiver {
 
     private List<String> customerIds = new ArrayList<>();
-    
     private CompletableFuture<String> registerResult;
     private CompletableFuture<Customer> getCustomerResult;
     private CompletableFuture<Response> retireCustomer;
@@ -41,17 +40,21 @@ public class CustomerService implements EventReceiver {
                 String customerId = (String) eventIn.getArguments()[0];
                 registerResult.complete(customerId); 
                 break;
+
             case "RegisterCustomerFailed":
                 registerResult.complete(null);
                 break;
+
             case "GetCustomerSuccessfull":
                 System.out.println("I got a GetCustomerSucessfull");
                 Customer customer = gson.fromJson(gson.toJson(eventIn.getArguments()[0]), Customer.class);
                 getCustomerResult.complete(customer);
                 break;
+
             case "GetCustomerFailed":
                 getCustomerResult.complete(null);
                 break;
+
             case "RetireCustomerByCprSuccessfull":
                 System.out.println("I got a RetireCustomerByCprSuccessfull");
                 boolean removed = customerIds.removeIf(c -> c.equals((String) eventIn.getArguments()[0]));
@@ -59,12 +62,13 @@ public class CustomerService implements EventReceiver {
                 if (!removed) {
                     System.out.println("No customer found with CPR: " + eventIn.getArguments()[0]);
                 }
-
                 retireCustomer.complete(Response.status(200).entity("Delete successful").build());
                 break;
+
             case "RetireCustomerByCprFailed":
                 retireCustomer.complete(Response.status(404).entity("Delete successful").build());
                 break;
+
             default:
                 System.out.println("Ignored event in Rest with type: " + eventIn.getEventType() + ". Event: " + eventIn.toString());
                 break;
@@ -76,9 +80,9 @@ public class CustomerService implements EventReceiver {
 
 
 
-    public String sendRegisterEvent(CustInt custInt) throws Exception{
+    public String sendRegisterEvent(Customer customer) throws Exception{
         String eventType = "RegisterCustomer";
-        Object[] arguments = new Object[]{custInt};
+        Object[] arguments = new Object[]{customer};
         Event event = new Event(eventType, arguments);
         registerResult = new CompletableFuture<>();
 

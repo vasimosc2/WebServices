@@ -1,7 +1,8 @@
 package dtu.example.models;
 
 public class Merchant {
-   
+
+   private String merchantId;
     private String firstName;
     private String lastName;
     private String cprNumber;

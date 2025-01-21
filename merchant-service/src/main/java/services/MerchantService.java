@@ -27,36 +27,15 @@ public class MerchantService implements IMerchantService {
     }
 
     @Override
-    public String register(MerchInt merchInt) throws BankServiceException_Exception,AccountExistsException, BankAccountException {
+    public String register(Merchant merchant) throws BankServiceException_Exception,AccountExistsException, BankAccountException {
 
-        if (isRegistered(merchInt.getMerchant())) {
-            throw new AccountExistsException("Account with cpr (" + merchInt.getMerchant().getCprNumber() + ") already exists!");
+        if (isRegistered(merchant)) {
+            throw new AccountExistsException("Account with cpr (" + merchant.getCprNumber() + ") already exists!");
         }
+        merchant.setId("MERC-"+ UUID.randomUUID());
+        repo.add(merchant);
+        return merchant.getId();
 
-
-        String bankaccountId = null;
-
-        Account potentialAccount = null;
-        try{
-            potentialAccount = bankService.getAccountByCprNumber(merchInt.getMerchant().getCprNumber());
-        } catch (BankServiceException_Exception e) {
-                System.out.println("Account not found, creating a new one.");
-            }
-        
-        System.out.println(potentialAccount);
-        
-        if (potentialAccount == null) {
-                bankaccountId = registerBankAccount(merchInt.getMerchant(), merchInt.getMoney());
-                merchInt.getMerchant().setBankAccount(bankaccountId);
-                merchInt.getMerchant().setId(UUID.randomUUID().toString());
-                repo.add(merchInt.getMerchant());
-                return merchInt.getMerchant().getId();
-            } else {
-                merchInt.getMerchant().setBankAccount(potentialAccount.getId());
-                merchInt.getMerchant().setId(UUID.randomUUID().toString());
-                repo.add(merchInt.getMerchant());
-                return merchInt.getMerchant().getId();
-            }
         
     }
 

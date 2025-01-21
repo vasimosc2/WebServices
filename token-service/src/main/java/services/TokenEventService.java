@@ -40,12 +40,12 @@ public class TokenEventService implements EventReceiver {
 
                     Response response = service.requestTokens(tokenInt);
 
-                    Event eventOut = new Event("RegisterTokenSuccessfull", new Object[]{response.getStatus()});
+                    Event eventOut = new Event("RequestTokensSuccessfull", new Object[]{response.getStatus()});
                     System.out.println("Ready to send back");
                     eventSender.sendEvent(eventOut);
                     
                 } catch (Exception e) {
-                    Event eventOut = new Event("RegisterTokenFailed", new Object[]{e.getMessage()});
+                    Event eventOut = new Event("RequestTokensFailed", new Object[]{e.getMessage()});
                     eventSender.sendEvent(eventOut);
                 }
                 break;

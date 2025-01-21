@@ -1,27 +1,26 @@
 package resources;
 
+import jakarta.ws.rs.*;
 import models.Token;
 import models.TokenInt;
 import services.TokenService;
 import messaging.rabbitmq.token.TokenFactory;
 
 
-import jakarta.ws.rs.DELETE;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.POST;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.PathParam;
-import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
+import java.util.List;
 
-@Path("/token")
+
+@Path("/tokens")
 public class TokenResource {
 
     TokenService service = TokenFactory.getService();
 
     @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
     public Response requestTokens(TokenInt tokenInt) throws Exception {
         boolean successful = service.sendRequestTokensEvent(tokenInt);
         if (successful) {
@@ -31,7 +30,10 @@ public class TokenResource {
         }
     }
 
+    //TODO check if this is correct   should be @GET
     @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
     public Token getToken(String customerId) throws Exception{
         return service.sendGetTokenRequest(customerId);
     }

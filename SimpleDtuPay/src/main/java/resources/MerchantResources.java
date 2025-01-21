@@ -12,21 +12,20 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import messaging.rabbitmq.merchant.MerchantFactory;
 
-import models.MerchInt;
 import models.Merchant;
 import services.MerchantService;
 
 
 
 
-@Path("/merchant")
+@Path("/merchants")
 public class MerchantResources{
     MerchantService service = MerchantFactory.getService();
     
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Merchant> merchants() {
-        return service.getMerchants();
+    public List<String> merchants() {
+        return service.getMerchantIds();
     }
     
     @GET
@@ -47,8 +46,8 @@ public class MerchantResources{
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response register(MerchInt merchInt) throws Exception {
-        String merchantId = service.sendRegisterEvent(merchInt);
+    public Response register(Merchant merchant) throws Exception {
+        String merchantId = service.sendRegisterEvent(merchant);
         return Response.ok().entity(merchantId).build(); // this returns to the test and gives a 200 status with the item
     }
 

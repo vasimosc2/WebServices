@@ -27,7 +27,7 @@ public class TokenService implements EventReceiver {
     @Override
     public void receiveEvent(Event eventIn) {
         switch (eventIn.getEventType()) {
-            case "RegisterTokenSuccessfull":
+            case "RequestTokensSuccessfull":
                 System.out.println("I got a successfull Token request");
                 requestTokensResult.complete(true);
                 break;

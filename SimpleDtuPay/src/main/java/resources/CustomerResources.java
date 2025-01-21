@@ -15,7 +15,7 @@ import models.CustInt;
 import models.Customer;
 import services.CustomerService;
 
-@Path("/customer")
+@Path("/customers")
 public class CustomerResources {
     CustomerService service = CustomerFactory.getService();
     
@@ -44,8 +44,8 @@ public class CustomerResources {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response register(CustInt custInt) throws Exception {
-        String customerId = service.sendRegisterEvent(custInt);
+    public Response register(Customer customer) throws Exception {
+        String customerId = service.sendRegisterEvent(customer);
         return Response.ok().entity(customerId).build();
     }
 
