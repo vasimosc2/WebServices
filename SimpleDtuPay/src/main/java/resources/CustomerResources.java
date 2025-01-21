@@ -11,42 +11,66 @@ import jakarta.ws.rs.core.MediaType;
 
 import jakarta.ws.rs.core.Response;
 import messaging.rabbitmq.customer.CustomerFactory;
-import models.CustInt;
+import messaging.rabbitmq.token.TokenFactory;
 import models.Customer;
+import models.Token;
+import models.TokenInt;
 import services.CustomerService;
+import services.TokenService;
 
 @Path("/customers")
 public class CustomerResources {
-    CustomerService service = CustomerFactory.getService();
+    CustomerService customerService = CustomerFactory.getService();
+    TokenService tokenService = TokenFactory.getService();
     
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public List<String> customer() {
-        return service.getCustomers();
+        return customerService.getCustomers();
     }
     
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("{cprNumber}")
+    @Path("/{cprNumber}")
     public Customer getCprNumber(@PathParam("cprNumber") String cprNumber) throws Exception {
-
-        return service.getCustomerByCpr(cprNumber);
+        return customerService.getCustomerByCpr(cprNumber);
     }
 
+
     @DELETE
-    @Path("/deleted/{cprNumber}")
+    @Path("/{cprNumber}")
     public Response retireAccount(@PathParam("cprNumber") String cprNumber) throws Exception {
         System.out.println(cprNumber);
-       return service.retireAccount(cprNumber);
+       return customerService.retireAccount(cprNumber);
     }
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response register(Customer customer) throws Exception {
-        String customerId = service.sendRegisterEvent(customer);
+        String customerId = customerService.sendRegisterEvent(customer);
         return Response.ok().entity(customerId).build();
+    }
+
+    @Path("/tokens")
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response requestTokens(TokenInt tokenInt) throws Exception {
+        boolean successful = tokenService.sendRequestTokensEvent(tokenInt);
+        if (successful) {
+            return Response.ok().build();
+        } else {
+            return Response.status(Response.Status.BAD_REQUEST).entity("Token request failed").build();
+        }
+    }
+
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Token getToken(String customerId) throws Exception{
+        return tokenService.sendGetTokenRequest(customerId);
     }
 
 }

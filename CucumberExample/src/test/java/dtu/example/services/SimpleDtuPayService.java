@@ -52,9 +52,6 @@ public class SimpleDtuPayService {
 
 
 
-
-
-
     public Customer getCustomer(String cprNumber){
         Response response = target.path("customers/" + cprNumber).request().get();
         if (response.getStatus() == 200) {
@@ -66,7 +63,7 @@ public class SimpleDtuPayService {
     }
 
     public Response deleteCustomer(String cprNumber) {
-        return target.path("customers/deleted/"+ cprNumber).request().delete();
+        return target.path("customers/"+ cprNumber).request().delete();
     }
 
 
@@ -82,24 +79,12 @@ public class SimpleDtuPayService {
     }
 
     public Response deleteMerchant(String cprNumber) {
-        return target.path("merchants/deleted/"+ cprNumber).request().delete();
-    }
-
-
-
-    public boolean maketransfer(int money, String tokenId, String merchantId) {
-        Response response = target.path("payments")
-                                    .request()
-                                    .post(Entity.entity(new BankPay(money, tokenId, merchantId), MediaType.APPLICATION_JSON));
-        if (response.getStatus() == Response.Status.BAD_REQUEST.getStatusCode()) {
-            return false;
-        }
-        return true;
+        return target.path("merchants/"+ cprNumber).request().delete();
     }
 
 
     public Token requestTokenFromCustomer(String customerId) {
-        return target.path("tokens")
+        return target.path("customers/tokens")
                 .request()
                 .post(Entity.entity(customerId, MediaType.APPLICATION_JSON), Token.class);
     }
@@ -110,11 +95,22 @@ public class SimpleDtuPayService {
         tokenInt.setAmount(tokenAmount);
         tokenInt.setCustomerId(customerAccountId);
         
-        Response response = target.path("tokens")
+        Response response = target.path("customers/tokens")
                                     .request()
                                     .post(Entity.entity(tokenInt, MediaType.APPLICATION_JSON_TYPE));
 
         return response.getStatus() == Response.Status.OK.getStatusCode();
+    }
+
+
+    public boolean maketransfer(int money, String tokenId, String merchantId) {
+        Response response = target.path("merchants/payments")
+                .request()
+                .post(Entity.entity(new BankPay(money, tokenId, merchantId), MediaType.APPLICATION_JSON));
+        if (response.getStatus() == Response.Status.BAD_REQUEST.getStatusCode()) {
+            return false;
+        }
+        return true;
     }
 
 

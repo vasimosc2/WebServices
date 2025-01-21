@@ -12,43 +12,56 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import messaging.rabbitmq.merchant.MerchantFactory;
 
+import messaging.rabbitmq.payment.PaymentFactory;
+import models.BankPay;
 import models.Merchant;
 import services.MerchantService;
-
-
+import services.PaymentService;
 
 
 @Path("/merchants")
 public class MerchantResources{
-    MerchantService service = MerchantFactory.getService();
+    MerchantService merchantService = MerchantFactory.getService();
+
+    PaymentService paymentService = PaymentFactory.getService();
     
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public List<String> merchants() {
-        return service.getMerchantIds();
+        return merchantService.getMerchantIds();
     }
     
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("{cprNumber}")
+    @Path("/{cprNumber}")
     public Merchant getCprNumber(@PathParam("cprNumber") String cprNumber) throws Exception {
-
-        return service.GetMerchantByCpr(cprNumber);
+        return merchantService.GetMerchantByCpr(cprNumber);
     }
 
     @DELETE
-    @Path("/deleted/{cprNumber}")
+    @Path("/{cprNumber}")
     public Response retireAccount(@PathParam("cprNumber") String cprNumber) throws Exception {
         System.out.println(cprNumber);
-       return service.retireAccount(cprNumber);
+       return merchantService.retireAccount(cprNumber);
     }
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response register(Merchant merchant) throws Exception {
-        String merchantId = service.sendRegisterEvent(merchant);
+        String merchantId = merchantService.sendRegisterEvent(merchant);
         return Response.ok().entity(merchantId).build(); // this returns to the test and gives a 200 status with the item
     }
+
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/payments")
+    public Response setBankPayment(BankPay bankpay) throws Exception {
+        boolean successful = paymentService.sendPaymentEvent(bankpay);
+        return Response.ok().entity(successful).build();
+    }
+
+
 
 }
