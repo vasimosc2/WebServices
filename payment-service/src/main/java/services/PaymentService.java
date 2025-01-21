@@ -1,5 +1,6 @@
 package services;
 
+import dtu.ws.fastmoney.BankService;
 import infrastructure.repositories.PaymentMap;
 import infrastructure.repositories.interfaces.IPayments;
 import jakarta.ws.rs.core.Response;
@@ -20,6 +21,15 @@ public class PaymentService implements IPaymentService {
     public Response requestPayment(BankPay bankPay) {
 
         int money = bankPay.money();
+        String tokenId = bankPay.tokenId();
+        String merchantId = bankPay.merchantId();
+
+        //TODO CreateEVENT on RABBITMQ to retrieve the customerID from the token service
+        //TODO CreateEVENT on RABBITMQ that given the customerID to retrieve the customer from the customer service
+        //TODO CreateEVENT on RABBITMQ that given the merchantID to retrieve the merchant from the merchant service
+
+        //BankService bankService = new BankService();
+        //boolean success = bankService.transferMoneyFromTo(Customer.getBankAccount, merchant.getBankACcount, money);
 
         return Response.status(Response.Status.OK).build();
     }

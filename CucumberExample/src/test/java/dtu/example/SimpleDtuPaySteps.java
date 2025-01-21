@@ -18,9 +18,8 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
 import java.math.BigDecimal;
-import java.util.List;
 
-public class SimpleDtuPayTest {
+public class SimpleDtuPaySteps {
     
     private Customer customer;
     private Merchant merchant;
@@ -66,6 +65,14 @@ public class SimpleDtuPayTest {
         assertTrue(isSuccess);
     }
 
+    @And("the customer retrieves a token")
+    public void the_merchant_asks_for_a_token_from_the_customer() {
+        System.out.println("I am ready to get one Token");
+        customerToken = dtupay.requestTokenFromCustomer(customerId);
+        System.out.println(customerToken.getId());
+        assertNotNull(customerToken.getId());
+    }
+
 
 
     @Given("a merchant with name {string}, last name {string}, and CPR {string}")
@@ -95,14 +102,6 @@ public class SimpleDtuPayTest {
         System.out.println("SANTI merchant id: " + merchantId);
     }
 
-
-    @And("the customer retrieves a token")
-    public void the_merchant_asks_for_a_token_from_the_customer() {
-        System.out.println("I am ready to get one Token");
-        customerToken = dtupay.requestTokenFromCustomer(customerId);
-        System.out.println(customerToken.getId());
-        assertNotNull(customerToken.getId());
-    }
 
     @When("the merchant initiates a payment for {int} kr given the token in position {int}")
     public void theMerchantInitiatesAPaymentForKrGivenTheTokenInPosition(int money, int tokenPosition) {
