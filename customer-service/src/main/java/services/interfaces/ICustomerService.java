@@ -13,6 +13,6 @@ public interface ICustomerService {
     void clear();
     String register(CustInt custInt) throws BankServiceException_Exception,AccountExistsException, BankAccountException ;
     Customer get(String id) throws AccountNotFoundException;
-    void retireAccountByCpr(String id) throws BankAccountException;
+    String retireAccountByCpr(String id) throws BankAccountException;
 
 }

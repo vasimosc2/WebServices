@@ -76,14 +76,15 @@ public class CustomerService implements ICustomerService {
 
 
     @Override
-    public void retireAccountByCpr(String cpr) throws BankAccountException {
+    public String retireAccountByCpr(String cpr) throws BankAccountException {
         Customer customer = repo.getByCpr(cpr);
 
         if (customer == null) {
-            return;
+            return null;
         }
 
         retireAccountFromInfo(customer);
+        return customer.getId();
     }
 
 

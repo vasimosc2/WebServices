@@ -2,10 +2,11 @@ package dtu.example;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import dtu.example.models.Customer;
 import dtu.example.models.Merchant;
+import dtu.example.models.Token;
 import dtu.example.services.SimpleDtuPayService;
 import dtu.ws.fastmoney.BankService;
 import dtu.ws.fastmoney.BankServiceException_Exception;
@@ -13,12 +14,15 @@ import dtu.ws.fastmoney.BankServiceService;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
 import jakarta.ws.rs.core.Response;
 public class SimpleDtuPayTest {
     
     private Customer customer;
     private Merchant merchant;
-    private String customerAccountId, merchantAccountId;
+    private String customerId, merchantId;
+    private Token customerToken;
+    private int paymentAmount;
     private SimpleDtuPayService dtupay = new SimpleDtuPayService();
 
 
@@ -33,12 +37,18 @@ public class SimpleDtuPayTest {
         customer.setCprNumber(string3);
         assertNotNull(customer, "Customer creation failed");
     }
-       
+    
+
     @Given("the customer is registered with the bank with an initial balance of {int} kr")
     public void theCustomerIsRegisteredWithTheBankWithAnInitialBalanceOfKr(int money) throws BankServiceException_Exception {
-        customerAccountId=dtupay.register(customer,money);
-        assertNotNull(customerAccountId);
+        customerId=dtupay.register(customer,money);
+        assertNotNull(customerId);
     }
+
+    /*    
+
+
+    Those are fine are not created for practical reasons for testing
 
     @And("get Customer with CPR {string}")
     public void getCustomerWithCPR(String cprNumber){
@@ -71,8 +81,8 @@ public class SimpleDtuPayTest {
     @And("the merchant is registered with the bank with an initial balance of {int} kr")
     public void registerMerchant(int money){
         System.out.println("I Register the Merchant");
-        merchantAccountId = dtupay.register(merchant, money);
-        assertNotNull(merchantAccountId);
+        merchantId = dtupay.register(merchant, money);
+        assertNotNull(merchantId);
     }
 
     @And("get Merchant with CPR {string}")
@@ -90,10 +100,33 @@ public class SimpleDtuPayTest {
     }
 
 
+    */
+
+    @Then("the customer requests {int} tokens")
+    public void the_customer_requests_tokens(int tokenAmount) {
+        System.out.println("I am at the tokenRequest");
+        boolean isSuccess = dtupay.requestTokens(customerId, tokenAmount);
+        assertTrue(isSuccess);
+    }
 
 
 
+    @When("the merchant initiates a payment for {int} by the customer")
+    public void the_merchant_initiates_a_payment_for_by_the_customer(int paymentAmount) {
+        this.paymentAmount = paymentAmount;
+    }
 
+
+    @And("the merchant asks for a token from the customer")
+    public void the_merchant_asks_for_a_token_from_the_customer() {
+        System.out.println("I am ready to get one Token");
+        customerToken = dtupay.requestTokenFromCustomer(customerId);
+        System.out.println(customerToken.getId());
+        assertNotNull(customerToken.getId());
+    }
+
+    
+    
 
     /* 
     @Given("the customer is registered with Simple DTU Pay using their bank account")

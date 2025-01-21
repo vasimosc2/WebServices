@@ -1,0 +1,32 @@
+package dtu.example.models;
+
+public class Token {
+    
+    
+
+    private String id;
+    private boolean used;
+
+    public Token() {
+    }
+
+    public Token(String id,boolean used) {
+        this.id = id;
+        this.used = used;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public void setUsed(boolean used){
+        this.used = used;
+    }
+    public boolean getUsed(){
+        return used;
+    }
+}

@@ -14,15 +14,15 @@ import java.nio.charset.StandardCharsets;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class MerchnatListener {
-    private final static Logger LOGGER = Logger.getLogger(MerchnatListener.class.getName());
+public class MerchantListener {
+    private final static Logger LOGGER = Logger.getLogger(MerchantListener.class.getName());
 	private static final String EXCHANGE_NAME = "eventsExchange";
 	private static final String QUEUE_TYPE = "topic";
 	private static final String TOPIC = "merchants";
 
     EventReceiver receiver;
 
-    public MerchnatListener(EventReceiver receiver) {
+    public MerchantListener(EventReceiver receiver) {
         this.receiver = receiver;
     }
 

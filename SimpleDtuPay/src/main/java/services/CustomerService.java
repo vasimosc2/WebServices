@@ -14,7 +14,7 @@ import jakarta.ws.rs.core.Response;
 
 public class CustomerService implements EventReceiver {
 
-    private List<Customer> customers = new ArrayList<>();
+    private List<String> customerIds = new ArrayList<>();
     
     private CompletableFuture<String> registerResult;
     private CompletableFuture<Customer> getCustomerResult;
@@ -29,8 +29,8 @@ public class CustomerService implements EventReceiver {
 
 
 
-    public List<Customer> getCustomers() {
-        return customers;
+    public List<String> getCustomers() {
+        return customerIds;
     }
 
 
@@ -54,7 +54,7 @@ public class CustomerService implements EventReceiver {
                 break;
             case "RetireCustomerByCprSuccessfull":
                 System.out.println("I got a RetireCustomerByCprSuccessfull");
-                boolean removed = customers.removeIf(c -> c.getCprNumber().equals((String) eventIn.getArguments()[0]));
+                boolean removed = customerIds.removeIf(c -> c.equals((String) eventIn.getArguments()[0]));
 
                 if (!removed) {
                     System.out.println("No customer found with CPR: " + eventIn.getArguments()[0]);
@@ -85,11 +85,10 @@ public class CustomerService implements EventReceiver {
         eventSender.sendEvent(event);
 
         String customerId = registerResult.join();
-        
-        Customer newCustomer = custInt.getCustomer();
+    
+
         if(customerId!=null){
-            newCustomer.setId(customerId);
-            customers.add(newCustomer);
+            customerIds.add(customerId);
             return customerId;
         }
         return null;

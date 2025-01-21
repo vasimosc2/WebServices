@@ -10,7 +10,7 @@ import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import messaging.rabbitmq.merchant.MerchnatFactory;
+import messaging.rabbitmq.merchant.MerchantFactory;
 
 import models.MerchInt;
 import models.Merchant;
@@ -21,7 +21,7 @@ import services.MerchantService;
 
 @Path("/merchant")
 public class MerchantResources{
-    MerchantService service = MerchnatFactory.getService();
+    MerchantService service = MerchantFactory.getService();
     
     @GET
     @Produces(MediaType.APPLICATION_JSON)

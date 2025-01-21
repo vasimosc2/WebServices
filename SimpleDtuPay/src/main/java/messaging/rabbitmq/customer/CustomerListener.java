@@ -14,8 +14,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
-import io.github.cdimascio.dotenv.Dotenv;
-
 public class CustomerListener {
 
     private final static Logger LOGGER = Logger.getLogger(CustomerListener.class.getName());

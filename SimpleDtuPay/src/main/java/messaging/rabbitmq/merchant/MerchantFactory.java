@@ -3,7 +3,7 @@ import messaging.EventSender;
 import services.MerchantService;
 
 
-public class MerchnatFactory {
+public class MerchantFactory {
 
     static MerchantService merchantService = null;
 
@@ -14,7 +14,7 @@ public class MerchnatFactory {
 
         EventSender sender = new MerchantSender();
         merchantService  = new MerchantService(sender);
-        MerchnatListener r = new MerchnatListener(merchantService);
+        MerchantListener r = new MerchantListener(merchantService);
         try {
             r.listen();
         } catch (Exception e) {

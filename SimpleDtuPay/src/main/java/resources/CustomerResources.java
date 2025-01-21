@@ -22,7 +22,7 @@ public class CustomerResources {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Customer> customer() {
+    public List<String> customer() {
         return service.getCustomers();
     }
     

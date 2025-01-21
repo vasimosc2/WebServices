@@ -4,6 +4,8 @@ import dtu.example.models.CustInt;
 import dtu.example.models.Customer;
 import dtu.example.models.MerchInt;
 import dtu.example.models.Merchant;
+import dtu.example.models.Token;
+import dtu.example.models.TokenInt;
 import dtu.ws.fastmoney.User;
 import jakarta.ws.rs.client.Client;
 import jakarta.ws.rs.client.ClientBuilder;
@@ -92,6 +94,21 @@ public class SimpleDtuPayService {
     public boolean maketransfer(int money,Customer customer, Merchant merchant) {
         target.path("payment").request().post(Entity.entity(new BankPay(money, customer, merchant), MediaType.APPLICATION_JSON));
         return true;
+    }
+
+
+    public Token requestTokenFromCustomer(String customerId) {
+        return target.path("token").request().post(Entity.entity(customerId, MediaType.APPLICATION_JSON), Token.class);
+    }
+
+
+    public boolean requestTokens(String customerAccountId, int tokenAmount) {
+        TokenInt tokenInt = new TokenInt();
+        tokenInt.setAmount(tokenAmount);
+        tokenInt.setCustomerId(customerAccountId);
+        
+        Response response = target.path("token").request().post(Entity.entity(tokenInt, MediaType.APPLICATION_JSON_TYPE));
+        return response.getStatus() == Response.Status.OK.getStatusCode();
     }
 
 

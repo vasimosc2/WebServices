@@ -64,9 +64,9 @@ public class CustomerEventService implements EventReceiver {
                 try {
                     System.out.println("Hello from RetireCustomer");
                     String cpr = (String) eventIn.getArguments()[0];
-                    service.retireAccountByCpr(cpr);
+                    String customerId = service.retireAccountByCpr(cpr);
 
-                    Event eventOut = new Event("RetireCustomerByCprSuccessfull", new Object[]{cpr});
+                    Event eventOut = new Event("RetireCustomerByCprSuccessfull", new Object[]{customerId});
                     eventSender.sendEvent(eventOut);
                 } catch (Exception e) {
                     Event eventOut = new Event("RetireCustomerByCprFailed", new Object[]{e.getMessage()});
