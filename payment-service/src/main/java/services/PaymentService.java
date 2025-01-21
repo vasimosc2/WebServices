@@ -25,16 +25,20 @@ public class PaymentService implements IPaymentService {
         String merchantId = bankPay.merchantId();
 
 
+        //TODO CreateEVENT on RABBITMQ to retrieve the customerID from the token service   <custID, list<Token>>
+        //subsequent TODO CreateEVENT on RABBITMQ that given the customerID to retrieve the customer from the customer service  < List <Customers>>
+        //
+        // in parallel TODO CreateEVENT on RABBITMQ that given the merchantID to retrieve the merchant from the merchant service  < List <Merchants>>
+        //
+        // subsequent TODO Customer.getBankAcc, Merhcant.getBankAcc
 
-        //TODO CreateEVENT on RABBITMQ to retrieve the customerID from the token service
-        //TODO CreateEVENT on RABBITMQ that given the customerID to retrieve the customer from the customer service
-        //TODO CreateEVENT on RABBITMQ that given the merchantID to retrieve the merchant from the merchant service
 
         //BankService bankService = new BankService();
         //boolean success = bankService.transferMoneyFromTo(Customer.getBankAccount, merchant.getBankACcount, money);
 
         return Response.status(Response.Status.OK).build();
-    }
+
+        //subsequent TODO CreateEVENT on RABBITMQ to update the token service with the new token status
 
 
 
