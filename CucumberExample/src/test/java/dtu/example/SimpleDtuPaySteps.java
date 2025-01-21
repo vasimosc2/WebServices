@@ -12,6 +12,7 @@ import dtu.ws.fastmoney.BankService;
 import dtu.ws.fastmoney.BankServiceException_Exception;
 import dtu.ws.fastmoney.BankServiceService;
 import dtu.ws.fastmoney.User;
+import io.cucumber.java.After;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -109,6 +110,33 @@ public class SimpleDtuPaySteps {
 
     }
 
+    @Then("the payment is successful")
+    public void sucess(){
+        assertTrue(successful);
+    }
+
+    @And("the balance of the customer at the bank is {int} kr")
+    public void customerBalance(int money) throws BankServiceException_Exception{
+        assertEquals(bankService.getAccount(customer.getBankAccount()).getBalance(), BigDecimal.valueOf(money));
+    }
+
+    @And("the balance of the merchant at the bank is {int} kr")
+    public void merchantBalance(int money) throws BankServiceException_Exception{
+        assertEquals(bankService.getAccount(merchant.getBankAccount()).getBalance(), BigDecimal.valueOf(money));
+    }
+
+    @After
+    public void cleanupBankAccounts() throws BankServiceException_Exception {
+        if (customer != null && customer.getBankAccount() != null) {
+            bankService.retireAccount(customer.getBankAccount());
+        }
+        if (merchant != null && merchant.getBankAccount() != null) {
+            bankService.retireAccount(merchant.getBankAccount());
+        }
+    }
+
+
+
 
 
     
@@ -157,20 +185,7 @@ public class SimpleDtuPaySteps {
         successful = dtupay.maketransfer(money,customer,merchant);
     }
 
-    @Then("the payment is successful")
-    public void sucess(){
-        assertTrue(successful);
-    }
 
-    @And("the balance of the customer at the bank is {int} kr")
-    public void customerBalance(int money) throws BankServiceException_Exception{
-        assertEquals(bankService.getAccount(customer.getBankAccount()).getBalance(), BigDecimal.valueOf(money));
-    }
-
-    @And("the balance of the merchant at the bank is {int} kr")
-    public void merchantBalance(int money) throws BankServiceException_Exception{
-        assertEquals(bankService.getAccount(merchant.getBankAccount()).getBalance(), BigDecimal.valueOf(money));
-    }
 
     @Then("delete the customer and merchant")
     public void DeleteTests() throws BankServiceException_Exception{

@@ -24,6 +24,8 @@ public class PaymentService implements IPaymentService {
         String tokenId = bankPay.tokenId();
         String merchantId = bankPay.merchantId();
 
+
+
         //TODO CreateEVENT on RABBITMQ to retrieve the customerID from the token service
         //TODO CreateEVENT on RABBITMQ that given the customerID to retrieve the customer from the customer service
         //TODO CreateEVENT on RABBITMQ that given the merchantID to retrieve the merchant from the merchant service
