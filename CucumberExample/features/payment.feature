@@ -4,7 +4,7 @@ Feature: Payment
     And the customer is registered with the bank with an initial balance of 1000 kr
     And the customer is registered with Simple DTU Pay using their bank account
     And the customer generates 5 tokens
-    Given a merchant with name "Jan", last name "fucker", and CPR "Millioner11"
+    Given a merchant with name "Jan", last name "fucker", and CPR "Millioner11222"
     And the merchant is registered with the bank with an initial balance of 5 kr
     And the merchant is registered with Simple DTU Pay using their bank account
     And the customer retrieves a token
