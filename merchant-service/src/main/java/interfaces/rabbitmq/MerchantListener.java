@@ -18,7 +18,7 @@ public class MerchantListener {
 
 	private static final String EXCHANGE_NAME = "eventsExchange";
 	private static final String QUEUE_TYPE = "topic";
-	private static final String TOPIC = "merchants";
+	private static final String TOPIC = "events";
 
 	EventReceiver service;
 

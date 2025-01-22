@@ -18,7 +18,7 @@ public class MerchantListener {
     private final static Logger LOGGER = Logger.getLogger(MerchantListener.class.getName());
 	private static final String EXCHANGE_NAME = "eventsExchange";
 	private static final String QUEUE_TYPE = "topic";
-	private static final String TOPIC = "merchants";
+	private static final String TOPIC = "events";
 
     EventReceiver receiver;
 

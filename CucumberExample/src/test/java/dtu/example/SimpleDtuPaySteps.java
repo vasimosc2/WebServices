@@ -105,6 +105,7 @@ public class SimpleDtuPaySteps {
 
     @When("the merchant initiates a payment for {int} kr")
     public void theMerchantInitiatesAPaymentForKrGivenTheTokenInPosition(int money ) {
+        System.out.println("I am ready to initiate a payment");
         successful = dtupay.maketransfer(money, customerToken.getId(), merchantId);
 
     }

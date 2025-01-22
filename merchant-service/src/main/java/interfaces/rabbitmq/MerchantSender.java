@@ -17,7 +17,7 @@ public class MerchantSender implements EventSender {
 
 	private static final String EXCHANGE_NAME = "eventsExchange";
 	private static final String QUEUE_TYPE = "topic";
-	private static final String TOPIC = "merchants";
+	private static final String TOPIC = "events";
 
     @Override
     public void sendEvent(Event event) throws Exception {
