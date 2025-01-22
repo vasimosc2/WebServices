@@ -66,6 +66,8 @@ public class CustomerEventService implements EventReceiver {
                     System.out.println(String.format("I am at CustomerEventService: %s", customerId));
 
                     Customer Customer = service.getCustomerById(customerId);
+                    System.out.println("I found the customer and I will send SuccessfullGotCustomerForCustomerID .....");
+                    System.out.println(Customer.getFirstName());
                     Event eventOut = new Event("SuccessfullGotCustomerForCustomerID", new Object[]{Customer});
                     eventSender.sendEvent(eventOut);
                     
