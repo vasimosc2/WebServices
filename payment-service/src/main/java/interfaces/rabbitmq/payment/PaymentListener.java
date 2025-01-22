@@ -32,7 +32,7 @@ public class PaymentListener {
 
         LOGGER.info("CONNECTING TO RABBITMQ HOST: " );
 
-		factory.setHost("172.20.0.3");
+		factory.setHost("172.20.0.5");
         factory.setUsername("vasimosc");
         factory.setPassword("bncvcxff3");
 		

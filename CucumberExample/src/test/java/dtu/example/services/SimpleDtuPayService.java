@@ -83,24 +83,29 @@ public class SimpleDtuPayService {
     }
 
 
-    public Token requestTokenFromCustomer(String customerId) {
-        return target.path("customers/tokens")
-                .request()
-                .post(Entity.entity(customerId, MediaType.APPLICATION_JSON), Token.class);
-    }
-
-
-    public boolean generateTokens(String customerAccountId, int tokenAmount) {
+    public boolean generateTokens(String customerId, int tokenAmount) {
         TokenInt tokenInt = new TokenInt();
         tokenInt.setAmount(tokenAmount);
-        tokenInt.setCustomerId(customerAccountId);
+        tokenInt.setCustomerId(customerId);
         
-        Response response = target.path("customers/tokens")
+        System.out.println("I am ready to generate tokens");
+
+        // This fails the test it should be pointing into a different Rest
+        Response response = target.path("customers/tokens/request")
                                     .request()
                                     .post(Entity.entity(tokenInt, MediaType.APPLICATION_JSON_TYPE));
 
         return response.getStatus() == Response.Status.OK.getStatusCode();
     }
+
+    public Token requestTokenFromCustomer(String customerId) {
+        return target.path("customers/tokens/getToken")
+                .request()
+                .post(Entity.entity(customerId, MediaType.APPLICATION_JSON), Token.class);
+    }
+
+
+    
 
 
     public boolean maketransfer(int money, String tokenId, String merchantId) {

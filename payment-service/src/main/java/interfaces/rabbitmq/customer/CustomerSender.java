@@ -24,7 +24,7 @@ public class CustomerSender implements EventSender {
     public void sendEvent(Event event) throws Exception {
         ConnectionFactory factory = new ConnectionFactory();
        
-        factory.setHost("172.20.0.3");
+        factory.setHost("172.20.0.5");
         factory.setUsername("vasimosc");
         factory.setPassword("bncvcxff3");
 

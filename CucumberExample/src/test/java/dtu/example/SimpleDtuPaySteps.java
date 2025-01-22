@@ -74,7 +74,9 @@ public class SimpleDtuPaySteps {
         assertNotNull(customerToken.getId());
     }
 
-
+    /*
+     
+     
 
     @Given("a merchant with name {string}, last name {string}, and CPR {string}")
     public void createrMerchant(String firstname,String lastname, String cpr){
@@ -138,7 +140,7 @@ public class SimpleDtuPaySteps {
 
 
 
-
+    */
     
     
 

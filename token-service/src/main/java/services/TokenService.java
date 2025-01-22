@@ -23,13 +23,13 @@ public class TokenService implements ITokenService {
         tokenmap.clear();
     }
 
-    @Override
+    @Override// TODO here ensure that he can x+y <= 6
     public Response requestTokens(TokenInt tokenInt) throws TokenException {
         if (tokenInt.getAmount() < 1 || tokenInt.getAmount() > 5) {
             throw new TokenException("You can only request 1 to 5 tokens");
         }
 
-        List<Token> unusedTokens = getUnusedTokens(tokenInt.getCustomerId()); // It does not matter
+        List<Token> unusedTokens = getUnusedTokens(tokenInt.getCustomerId());
         if (unusedTokens.size() > 6) {
             throw new TokenException("You can only have a maximum of 6 tokens");
         }
@@ -37,15 +37,15 @@ public class TokenService implements ITokenService {
         List<Token> generatedTokens = new ArrayList<>();
 
         for(int i = 0; i < tokenInt.getAmount(); i++){
+            // Comment here you dont need to return the tokens, it is redundant 
             
             Token token = new Token(UUID.randomUUID().toString(), false);
-            System.out.println(tokenInt.getCustomerId());
             tokenmap.update(tokenInt.getCustomerId(),token);
             generatedTokens.add(token);
         }
 
         System.out.println(tokenmap.get(tokenInt.getCustomerId()));
-        return Response.ok(generatedTokens).build();
+        return Response.ok(generatedTokens).build(); 
     }
 
 
