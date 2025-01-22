@@ -1,6 +1,7 @@
 package infrastructure.repositories;
 
 
+import exceptions.TokenException;
 import models.Token;
 import infrastructure.repositories.interfaces.ITokens;
 
@@ -56,25 +57,37 @@ public class TokenMap implements ITokens {
     }
 
     @Override
-    public void invalidateToken(String customerId, Token token){
-        List<Token> tokens = tokenStore.get(customerId);
+    public void invalidateToken(String tokenId) throws TokenException {
 
-        if (tokens == null || tokens.isEmpty()) {
-            System.out.println("No tokens found for customer with ID: " + customerId);
-            return;
-        }
-
-        for (Token t : tokens) {
-            if (t.getId().equals(token.getId())) {
-                t.setUsed(true);
-                System.out.println("Token " + token.getId() + " marked as used for customer: " + customerId);
-                return;
+        for (Map.Entry<String, List<Token>> entry : tokenStore.entrySet()) {
+            List<Token> tokens = entry.getValue();
+            for (Token t : tokens) {
+                if (t.getId().equals(tokenId)) {
+                    t.setUsed(true);
+                    System.out.println("Token " + tokenId + " marked as used for customer: " + entry.getKey());
+                    update(entry.getKey(), t);
+                    return;
+                }
             }
+        }
+        System.out.println("Token with ID: " + tokenId + " not found");
+        throw new TokenException("Token with ID: " + tokenId + " not found");
     }
 
-    // If no matching token was found, print a message (or handle accordingly)
-    System.out.println("Token with ID " + token.getId() + " not found for customer: " + customerId);
+    @Override
+    public String getCustomerIdByTokenId(String tokenId) throws TokenException {
+        for (Map.Entry<String, List<Token>> entry : tokenStore.entrySet()) {
+            List<Token> tokens = entry.getValue();
+            for (Token t : tokens) {
+                if (t.getId().equals(tokenId)) {
+                    System.out.println("Token " + tokenId + " found for customer: " + entry.getKey());
+                    return entry.getKey();
+                }
+            }
+        }
+        throw new TokenException("Token with ID: " + tokenId + " not found");
     }
+
 
 
     @Override

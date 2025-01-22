@@ -84,6 +84,17 @@ public class TokenService implements ITokenService {
         return tokenToReturn;
     }
 
+    public String getCustomerIdByTokenIdForPayment(String tokenId) throws TokenException {
+        String customerId = tokenmap.getCustomerIdByTokenId(tokenId);
+        System.out.println("Token " + tokenId + " found for customer: " + customerId);
+        return customerId;
+    }
+
+    public void markTokenAsUsed(String tokenId) throws TokenException {
+        tokenmap.invalidateToken(tokenId);
+    }
+
+
 
 
 }
