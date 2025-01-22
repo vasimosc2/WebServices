@@ -18,7 +18,7 @@ public class TokenListener {
     private final static Logger LOGGER = Logger.getLogger(TokenListener.class.getName());
 	private static final String EXCHANGE_NAME = "eventsExchange";
 	private static final String QUEUE_TYPE = "topic";
-	private static final String TOPIC = "Tokens";
+	private static final String TOPIC = "events";
 
     EventReceiver receiver;
 

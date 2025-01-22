@@ -54,8 +54,9 @@ public class TokenEventService implements EventReceiver {
                 try {
                     System.out.println("Hello from RequestGetToken");
                     String customerId = gson.fromJson(gson.toJson(eventIn.getArguments()[0]), String.class);
-                    System.out.println(customerId);
+                    
                     Token Token = service.getFirstToken(customerId);
+                    System.out.println(Token.getId());
                     Event eventOut = new Event("GetTokenSuccessfull", new Object[]{Token});
                     eventSender.sendEvent(eventOut);
                 } catch (Exception e) {
@@ -63,6 +64,7 @@ public class TokenEventService implements EventReceiver {
                     eventSender.sendEvent(eventOut);
                 }
                 break;
+                
             case "GetCustomerIdFromTokenId":
                 try {
                     System.out.println("Hello form GetCustomerIdFromTokenId");
