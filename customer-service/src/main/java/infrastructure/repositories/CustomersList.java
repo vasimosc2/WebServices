@@ -53,14 +53,6 @@ public class CustomersList implements ICustomers {
     }
 
     @Override
-    public Customer getByCustomerId(String customerId) {
-        return customers.stream()
-                .filter(a -> a.getId().equals(customerId))
-                .findAny()
-                .orElse(null);
-    }
-
-    @Override
     public void remove(String customerId) throws AccountNotFoundException {
         Customer customer = getById(customerId);
         if (customer != null) {

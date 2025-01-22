@@ -11,7 +11,6 @@ public interface ITokens extends IRepository<Map<String, List<Token>>> {
     List<Token> get(String customerId);
     void update(String customerId, Token token);
     void invalidateToken(String tokenId) throws TokenException;
-
     String getCustomerIdByTokenId(String tokenId) throws TokenException;
 
 }
