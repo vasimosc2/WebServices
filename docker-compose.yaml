@@ -1,0 +1,79 @@
+version: '3'
+services:
+  demo:
+    build: ./SimpleDtuPay
+    image: demo
+    container_name: demo
+    ports:
+      - "8081:8081" # Map container's 8080 to host's 8081
+    depends_on:
+      - rabbitmq
+
+  customer:
+    build: ./customer-service
+    image: customer
+    container_name: customer
+    ports:
+      - "8082:8082" # Map container's 8080 to host's 8082
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    environment:
+      - RABBITMQ_HOST=rabbitmq
+
+
+  merchant:
+    build: ./merchant-service
+    image: merchant
+    container_name: merchant
+    ports:
+      - "8083:8083" # Map container's 8080 to host's 8083
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    environment:
+      - RABBITMQ_HOST=rabbitmq
+
+
+  token:
+    build: ./token-service
+    image: token
+    container_name: token
+    ports:
+      - "8084:8084" # Map container's 8080 to host's 8084
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    environment:
+      - RABBITMQ_HOST=rabbitmq
+
+  # payment:
+  #   build: ./payment-service
+  #   image: token
+  #   container_name: token
+  #   ports:
+  #     - "8085:8085" # Map container's 8080 to host's 8084
+  #   depends_on:
+  #     rabbitmq:
+  #       condition: service_healthy
+  #   environment:
+  #     - RABBITMQ_HOST=rabbitmq
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"  # RabbitMQ message broker port
+      - "15672:15672"  # RabbitMQ management interface
+    healthcheck:
+      test: ["CMD", "rabbitmqctl", "status"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # rabbitmq:
+  #   image: rabbitmq:3-management
+  #   container_name: rabbitmq
+  #   ports:
+  #     - "5672:5672" # RabbitMQ message broker port
+  #     - "15672:15672" # RabbitMQ management interface

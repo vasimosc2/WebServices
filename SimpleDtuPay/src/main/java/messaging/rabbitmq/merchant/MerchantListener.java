@@ -30,9 +30,9 @@ public class MerchantListener {
         ConnectionFactory factory = new ConnectionFactory();
         
         
-        factory.setHost("172.20.0.5");
-        factory.setUsername("vasimosc");
-        factory.setPassword("bncvcxff3");
+        factory.setHost("rabbitmq");
+        factory.setUsername("guest");
+        factory.setPassword("guest");
 
 
         Connection connection = factory.newConnection();
