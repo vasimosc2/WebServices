@@ -74,7 +74,16 @@ public class SimpleDtuPaySteps {
         assertNotNull(customerToken.getId());
     }
 
-    /*
+    @After
+    public void cleanupBankAccounts() throws BankServiceException_Exception {
+        if (customer != null && customer.getBankAccount() != null) {
+            bankService.retireAccount(customer.getBankAccount());
+        }
+        if (merchant != null && merchant.getBankAccount() != null) {
+            bankService.retireAccount(merchant.getBankAccount());
+        }
+    }
+    
      
      
 
@@ -99,12 +108,14 @@ public class SimpleDtuPaySteps {
 
     @And("the merchant is registered with Simple DTU Pay using their bank account")
     public void theMerchantIsRegisteredWithSimpleDTUPayUsingTheirBankAccount() {
-        assertNotNull(merchant.getCprNumber()); //maybe not needed
-        assertNotNull(merchant.getBankAccount()); //maybe not needed
+        assertNotNull(merchant.getCprNumber()); 
+        assertNotNull(merchant.getBankAccount());
         merchantId = dtupay.register(merchant);
         System.out.println("SANTI merchant id: " + merchantId);
     }
 
+
+    /* 
 
     @When("the merchant initiates a payment for {int} kr given the token in position {int}")
     public void theMerchantInitiatesAPaymentForKrGivenTheTokenInPosition(int money, int tokenPosition) {
@@ -137,7 +148,7 @@ public class SimpleDtuPaySteps {
         }
     }
 
-
+    
 
 
     */
