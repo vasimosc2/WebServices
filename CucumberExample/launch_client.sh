@@ -5,6 +5,4 @@ set -e  # Exit immediately if a command exits with a non-zero status
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$SCRIPT_DIR"
 
-mvn clean install
-mvn package
-
+mvn test
