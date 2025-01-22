@@ -49,8 +49,8 @@ services:
 
   payment:
     build: ./payment-service
-    image: token
-    container_name: token
+    image: payment
+    container_name: payment
     ports:
       - "8085:8085" # Map container's 8080 to host's 8084
     depends_on:
