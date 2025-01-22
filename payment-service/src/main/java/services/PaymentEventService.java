@@ -18,6 +18,8 @@ import java.util.logging.Logger;
 
 import jakarta.ws.rs.core.Response;
 
+import static utils.EventTypes.*;
+
 public class PaymentEventService implements EventReceiver {
 
     private final static Logger LOGGER = Logger.getLogger(PaymentEventService.class.getName());
@@ -40,7 +42,7 @@ public class PaymentEventService implements EventReceiver {
     @Override
     public void receiveEvent(Event eventIn) throws Exception {
         switch (eventIn.getEventType()) {
-            case "RequestPayment":
+            case PAYMENT_REQUEST:
                 try {
                     System.out.println("Hello from RequestPayment");
                     BankPay bankPay = gson.fromJson(gson.toJson(eventIn.getArguments()[0]), BankPay.class);
@@ -52,7 +54,7 @@ public class PaymentEventService implements EventReceiver {
                     Future_customer = new CompletableFuture<>();
 
                     // Step 2: Send event to retrieve Customer
-                    Event eventOut1 = new Event("GetCustomerIdFromTokenId", new Object[]{bankPay});
+                    Event eventOut1 = new Event(GET_CUSTOMER_ID_BY_TOKEN_ID_REQUEST, new Object[]{bankPay.getTokenId()});
                     System.out.println("Sending to the Token Service .....");
                     eventSender.sendEvent(eventOut1);
 
@@ -63,7 +65,7 @@ public class PaymentEventService implements EventReceiver {
 
                             // Step 4: Send event to retrieve Merchant
                             Future_merchant = new CompletableFuture<>();
-                            Event eventOut2 = new Event("GetMerchantByMerchantId", new Object[]{bankPay.getMerchantId()});
+                            Event eventOut2 = new Event(GET_MERCHANT_BY_MERCHANT_ID_REQUEST, new Object[]{bankPay.getMerchantId()});
                             System.out.println("Sending to the Merchant Service ....");
                             eventSender.sendEvent(eventOut2);
 
@@ -72,8 +74,10 @@ public class PaymentEventService implements EventReceiver {
                                 try {
                                     System.out.println("I got the merchant: " + merchant.getFirstName());
 
+                                    service.requestPayment(customer, merchant, bankPay.getMoney(), bankPay.getTokenId());
+
                                     // Step 6: Send success event
-                                    Event eventOut3 = new Event("PaymentSuccessful", new Object[]{});
+                                    Event eventOut3 = new Event(PAYMENT_REQUEST_SUCCESS, new Object[]{bankPay.getTokenId()});
                                     System.out.println("I am sending a PaymentSuccessful ....");
                                     eventSender.sendEvent(eventOut3);
                                 } catch (Exception e) {
@@ -88,14 +92,14 @@ public class PaymentEventService implements EventReceiver {
                     System.err.println("Error during RequestPayment: " + e.getMessage());
                 }
                 break;
-            case "SuccessfullGotCustomerForCustomerID":
+            case GET_CUSTOMER_BY_CUSTOMER_ID_REQUEST_SUCCESS:
                 System.out.println("Hello from the SuccessfullGotCustomerForCustomerId");
                 Customer customer = gson.fromJson(gson.toJson(eventIn.getArguments()[0]), Customer.class);
                 System.out.println("I am at the Paymentservice and the Customer I found is :");
                 System.out.println(customer.getFirstName());
                 Future_customer.complete(customer);
                 break;
-            case "SuccessfullGetMerchantByMerchantId":
+            case GET_MERCHANT_BY_MERCHANT_ID_REQUEST_SUCCESS:
                 System.out.println("Hello from the SuccessfullGetMerchantByMerchantId");
                 Merchant merchant = gson.fromJson(gson.toJson(eventIn.getArguments()[0]), Merchant.class);
                 Future_merchant.complete(merchant);
@@ -106,14 +110,14 @@ public class PaymentEventService implements EventReceiver {
         }
     }
 
-    public Customer sendRequestCustomerByTokenIdEvent(String tokenId) throws Exception{
-        String eventType = "RequestCustomerByTokenEvent";
-        Object[] arguments = new Object[]{tokenId};
-        Event event = new Event(eventType, arguments);
-        CompletableFuture<Customer> requestCustomerByTokenIdResult = new CompletableFuture<>();
-        eventSender.sendEvent(event);
-
-        return requestCustomerByTokenIdResult.join();
-    }
+//    public Customer sendRequestCustomerByTokenIdEvent(String tokenId) throws Exception{
+//        String eventType = "RequestCustomerByTokenEvent";
+//        Object[] arguments = new Object[]{tokenId};
+//        Event event = new Event(eventType, arguments);
+//        CompletableFuture<Customer> requestCustomerByTokenIdResult = new CompletableFuture<>();
+//        eventSender.sendEvent(event);
+//
+//        return requestCustomerByTokenIdResult.join();
+//    }
 
 }

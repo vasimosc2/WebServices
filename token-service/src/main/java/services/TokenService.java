@@ -9,6 +9,7 @@ import services.interfaces.ITokenService;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 
@@ -90,6 +91,12 @@ public class TokenService implements ITokenService {
         return customerId;
     }
 
+    @Override
+    public boolean isTokenValid(String tokenId) throws TokenException {
+        return tokenmap.checkTokenIsValid(tokenId);
+    }
+
+    @Override
     public void markTokenAsUsed(String tokenId) throws TokenException {
         tokenmap.invalidateToken(tokenId);
     }

@@ -61,7 +61,7 @@ public class CustomerEventService implements EventReceiver {
                 }
                 break;
             
-            case "SuccessfullGotTheCustomerID":
+            case GET_CUSTOMER_BY_CUSTOMER_ID_REQUEST:
                 try {
                     System.out.println("Hello from SuccessfullgotTheCustomerID");
                     String customerId = gson.fromJson(gson.toJson(eventIn.getArguments()[0]), String.class);
@@ -70,11 +70,11 @@ public class CustomerEventService implements EventReceiver {
                     Customer Customer = service.getCustomerById(customerId);
                     System.out.println("I found the customer and I will send SuccessfullGotCustomerForCustomerID .....");
                     System.out.println(Customer.getFirstName());
-                    Event eventOut = new Event("SuccessfullGotCustomerForCustomerID", new Object[]{Customer});
+                    Event eventOut = new Event(GET_CUSTOMER_BY_CUSTOMER_ID_REQUEST_SUCCESS, new Object[]{Customer});
                     eventSender.sendEvent(eventOut);
 
                 } catch (Exception e) {
-                    Event eventOut = new Event("GetCustomerFailed", new Object[]{e.getMessage()});
+                    Event eventOut = new Event(GET_CUSTOMER_BY_CUSTOMER_ID_REQUEST_FAILED, new Object[]{e.getMessage()});
                     eventSender.sendEvent(eventOut);
                 }
                 break;

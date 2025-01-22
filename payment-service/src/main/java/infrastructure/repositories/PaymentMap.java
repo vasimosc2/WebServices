@@ -1,9 +1,11 @@
 package infrastructure.repositories;
 
 
-import models.Payment;
-import models.Token;
+import models.PaymentCustomer;
 import infrastructure.repositories.interfaces.IPayments;
+import models.PaymentManager;
+import models.PaymentMerchant;
+import models.Token;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,11 +18,15 @@ public class PaymentMap implements IPayments {
    private static PaymentMap instance = null;
 
     // Internal map to store tokens
-    private final Map<String, Payment> paymentStore;
+    private final Map<String, List<PaymentCustomer>> paymentStoreCustomer;
+    private final Map<String, List<PaymentMerchant>> paymentStoreMerchant;
+    private final List<PaymentManager> paymentStoreManager;
 
     // Private constructor for singleton pattern
     private PaymentMap() {
-        paymentStore = new HashMap<>();
+        paymentStoreCustomer = new HashMap<>();
+        paymentStoreMerchant = new HashMap<>();
+        paymentStoreManager = new ArrayList<>();
     }
 
     // Public method to get the singleton instance
@@ -38,19 +44,53 @@ public class PaymentMap implements IPayments {
 
     @Override
     public void clear() {
-        paymentStore.clear();
+        paymentStoreCustomer.clear();
+        paymentStoreMerchant.clear();
+        paymentStoreManager.clear();
+    }
+
+    @Override
+    public void updateCustomerStore(String customerId, PaymentCustomer paymentCustomer) {
+        // If the customerId exists, add the token to the list; otherwise, create a new list
+        paymentStoreCustomer.merge(customerId, new ArrayList<>(List.of(paymentCustomer)), (existingPayments, newPayments) -> {
+            existingPayments.addAll(newPayments);
+            return existingPayments;
+        });
+    }
+
+    @Override
+    public void updateMerchantStore(String merchantId, PaymentMerchant paymentMerchant) {
+        // If the merchantId exists, add the token to the list; otherwise, create a new list
+        paymentStoreMerchant.merge(merchantId, new ArrayList<>(List.of(paymentMerchant)), (existingPayments, newPayments) -> {
+            existingPayments.addAll(newPayments);
+            return existingPayments;
+        });
+    }
+
+    @Override
+    public void addPaymentManager(PaymentManager paymentManager) {
+        paymentStoreManager.add(paymentManager);
+    }
+
+    @Override
+    public List<PaymentCustomer> getPaymentsCustomer(String customerId){
+        return paymentStoreCustomer.getOrDefault(customerId, new ArrayList<PaymentCustomer>());
+    }
+
+    @Override
+    public List<PaymentMerchant> getPaymentsMerchant(String customerId){
+        return paymentStoreMerchant.getOrDefault(customerId, new ArrayList<PaymentMerchant>());
+    }
+
+    @Override
+    public List<PaymentManager> getAllPayments(){
+        return paymentStoreManager;
     }
 
 
-    @Override
-    public  Payment get(String paymentId){
-        return paymentStore.getOrDefault(paymentId, new Payment());
-    }
-
-
 
     @Override
-    public void add(Map<String, Payment> obj) {
+    public void add(Map<String, PaymentCustomer> obj) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'add'");
     }

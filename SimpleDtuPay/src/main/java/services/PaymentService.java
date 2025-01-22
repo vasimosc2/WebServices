@@ -5,10 +5,11 @@ import messaging.Event;
 import messaging.EventReceiver;
 import messaging.EventSender;
 import models.BankPay;
-import models.Token;
-import models.TokenInt;
+import models.Customer;
 
 import java.util.concurrent.CompletableFuture;
+
+import static utils.EventTypes.*;
 
 public class PaymentService implements EventReceiver {
 
@@ -25,13 +26,19 @@ public class PaymentService implements EventReceiver {
     }
 
     @Override
-    public void receiveEvent(Event eventIn) {
+    public void receiveEvent(Event eventIn) throws Exception {
         switch (eventIn.getEventType()) {
-            case "PaymentSuccessful":
+            case PAYMENT_REQUEST_SUCCESS:
                 System.out.println("I got PaymentSuccessful");
+                String tokenId = gson.fromJson(gson.toJson(eventIn.getArguments()[0]), String.class);
+
+                Event eventOut = new Event(SET_TOKEN_AS_USED_REQUEST, new Object[]{tokenId});
+                System.out.println("Sending to the Token Service .....");
+                eventSender.sendEvent(eventOut);
+
                 requestPaymentResult.complete(true);
                 break;
-            case "RequestPaymentFailed":
+            case PAYMENT_REQUEST_FAILED:
                 requestPaymentResult.complete(false);
                 break;
             default:
@@ -42,7 +49,7 @@ public class PaymentService implements EventReceiver {
 
 
     public boolean sendPaymentEvent(BankPay bankpay) throws Exception{
-        String eventType = "RequestPayment";
+        String eventType = PAYMENT_REQUEST;
         Object[] arguments = new Object[]{bankpay};
         Event event = new Event(eventType, arguments);
         requestPaymentResult = new CompletableFuture<>();

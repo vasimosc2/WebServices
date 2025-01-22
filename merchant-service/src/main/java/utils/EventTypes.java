@@ -35,5 +35,9 @@ public class EventTypes {
     public static final String RETIRE_MERCHANT_REQUEST_SUCCESS = "RetireMerchantRequestSuccess";
     public static final String RETIRE_MERCHANT_REQUEST_FAILED = "RetireMerchantRequestFailed";
 
+    public static final String GET_MERCHANT_BY_MERCHANT_ID_REQUEST = "GetMerchantByMerchantIdRequest";
+    public static final String GET_MERCHANT_BY_MERCHANT_ID_REQUEST_SUCCESS = "GetMerchantByMerchantIdRequestSuccess";
+    public static final String GET_MERCHANT_BY_MERCHANT_ID_REQUEST_FAILED = "GetMerchantByMerchantIdRequestFailed";
+
 
 }

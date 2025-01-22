@@ -35,5 +35,24 @@ public class EventTypes {
     public static final String RETIRE_MERCHANT_REQUEST_SUCCESS = "RetireMerchantRequestSuccess";
     public static final String RETIRE_MERCHANT_REQUEST_FAILED = "RetireMerchantRequestFailed";
 
+    public static final String GET_MERCHANT_BY_MERCHANT_ID_REQUEST = "GetMerchantByMerchantIdRequest";
+    public static final String GET_MERCHANT_BY_MERCHANT_ID_REQUEST_SUCCESS = "GetMerchantByMerchantIdRequestSuccess";
+    public static final String GET_MERCHANT_BY_MERCHANT_ID_REQUEST_FAILED = "GetMerchantByMerchantIdRequestFailed";
 
+    public static final String GET_CUSTOMER_BY_CUSTOMER_ID_REQUEST = "GetCustomerByCustomerIdRequest";
+    public static final String GET_CUSTOMER_BY_CUSTOMER_ID_REQUEST_SUCCESS = "GetCustomerByCustomerIdRequestSuccess";
+    public static final String GET_CUSTOMER_BY_CUSTOMER_ID_REQUEST_FAILED = "GetCustomerByCustomerIdRequestFailed";
+
+    public static final String GET_CUSTOMER_ID_BY_TOKEN_ID_REQUEST = "GetCustomerIdByTokenIdRequest";
+    public static final String GET_CUSTOMER_ID_BY_TOKEN_ID_REQUEST_SUCCESS = "GetCustomerIdByTokenIdRequestSuccess";
+    public static final String GET_CUSTOMER_ID_BY_TOKEN_ID_REQUEST_FAILED = "GetCustomerIdByTokenIdRequestFailed";
+
+
+    public static final String PAYMENT_REQUEST = "PaymentRequest";
+    public static final String PAYMENT_REQUEST_SUCCESS = "PaymentRequestSuccess";
+    public static final String PAYMENT_REQUEST_FAILED = "PaymentRequestFailed";
+
+    public static final String SET_TOKEN_AS_USED_REQUEST = "SetTokenAsUsedRequest";
+    public static final String SET_TOKEN_AS_USED_REQUEST_SUCCESS = "SetTokenAsUsedRequestSuccess";
+    public static final String SET_TOKEN_AS_USED_REQUEST_FAILED = "SetTokenAsUsedRequestFailed";
 }
