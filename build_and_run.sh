@@ -6,6 +6,7 @@ echo "Current directory: $(pwd)"
 ./SimpleDtuPay/launch_service.sh
 ./customer-service/launch_service.sh
 ./merchant-service/launch_service.sh
+# ./payment-service/launch_service.sh
 ./token-service/launch_service.sh
 
 
