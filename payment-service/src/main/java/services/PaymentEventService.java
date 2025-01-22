@@ -25,8 +25,8 @@ public class PaymentEventService implements EventReceiver {
     
     private final IPaymentService service;
 
-    private CompletableFuture<Customer> Future_customer;
-    private CompletableFuture<Merchant> Future_merchant;
+    private CompletableFuture<Customer> Future_customer  = new CompletableFuture<>();
+    private CompletableFuture<Merchant> Future_merchant =  new CompletableFuture<>();
 
 
     private final Gson gson = new Gson();
@@ -81,7 +81,10 @@ public class PaymentEventService implements EventReceiver {
             case "SuccessfullGotCustomerForCustomerID":
                 System.out.println("Hello from the SuccessfullGotCustomerForCustomerId");
                 Customer customer = gson.fromJson(gson.toJson(eventIn.getArguments()[0]), Customer.class);
+                System.out.println("I am at the Paymentservice and the Customer I found is :");
+                System.out.println(customer.getFirstName());
                 Future_customer.complete(customer);
+
             case "SuccessfullGetMerchantByMerchantId":
                 System.out.println("Hello from the SuccessfullGetMerchantByMerchantId");
                 Merchant merchant = gson.fromJson(gson.toJson(eventIn.getArguments()[0]), Merchant.class);
