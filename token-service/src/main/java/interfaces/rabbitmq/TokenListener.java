@@ -18,7 +18,7 @@ public class TokenListener {
 
 	private static final String EXCHANGE_NAME = "eventsExchange";
 	private static final String QUEUE_TYPE = "topic";
-	private static final String TOPIC = "Tokens";
+	private static final String TOPIC = "events";
 
 	EventReceiver service;
 

@@ -73,20 +73,8 @@ public class SimpleDtuPaySteps {
         System.out.println(customerToken.getId());
         assertNotNull(customerToken.getId());
     }
-
-    @After
-    public void cleanupBankAccounts() throws BankServiceException_Exception {
-        if (customer != null && customer.getBankAccount() != null) {
-            bankService.retireAccount(customer.getBankAccount());
-        }
-        if (merchant != null && merchant.getBankAccount() != null) {
-            bankService.retireAccount(merchant.getBankAccount());
-        }
-    }
-    
      
      
-
     @Given("a merchant with name {string}, last name {string}, and CPR {string}")
     public void createrMerchant(String firstname,String lastname, String cpr){
         merchant = new Merchant();
@@ -115,10 +103,9 @@ public class SimpleDtuPaySteps {
     }
 
 
-    /* 
-
-    @When("the merchant initiates a payment for {int} kr given the token in position {int}")
-    public void theMerchantInitiatesAPaymentForKrGivenTheTokenInPosition(int money, int tokenPosition) {
+    @When("the merchant initiates a payment for {int} kr")
+    public void theMerchantInitiatesAPaymentForKrGivenTheTokenInPosition(int money ) {
+        System.out.println("I am ready to initiate a payment");
         successful = dtupay.maketransfer(money, customerToken.getId(), merchantId);
 
     }
@@ -127,6 +114,8 @@ public class SimpleDtuPaySteps {
     public void sucess(){
         assertTrue(successful);
     }
+
+    /* 
 
     @And("the balance of the customer at the bank is {int} kr")
     public void customerBalance(int money) throws BankServiceException_Exception{
@@ -138,6 +127,8 @@ public class SimpleDtuPaySteps {
         assertEquals(bankService.getAccount(merchant.getBankAccount()).getBalance(), BigDecimal.valueOf(money));
     }
 
+    */
+
     @After
     public void cleanupBankAccounts() throws BankServiceException_Exception {
         if (customer != null && customer.getBankAccount() != null) {
@@ -148,10 +139,6 @@ public class SimpleDtuPaySteps {
         }
     }
 
-    
-
-
-    */
     
     
 

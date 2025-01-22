@@ -2,6 +2,7 @@ package services;
 
 import com.google.gson.Gson;
 
+import models.CustInt;
 import models.Customer;
 import messaging.Event;
 import messaging.EventReceiver;
@@ -41,7 +42,7 @@ public class CustomerEventService implements EventReceiver {
 
                     eventSender.sendEvent(eventOut);
                 } catch (Exception e) {
-                    Event eventOut = new Event(REGISTER_CUSTOMER_REQUEST_FAILED, new Object[]{e.getMessage()});
+                    Event eventOut = new Event("RegisterCustomerFailed", new Object[]{e.getMessage()});
                     eventSender.sendEvent(eventOut);
                 }
                 break;
@@ -60,6 +61,24 @@ public class CustomerEventService implements EventReceiver {
                 }
                 break;
             
+            case "SuccessfullGotTheCustomerID":
+                try {
+                    System.out.println("Hello from SuccessfullgotTheCustomerID");
+                    String customerId = gson.fromJson(gson.toJson(eventIn.getArguments()[0]), String.class);
+                    System.out.println(String.format("I am at CustomerEventService: %s", customerId));
+
+                    Customer Customer = service.getCustomerById(customerId);
+                    System.out.println("I found the customer and I will send SuccessfullGotCustomerForCustomerID .....");
+                    System.out.println(Customer.getFirstName());
+                    Event eventOut = new Event("SuccessfullGotCustomerForCustomerID", new Object[]{Customer});
+                    eventSender.sendEvent(eventOut);
+
+                } catch (Exception e) {
+                    Event eventOut = new Event("GetCustomerFailed", new Object[]{e.getMessage()});
+                    eventSender.sendEvent(eventOut);
+                }
+                break;
+
             case RETIRE_CUSTOMER_REQUEST:
                 try {
                     System.out.println("Hello from RetireCustomer");

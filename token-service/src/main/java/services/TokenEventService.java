@@ -6,6 +6,7 @@ import messaging.Event;
 import messaging.EventReceiver;
 import messaging.EventSender;
 import models.TokenInt;
+import models.BankPay;
 import models.Token;
 import services.interfaces.ITokenService;
 
@@ -61,6 +62,20 @@ public class TokenEventService implements EventReceiver {
                     eventSender.sendEvent(eventOut);
                 } catch (Exception e) {
                     Event eventOut = new Event(GET_FIRST_TOKEN_REQUEST_FAILED, new Object[]{e.getMessage()});
+                    eventSender.sendEvent(eventOut);
+                }
+                break;
+
+            case "GetCustomerIdFromTokenId":
+                try {
+                    System.out.println("Hello form GetCustomerIdFromTokenId");
+                    BankPay BankPay = gson.fromJson(gson.toJson(eventIn.getArguments()[0]), BankPay.class);
+                    String customerId = service.getCustomerIdByTokenIdForPayment(BankPay.getTokenId());
+                    Event eventOut = new Event("SuccessfullGotTheCustomerID", new Object[]{customerId});
+                    System.out.println("I am contacting Customer Service ...");
+                    eventSender.sendEvent(eventOut);
+                } catch (Exception e) {
+                    Event eventOut = new Event("FailureGotTheCustomerID", new Object[]{e.getMessage()});
                     eventSender.sendEvent(eventOut);
                 }
                 break;

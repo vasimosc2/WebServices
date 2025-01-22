@@ -15,5 +15,5 @@ public interface ITokenService {
     void clear();
     Response requestTokens(TokenInt tokenInt) throws TokenException;
     Token getFirstToken(String id) throws TokenException ;
-
+    String getCustomerIdByTokenIdForPayment(String tokenId) throws TokenException;
 }
