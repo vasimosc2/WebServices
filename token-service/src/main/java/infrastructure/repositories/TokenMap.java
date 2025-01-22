@@ -63,9 +63,9 @@ public class TokenMap implements ITokens {
             List<Token> tokens = entry.getValue();
             for (Token t : tokens) {
                 if (t.getId().equals(tokenId)) {
+                    System.out.println("Token " + tokenId + " has following usedValue: " + tokenStore.get(entry.getKey()));
                     t.setUsed(true);
-                    System.out.println("Token " + tokenId + " marked as used for customer: " + entry.getKey());
-                    update(entry.getKey(), t);
+                    System.out.println("Token " + tokenId + " marked as used USEDVALUE: " + tokenStore.get(entry.getKey()) + " for customer: " + entry.getKey());
                     return;
                 }
             }
@@ -86,6 +86,10 @@ public class TokenMap implements ITokens {
             }
         }
         throw new TokenException("Token with ID: " + tokenId + " not found");
+    }
+
+    public void updateTokenInTokenStore(String tokenId) {
+
     }
 
 
