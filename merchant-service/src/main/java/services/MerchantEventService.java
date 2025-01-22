@@ -4,12 +4,13 @@ import com.google.gson.Gson;
 import messaging.Event;
 import messaging.EventReceiver;
 import messaging.EventSender;
-import models.MerchInt;
 import models.Merchant;
 import services.interfaces.IMerchantService;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import static utils.EventTypes.*;
 
 public class MerchantEventService implements EventReceiver {
 
@@ -28,46 +29,46 @@ public class MerchantEventService implements EventReceiver {
     @Override
     public void receiveEvent(Event eventIn) throws Exception {
         switch (eventIn.getEventType()) {
-            case "RegisterMerchant":
+            case REGISTER_MERCHANT_REQUEST:
                 try {
                     System.out.println("Hello from RegisterMerchant");
                     Merchant merchant = gson.fromJson(gson.toJson(eventIn.getArguments()[0]), Merchant.class);
                     System.out.println(merchant.getFirstName());
                     String merchantId = service.register(merchant);
                     System.out.println(merchantId);
-                    Event eventOut = new Event("RegisterMerchantSuccessful", new Object[]{merchantId});
+                    Event eventOut = new Event(REGISTER_MERCHANT_REQUEST_SUCCESS, new Object[]{merchantId});
 
                     eventSender.sendEvent(eventOut);
                 } catch (Exception e) {
-                    Event eventOut = new Event("RegisterMerchantFailed", new Object[]{e.getMessage()});
+                    Event eventOut = new Event(REGISTER_MERCHANT_REQUEST_FAILED, new Object[]{e.getMessage()});
                     eventSender.sendEvent(eventOut);
                 }
                 break;
-            case "GetMerchant":
+            case GET_MERCHANT_REQUEST:
                 try {
                     System.out.println("Hello from GetMerchant");
-                    String cprNumber = gson.fromJson(gson.toJson(eventIn.getArguments()[0]), String.class);
-                    System.out.println(String.format("I am at MerchnatEventService: %s", cprNumber));
+                    String merchantId = gson.fromJson(gson.toJson(eventIn.getArguments()[0]), String.class);
+                    System.out.println(String.format("I am at MerchnatEventService: %s", merchantId));
 
-                    Merchant Merchant = service.get(cprNumber);
-                    Event eventOut = new Event("GetMerchantSuccessfull", new Object[]{Merchant});
+                    Merchant Merchant = service.getAccount(merchantId);
+                    Event eventOut = new Event(GET_MERCHANT_REQUEST_SUCCESS, new Object[]{Merchant});
                     eventSender.sendEvent(eventOut);
                 } catch (Exception e) {
-                    Event eventOut = new Event("GetMerchantFailed", new Object[]{e.getMessage()});
+                    Event eventOut = new Event(GET_MERCHANT_REQUEST_FAILED, new Object[]{e.getMessage()});
                     eventSender.sendEvent(eventOut);
                 }
                 break;
             
-            case "Retiremerchant":
+            case RETIRE_MERCHANT_REQUEST:
                 try {
                     System.out.println("Hello from Retiremerchant");
-                    String cpr = (String) eventIn.getArguments()[0];
-                    service.retireAccountByCpr(cpr);
+                    String merchantId = (String) eventIn.getArguments()[0];
+                    service.retireAccount(merchantId);
 
-                    Event eventOut = new Event("RetiremerchantByCprSuccessful", new Object[]{cpr});
+                    Event eventOut = new Event(RETIRE_MERCHANT_REQUEST_SUCCESS, new Object[]{merchantId});
                     eventSender.sendEvent(eventOut);
                 } catch (Exception e) {
-                    Event eventOut = new Event("RetiremerchantByCprFailed", new Object[]{e.getMessage()});
+                    Event eventOut = new Event(RETIRE_MERCHANT_REQUEST_FAILED, new Object[]{e.getMessage()});
                     eventSender.sendEvent(eventOut);
                 }
                 break;

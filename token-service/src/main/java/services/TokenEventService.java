@@ -14,6 +14,8 @@ import java.util.logging.Logger;
 
 import jakarta.ws.rs.core.Response;
 
+import static utils.EventTypes.*;
+
 public class TokenEventService implements EventReceiver {
 
     private final static Logger LOGGER = Logger.getLogger(TokenEventService.class.getName());
@@ -31,7 +33,7 @@ public class TokenEventService implements EventReceiver {
     @Override
     public void receiveEvent(Event eventIn) throws Exception {
         switch (eventIn.getEventType()) {
-            case "RequestTokens":
+            case TOKENS_REQUEST:
                 try {
                     System.out.println("Hello from RequestTokens");
                     TokenInt tokenInt = gson.fromJson(gson.toJson(eventIn.getArguments()[0]), TokenInt.class);
@@ -40,25 +42,25 @@ public class TokenEventService implements EventReceiver {
 
                     Response response = service.requestTokens(tokenInt);
 
-                    Event eventOut = new Event("RequestTokensSuccessfull", new Object[]{response.getStatus()});
+                    Event eventOut = new Event(TOKENS_REQUEST_SUCCESS, new Object[]{response.getStatus()});
                     System.out.println("Ready to send back");
                     eventSender.sendEvent(eventOut);
                     
                 } catch (Exception e) {
-                    Event eventOut = new Event("RequestTokensFailed", new Object[]{e.getMessage()});
+                    Event eventOut = new Event(TOKENS_REQUEST_FAILED, new Object[]{e.getMessage()});
                     eventSender.sendEvent(eventOut);
                 }
                 break;
-            case "RequestGetToken":
+            case GET_FIRST_TOKEN_REQUEST:
                 try {
                     System.out.println("Hello from RequestGetToken");
                     String customerId = gson.fromJson(gson.toJson(eventIn.getArguments()[0]), String.class);
                     System.out.println(customerId);
                     Token Token = service.getFirstToken(customerId);
-                    Event eventOut = new Event("GetTokenSuccessfull", new Object[]{Token});
+                    Event eventOut = new Event(GET_FIRST_TOKEN_REQUEST_SUCCESS, new Object[]{Token});
                     eventSender.sendEvent(eventOut);
                 } catch (Exception e) {
-                    Event eventOut = new Event("GetTokenFailed", new Object[]{e.getMessage()});
+                    Event eventOut = new Event(GET_FIRST_TOKEN_REQUEST_FAILED, new Object[]{e.getMessage()});
                     eventSender.sendEvent(eventOut);
                 }
                 break;

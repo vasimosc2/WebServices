@@ -10,6 +10,8 @@ import messaging.EventReceiver;
 import messaging.EventSender;
 import models.Merchant;
 
+import static utils.EventTypes.*;
+
 public class MerchantService implements EventReceiver  {
     private List<String> merchantIds = new ArrayList<>();
 
@@ -32,27 +34,27 @@ public class MerchantService implements EventReceiver  {
 
     public void receiveEvent(Event eventIn) {
         switch (eventIn.getEventType()) {
-            case "RegisterMerchantSuccessful":
+            case REGISTER_MERCHANT_REQUEST_SUCCESS:
                 System.out.println("I got a RegisterMerchantSuccessful");
                 String merchantId = (String) eventIn.getArguments()[0];
                 registerResult.complete(merchantId);
                 break;
 
-            case "RegisterMerchantFailed":
+            case REGISTER_MERCHANT_REQUEST_FAILED:
                 registerResult.complete(null);
                 break;
 
-            case "GetMerchantSuccessfull":
+            case GET_MERCHANT_REQUEST_SUCCESS:
                 System.out.println("I got a GetMerchantSucessfull");
                 Merchant merchant = gson.fromJson(gson.toJson(eventIn.getArguments()[0]), Merchant.class);
                 GetMerchantResult.complete(merchant);
                 break;
 
-            case "GetMerchantFailed":
+            case GET_MERCHANT_REQUEST_FAILED:
                 GetMerchantResult.complete(null);
                 break;
 
-            case "RetiremerchantByCprSuccessful":
+            case RETIRE_MERCHANT_REQUEST_SUCCESS:
                 System.out.println("I got a RetiremerchantByCprSuccessful");
                 boolean removed = merchantIds.removeIf(c -> c.equals((String) eventIn.getArguments()[0]));
 
@@ -63,7 +65,7 @@ public class MerchantService implements EventReceiver  {
                 retireMerchant.complete(Response.status(200).entity("Delete successful").build());
                 break;
 
-            case "RetiremerchantByCprFailed":
+            case RETIRE_MERCHANT_REQUEST_FAILED:
                 retireMerchant.complete(Response.status(404).entity("Delete successful").build());
                 break;
 
@@ -79,7 +81,7 @@ public class MerchantService implements EventReceiver  {
 
 
     public String sendRegisterEvent(Merchant merchant) throws Exception{
-        String eventType = "RegisterMerchant";
+        String eventType = REGISTER_MERCHANT_REQUEST;
         Object[] arguments = new Object[]{merchant};
         Event event = new Event(eventType, arguments);
         registerResult = new CompletableFuture<>();
@@ -97,9 +99,9 @@ public class MerchantService implements EventReceiver  {
 
 
 
-    public Merchant GetMerchantByCpr(String cprNumber) throws Exception {
-        String eventType = "GetMerchant";
-        Object[] arguments = new Object[]{cprNumber};
+    public Merchant getMerchantByMerchantId(String merchantId) throws Exception {
+        String eventType = GET_MERCHANT_REQUEST;
+        Object[] arguments = new Object[]{merchantId};
         Event event = new Event(eventType,arguments);
         GetMerchantResult = new CompletableFuture<>();
 
@@ -110,9 +112,9 @@ public class MerchantService implements EventReceiver  {
 
 
 
-    public Response retireAccount(String cprNumber) throws Exception {
-        String eventType = "Retiremerchant";
-        Object[] arguments = new Object[]{cprNumber};
+    public Response retireAccount(String merchantId) throws Exception {
+        String eventType = RETIRE_MERCHANT_REQUEST;
+        Object[] arguments = new Object[]{merchantId};
         Event event = new Event(eventType,arguments);
         retireMerchant = new CompletableFuture<>();
         eventSender.sendEvent(event);
