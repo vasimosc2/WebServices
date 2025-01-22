@@ -27,8 +27,8 @@ public class PaymentService implements EventReceiver {
     @Override
     public void receiveEvent(Event eventIn) {
         switch (eventIn.getEventType()) {
-            case "PaymentSuccessfull":
-                System.out.println("I got a successfull RequestPayment request");
+            case "PaymentSuccessful":
+                System.out.println("I got PaymentSuccessful");
                 requestPaymentResult.complete(true);
                 break;
             case "RequestPaymentFailed":

@@ -74,6 +74,7 @@ public class PaymentEventService implements EventReceiver {
 
                                     // Step 6: Send success event
                                     Event eventOut3 = new Event("PaymentSuccessful", new Object[]{});
+                                    System.out.println("I am sending a PaymentSuccessful ....");
                                     eventSender.sendEvent(eventOut3);
                                 } catch (Exception e) {
                                     System.err.println("Error in merchant processing: " + e.getMessage());
