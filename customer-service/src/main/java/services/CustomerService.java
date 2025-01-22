@@ -53,6 +53,18 @@ public class CustomerService implements ICustomerService {
 
 
     @Override
+    public Customer getCustomerById(String customerId) throws AccountNotFoundException {
+        Customer customer = repo.getByCustomerId(customerId);
+
+        if (customer == null) {
+            throw new AccountNotFoundException("Customer with Cpr (" + customerId + ") is not found!");
+        }
+
+       return customer;
+    }
+
+
+    @Override
     public String retireAccountByCpr(String cpr) throws BankAccountException {
         Customer customer = repo.getByCpr(cpr);
 

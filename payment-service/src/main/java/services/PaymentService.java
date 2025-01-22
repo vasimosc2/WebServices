@@ -1,5 +1,7 @@
 package services;
 
+import java.math.BigDecimal;
+
 import dtu.ws.fastmoney.BankService;
 import infrastructure.repositories.PaymentMap;
 import infrastructure.repositories.interfaces.IPayments;
@@ -20,9 +22,9 @@ public class PaymentService implements IPaymentService {
     @Override
     public Response requestPayment(BankPay bankPay) {
 
-        int money = bankPay.money();
-        String tokenId = bankPay.tokenId();
-        String merchantId = bankPay.merchantId();
+        BigDecimal money = bankPay.getMoney();
+        String tokenId = bankPay.getTokenId();
+        String merchantId = bankPay.getMerchantId();
 
 
         //TODO CreateEVENT on RABBITMQ to retrieve the customerID from the token service   <custID, list<Token>>
@@ -67,6 +69,7 @@ public class PaymentService implements IPaymentService {
 
 
 
+}
 
 
 }

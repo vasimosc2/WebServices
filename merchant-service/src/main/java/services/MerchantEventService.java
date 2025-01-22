@@ -57,7 +57,20 @@ public class MerchantEventService implements EventReceiver {
                     eventSender.sendEvent(eventOut);
                 }
                 break;
-            
+            case "GetMerchantByMerchantId":
+                try {
+                    System.out.println("Hello from GetMerchantByMerchantId");
+                    String merchantId = gson.fromJson(gson.toJson(eventIn.getArguments()[0]), String.class);
+                    System.out.println(String.format("I am at MerchnatEventService: %s", merchantId));
+
+                    Merchant Merchant = service.getMerchantById(merchantId);
+                    Event eventOut = new Event("SuccessfullGetMerchantByMerchantId", new Object[]{Merchant});
+                    eventSender.sendEvent(eventOut);
+                } catch (Exception e) {
+                    Event eventOut = new Event("GetMerchantFailed", new Object[]{e.getMessage()});
+                    eventSender.sendEvent(eventOut);
+                }
+                break;
             case "Retiremerchant":
                 try {
                     System.out.println("Hello from Retiremerchant");

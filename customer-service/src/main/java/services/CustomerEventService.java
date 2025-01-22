@@ -59,6 +59,22 @@ public class CustomerEventService implements EventReceiver {
                 }
                 break;
             
+            case "SuccessfullGotTheCustomerID":
+                try {
+                    System.out.println("Hello from SuccessfullgotTheCustomerID");
+                    String customerId = gson.fromJson(gson.toJson(eventIn.getArguments()[0]), String.class);
+                    System.out.println(String.format("I am at CustomerEventService: %s", customerId));
+
+                    Customer Customer = service.getCustomerById(customerId);
+                    Event eventOut = new Event("SuccessfullGotCustomerForCustomerID", new Object[]{Customer});
+                    eventSender.sendEvent(eventOut);
+                    
+                } catch (Exception e) {
+                    Event eventOut = new Event("GetCustomerFailed", new Object[]{e.getMessage()});
+                    eventSender.sendEvent(eventOut);
+                }
+                break;
+            
             case "RetireCustomer":
                 try {
                     System.out.println("Hello from RetireCustomer");

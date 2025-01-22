@@ -43,6 +43,14 @@ public class MerchantsList implements IMerchants {
     }
 
     @Override
+    public Merchant getById(String merchantId) {
+        return Merchants.stream()
+                .filter(a -> a.getId().equals(merchantId))
+                .findAny()
+                .orElse(null);
+    }
+
+    @Override
     public void remove(String cpr) {
         Merchant Merchant = getByCpr(cpr);
         if (Merchant != null) {

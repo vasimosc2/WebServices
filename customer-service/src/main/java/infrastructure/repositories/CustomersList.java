@@ -44,6 +44,14 @@ public class CustomersList implements ICustomers {
     }
 
     @Override
+    public Customer getByCustomerId(String customerId) {
+        return Customers.stream()
+                .filter(a -> a.getId().equals(customerId))
+                .findAny()
+                .orElse(null);
+    }
+
+    @Override
     public void remove(String cpr) {
         Customer Customer = getByCpr(cpr);
         if (Customer != null) {

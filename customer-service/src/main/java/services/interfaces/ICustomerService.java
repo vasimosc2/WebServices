@@ -12,7 +12,8 @@ import dtu.ws.fastmoney.BankServiceException_Exception;
 public interface ICustomerService {
     void clear();
     String register(Customer customer) throws BankServiceException_Exception,AccountExistsException, BankAccountException ;
-    Customer get(String id) throws AccountNotFoundException;
+    Customer get(String cpr) throws AccountNotFoundException;
+    Customer getCustomerById(String customerId) throws AccountNotFoundException;
     String retireAccountByCpr(String id) throws BankAccountException;
 
 }

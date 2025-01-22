@@ -1,4 +1,4 @@
-package models;
+package dtu.example.models;
 
 import java.math.BigDecimal;
 
@@ -21,4 +21,5 @@ public class BankPay {
     };
 
 }
+
 
