@@ -32,7 +32,7 @@ public class MerchantEventService implements EventReceiver {
         switch (eventIn.getEventType()) {
             case REGISTER_MERCHANT_REQUESTED:
                 try {
-                    System.out.println("Hello from RegisterMerchant");
+                    System.out.println("Hello from REGISTER_MERCHANT_REQUESTED");
                     Merchant merchant = gson.fromJson(gson.toJson(eventIn.getArguments()[0]), Merchant.class);
                     System.out.println(merchant.getFirstName());
                     String merchantId = service.register(merchant);
@@ -41,52 +41,52 @@ public class MerchantEventService implements EventReceiver {
 
                     eventSender.sendEvent(eventOut);
                 } catch (Exception e) {
-                    Event eventOut = new Event(REGISTER_MERCHANT_REQUEST_FAILED, new Object[]{e.getMessage()});
+                    Event eventOut = new Event(REGISTER_MERCHANT_FAILED, new Object[]{e.getMessage()});
                     eventSender.sendEvent(eventOut);
                 }
                 break;
-            case GET_MERCHANT_REQUEST:
+            case GET_MERCHANT_REQUESTED:
                 try {
-                    System.out.println("Hello from GetMerchant");
+                    System.out.println("Hello from GET_MERCHANT_REQUESTED");
                     String merchantId = gson.fromJson(gson.toJson(eventIn.getArguments()[0]), String.class);
                     System.out.println(String.format("I am at MerchnatEventService: %s", merchantId));
 
                     Merchant Merchant = service.getAccount(merchantId);
-                    Event eventOut = new Event(GET_MERCHANT_REQUEST_SUCCESS, new Object[]{Merchant});
+                    Event eventOut = new Event(MERCHANT_RETRIEVED, new Object[]{Merchant});
                     eventSender.sendEvent(eventOut);
                 } catch (Exception e) {
-                    Event eventOut = new Event(GET_MERCHANT_REQUEST_FAILED, new Object[]{e.getMessage()});
+                    Event eventOut = new Event(MERCHANT_NOT_RETRIEVED, new Object[]{e.getMessage()});
                     eventSender.sendEvent(eventOut);
                 }
                 break;
 
-            case PAYMENT_REQUEST:
+            case PAYMENT_REQUESTED:
                 try {
-                    System.out.println("Hello from PaymentRequested at MerchantService");
+                    System.out.println("Hello from PAYMENT_REQUESTED at MerchantService");
                     BankPay bankpay = gson.fromJson(gson.toJson(eventIn.getArguments()[0]), BankPay.class);
                     String correladtionId = gson.fromJson(gson.toJson(eventIn.getArguments()[1]), String.class);
-                    System.out.println(String.format("I am at Merchant Service at Paymentrequest and the id of the merchant is : %s", bankpay.getMerchantId()));
+                    System.out.println(String.format("I am at Merchant Service at PAYMENT_REQUESTED and the id of the merchant is : %s", bankpay.getMerchantId()));
 
                     Merchant Merchant = service.getMerchantById(bankpay.getMerchantId());
-                    Event eventOut = new Event(GET_MERCHANT_BY_MERCHANT_ID_REQUEST_SUCCESS, new Object[]{Merchant,correladtionId});
+                    Event eventOut = new Event(MERCHANT_BY_MERCHANT_ID_RETRIEVED, new Object[]{Merchant,correladtionId});
                     eventSender.sendEvent(eventOut);
                 } catch (Exception e) {
                     //TODO event created but never caught anywhere it should be caught on payment service
-                    Event eventOut = new Event(GET_MERCHANT_BY_MERCHANT_ID_REQUEST_FAILED, new Object[]{e.getMessage()});
+                    Event eventOut = new Event(GET_MERCHANT_BY_MERCHANT_ID_FAILED, new Object[]{e.getMessage()});
                     eventSender.sendEvent(eventOut);
                 }
                 break;
 
-            case RETIRE_MERCHANT_REQUEST:
+            case RETIRE_MERCHANT_REQUESTED:
                 try {
-                    System.out.println("Hello from Retiremerchant");
+                    System.out.println("Hello from RETIRE_MERCHANT_REQUEST");
                     String merchantId = (String) eventIn.getArguments()[0];
                     service.retireAccount(merchantId);
 
-                    Event eventOut = new Event(RETIRE_MERCHANT_REQUEST_SUCCESS, new Object[]{merchantId});
+                    Event eventOut = new Event(MERCHANT_RETIRED, new Object[]{merchantId});
                     eventSender.sendEvent(eventOut);
                 } catch (Exception e) {
-                    Event eventOut = new Event(RETIRE_MERCHANT_REQUEST_FAILED, new Object[]{e.getMessage()});
+                    Event eventOut = new Event(RETIRE_MERCHANT_FAILED, new Object[]{e.getMessage()});
                     eventSender.sendEvent(eventOut);
                 }
                 break;

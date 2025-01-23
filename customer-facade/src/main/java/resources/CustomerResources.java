@@ -24,17 +24,14 @@ import services.ReportingService;
 import services.TokenService;
 @Path("/customers")
 public class CustomerResources {
-
     private final CustomerService customerService = CustomerFactory.getService();
     private final TokenService tokenService = TokenFactory.getService();
     private final ReportingService reportingService = ReportingFactory.getService();
-
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public List<String> getAllCustomers() {
         return customerService.getCustomers();
     }
-
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
@@ -59,17 +56,15 @@ public class CustomerResources {
 
 
     @POST
-    @Path("/{customerId}/tokens")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
+    @Path("/{customerId}/tokens")
     public Response requestTokens(@PathParam("customerId") String customerId, int tokenAmount) throws Exception {
         TokenInt tokenInt = new TokenInt();
         tokenInt.setCustomerId(customerId);
         tokenInt.setAmount(tokenAmount);
-        System.out.println("I reached DTUPay");
         boolean successful = tokenService.sendGenerateTokensEvent(tokenInt);
         if (successful) {
-            System.out.println("inside customer facade sucessful generation of tokens");
             return Response.ok().build();
         } else {
             return Response.status(Response.Status.BAD_REQUEST)

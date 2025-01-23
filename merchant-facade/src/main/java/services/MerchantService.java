@@ -42,22 +42,22 @@ public class MerchantService implements EventReceiver  {
                 registerResult.complete(merchantId);
                 break;
 
-            case "RegisterMerchantFailed":
+            case REGISTER_MERCHANT_FAILED:
                 registerResult.complete(null);
                 break;
 
-            case "GetMerchantSuccessfull":
-                System.out.println("I got a GetMerchantSucessfull");
+            case MERCHANT_RETRIEVED:
+                System.out.println("I got a MERCHANT_RETRIEVED");
                 Merchant merchant = gson.fromJson(gson.toJson(eventIn.getArguments()[0]), Merchant.class);
                 GetMerchantResult.complete(merchant);
                 break;
 
-            case "GetMerchantFailed":
+            case MERCHANT_NOT_RETRIEVED:
                 GetMerchantResult.complete(null);
                 break;
 
-            case "RetiremerchantByCprSuccessful":
-                System.out.println("I got a RetiremerchantByCprSuccessful");
+            case MERCHANT_RETIRED:
+                System.out.println("I got a MERCHANT_RETIRED");
                 boolean removed = merchantIds.removeIf(c -> c.equals((String) eventIn.getArguments()[0]));
 
                 if (!removed) {
@@ -67,16 +67,9 @@ public class MerchantService implements EventReceiver  {
                 retireMerchant.complete(Response.status(200).entity("Delete successful").build());
                 break;
 
-            case "RetiremerchantByCprFailed":
+            case RETIRE_MERCHANT_FAILED:
                 retireMerchant.complete(Response.status(404).entity("Delete successful").build());
                 break;
-            
-            case PAYMENT_REQUEST_SUCCESS:
-                System.out.println("I got PaymentSuccessful");
-                requestPaymentResult.complete(true);
-                break;
-                
-
             default:
                 System.out.println("Ignored event in Rest with type: " + eventIn.getEventType() + ". Event: " + eventIn.toString());
                 break;
@@ -104,7 +97,7 @@ public class MerchantService implements EventReceiver  {
     }
 
     public Merchant getMerchantByMerchantId(String merchantId) throws Exception {
-        String eventType = GET_MERCHANT_REQUEST;
+        String eventType = GET_MERCHANT_REQUESTED;
         Object[] arguments = new Object[]{merchantId};
         Event event = new Event(eventType,arguments);
         GetMerchantResult = new CompletableFuture<>();
@@ -117,7 +110,7 @@ public class MerchantService implements EventReceiver  {
 
 
     public Response retireAccount(String merchantId) throws Exception {
-        String eventType = RETIRE_MERCHANT_REQUEST;
+        String eventType = RETIRE_MERCHANT_REQUESTED;
         Object[] arguments = new Object[]{merchantId};
         Event event = new Event(eventType,arguments);
         retireMerchant = new CompletableFuture<>();
@@ -125,14 +118,4 @@ public class MerchantService implements EventReceiver  {
         return retireMerchant.join();
     }
 
-//    public boolean sendPaymentEvent(BankPay bankpay) throws Exception{
-//        String eventType = PAYMENT_REQUEST;
-//        Object[] arguments = new Object[]{bankpay};
-//        Event event = new Event(eventType, arguments);
-//        requestPaymentResult = new CompletableFuture<>();
-//        eventSender.sendEvent(event);
-//
-//        return requestPaymentResult.join();
-//
-//    }
 }

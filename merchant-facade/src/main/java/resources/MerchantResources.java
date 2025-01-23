@@ -25,14 +25,12 @@ import services.ReportingService;
 @Path("/merchants")
 public class MerchantResources{
     private final MerchantService merchantService = MerchantFactory.getService();
-
     private final PaymentService paymentService = PaymentFactory.getService();
-
     private final ReportingService reportingService = ReportingFactory.getService();
     
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<String> merchants() {
+    public List<String> getAllMerchants() {
         return merchantService.getMerchantIds();
     }
 
