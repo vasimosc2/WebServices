@@ -141,7 +141,8 @@ public class SimpleDtuPaySteps {
 
         thread1.join();
         thread2.join();
-
+        System.out.println(result.get());
+        System.out.println(result2.get());
         assertTrue(result.get());
         assertTrue(result2.get());
     }

@@ -70,7 +70,7 @@ public class MerchantService implements EventReceiver  {
                 break;
             
             case PAYMENT_REQUEST_SUCCESS:
-                System.out.println("I got PaymentSuccessful");
+                System.out.println("I got Merchant Facade PaymentSuccessful ");
                 requestPaymentResult.complete(true);
                 break;
                 

@@ -41,7 +41,9 @@ public class PaymentService implements EventReceiver {
         switch (eventIn.getEventType()) {
             case PAYMENT_REQUEST_SUCCESS:
                 System.out.println("I got PaymentSuccessful");
+                
                 String correlationId = gson.fromJson(gson.toJson(eventIn.getArguments()[1]), String.class);
+                System.out.println(correlationId);
                 correlations.get(correlationId).complete(true);
                 break;
             case PAYMENT_REQUEST_FAILED:
