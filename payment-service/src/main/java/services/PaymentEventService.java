@@ -44,7 +44,7 @@ public class PaymentEventService implements EventReceiver {
         switch (eventIn.getEventType()) {
             case PAYMENT_REQUEST:
                 try {
-                    System.out.println("Hello from RequestPayment");
+                    System.out.println("Hello from RequestPayment at the PaymentService");
                     BankPay bankPay = gson.fromJson(gson.toJson(eventIn.getArguments()[0]), BankPay.class);
 
                     System.out.println(bankPay.getMoney());
