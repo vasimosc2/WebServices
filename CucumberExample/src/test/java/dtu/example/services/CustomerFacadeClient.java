@@ -30,7 +30,7 @@ public class CustomerFacadeClient {
         }
     
     
-    
+    /*
         public Customer getCustomer(String cprNumber){
             Response response = target.path("customers/" + cprNumber).request().get();
             if (response.getStatus() == 200) {
@@ -45,26 +45,25 @@ public class CustomerFacadeClient {
             return target.path("customers/"+ cprNumber).request().delete();
         }
 
+     */
+
     
     
         public boolean generateTokens(String customerId, int tokenAmount) {
-            TokenInt tokenInt = new TokenInt();
-            tokenInt.setAmount(tokenAmount);
-            tokenInt.setCustomerId(customerId);
             
             System.out.println("I am ready to generate tokens");
     
             // This fails the test it should be pointing into a different Rest
-            Response response = target.path("customers/tokens")
+            Response response = target.path("customers/" + customerId + "/tokens")
                                         .request()
-                                        .post(Entity.entity(tokenInt, MediaType.APPLICATION_JSON_TYPE));
+                                        .post(Entity.entity(tokenAmount, MediaType.APPLICATION_JSON_TYPE));
     
             return response.getStatus() == Response.Status.OK.getStatusCode();
         }
     
         public Token getUnusedTokenFromCustomer(String customerId) {
             System.out.println("request one unused token from customer");
-            Response response = target.path("customers/tokens/" + customerId)
+            Response response = target.path("customers/" + customerId + "/tokens")
                     .request()
                     .get();
 

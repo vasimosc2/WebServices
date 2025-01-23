@@ -40,6 +40,11 @@ public class ReportEventService implements EventReceiver {
                 System.out.println("Hello from CustomerReportsRequested Event");
                 String customerId = gson.fromJson(gson.toJson(eventIn.getArguments()[0]), String.class);
                 List<PaymentCustomer> customerPaymentsReport = service.getCustomerPaymentReport(customerId);
+                for (PaymentCustomer paymentCustomer : customerPaymentsReport) {
+                    System.out.println("SANTI: " + paymentCustomer.getTokenId());
+                    System.out.println("SANTI: " + paymentCustomer.getMerchantId());
+                    System.out.println("SANTI: " + paymentCustomer.getAmount());
+                }
                 Event eventOut = new Event(CUSTOMER_REPORTS_GENERATED, new Object[]{customerPaymentsReport});
                 eventSender.sendEvent(eventOut);
                 break;

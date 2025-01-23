@@ -123,7 +123,7 @@ public class SimpleDtuPaySteps {
         assertTrue(successful);
     }
 
-    /* 
+
 
     @And("the balance of the customer at the bank is {int} kr")
     public void customerBalance(int money) throws BankServiceException_Exception{
@@ -135,70 +135,36 @@ public class SimpleDtuPaySteps {
         assertEquals(bankService.getAccount(merchant.getBankAccount()).getBalance(), BigDecimal.valueOf(money));
     }
 
-    */
+    @And("delete the customer and merchant")
+    public void deleteTheCustomerAndMerchant() throws BankServiceException_Exception {
+        bankService.retireAccount(customer.getBankAccount());
+        bankService.retireAccount(merchant.getBankAccount());
+    }
+
 
     @After
     public void cleanupBankAccounts() throws BankServiceException_Exception {
-        if (customer != null && customer.getBankAccount() != null) {
+        if (customer != null && bankService.getAccount(customerBankAccountId) != null) {
             bankService.retireAccount(customer.getBankAccount());
         }
-        if (merchant != null && merchant.getBankAccount() != null) {
+        if (merchant != null && bankService.getAccount(merchantBankAccountId) != null) {
             bankService.retireAccount(merchant.getBankAccount());
         }
     }
 
-    
-    
+
+
+
+
 
     /* 
-    @Given("the customer is registered with Simple DTU Pay using their bank account")
-    public void theCustomerIsRegisteredWithSimpleDTUPayUsingTheirBankAccount() throws BankServiceException_Exception {
-        assertNotNull(customer.getCprNumber());
-        Account account = bankService.getAccount(customer.getBankAccount());
-        dtupay.register(account.getUser(),account.getId(),"customer");
-       
-    }
-
-
-    @Given("a merchant with name {string}, last name {string}, and CPR {string}")
-    public void aMerchantWithNameLastNameAndCPR(String string, String string2, String string3) {
-        merchant = new Merchant();
-        merchant.setFirstName(string);
-        merchant.setLastName(string2);
-        merchant.setCprNumber(string3);
-        assertNotNull(merchant, "Customer creation failed");
-
-    }
-
-    @Given("the merchant is registered with the bank with an initial balance of {int} kr")
-    public void theMerchantIsRegisteredWithTheBankWithAnInitialBalanceOfKr(int money) throws BankServiceException_Exception {
-        User user = new User();
-        user.setFirstName(merchant.getFirstName());
-        user.setLastName(merchant.getLastName());
-        user.setCprNumber(merchant.getCprNumber());
-        merchantAccountId = bankService.createAccountWithBalance(user,BigDecimal.valueOf(money));
-        merchant.setBankAccount(merchantAccountId);
-    }
-
-
-    @Given("the merchant is registered with Simple DTU Pay using their bank account")
-    public void theMerchantIsRegisteredWithSimpleDTUPayUsingTheirBankAccount() throws BankServiceException_Exception {
-        assertNotNull(merchant.getCprNumber());
-        Account account = bankService.getAccount(merchant.getBankAccount());
-        dtupay.register(account.getUser(),account.getId(),"merchant");
-    }
-    
-    @When("the merchant initiates a payment for {int} kr by the customer")
-    public void TransferMoney(int money){
-        successful = dtupay.maketransfer(money,customer,merchant);
-    }
 
 
 
-    @Then("delete the customer and merchant")
-    public void DeleteTests() throws BankServiceException_Exception{
-        bankService.retireAccount(customer.getBankAccount());
-        bankService.retireAccount(merchant.getBankAccount());
-    }
+
+
+
+
+
     */
 }

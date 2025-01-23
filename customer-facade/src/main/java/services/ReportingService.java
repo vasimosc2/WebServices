@@ -30,9 +30,10 @@ public class ReportingService implements EventReceiver {
         public void receiveEvent(Event eventIn) {
             switch (eventIn.getEventType()) {
                 case CUSTOMER_REPORTS_GENERATED:
-                    System.out.println("I got a successfull Generation of Token");
+                    System.out.println("I got a CUSTOMER_REPORTS_GENERATED");
                     Type listType = new TypeToken<List<PaymentCustomer>>() {}.getType();
                     List<PaymentCustomer> customerReport = gson.fromJson(gson.toJson(eventIn.getArguments()[0]), listType);
+                    System.out.println("SANTI" + customerReport);
                     requestPaymentCustomerReportResult.complete(customerReport);
                     break;
                 default:
@@ -44,12 +45,12 @@ public class ReportingService implements EventReceiver {
 
         public List<PaymentCustomer> sendRetrieveCustomerReportEvent(String customerId) throws Exception{
             String eventType = CUSTOMER_REPORTS_REQUESTED;
-            System.out.println("we are sending request of token event");
+            System.out.println("we are sending CUSTOMER_REPORTS_REQUESTED event");
             Object[] arguments = new Object[]{customerId};
             Event event = new Event(eventType, arguments);
             requestPaymentCustomerReportResult = new CompletableFuture<>();
             eventSender.sendEvent(event);
-            System.out.println("almost requestTokenResults join");
+            System.out.println("almost CUSTOMER_REPORTS_REQUESTED join");
             return requestPaymentCustomerReportResult.join();
 
         }

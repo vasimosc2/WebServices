@@ -59,10 +59,13 @@ public class CustomerResources {
 
 
     @POST
-    @Path("/tokens")
+    @Path("/{customerId}/tokens")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response requestTokens(TokenInt tokenInt) throws Exception {
+    public Response requestTokens(@PathParam("customerId") String customerId, int tokenAmount) throws Exception {
+        TokenInt tokenInt = new TokenInt();
+        tokenInt.setCustomerId(customerId);
+        tokenInt.setAmount(tokenAmount);
         System.out.println("I reached DTUPay");
         boolean successful = tokenService.sendGenerateTokensEvent(tokenInt);
         if (successful) {
@@ -75,7 +78,7 @@ public class CustomerResources {
     }
 
     @GET
-    @Path("/tokens/{customerId}")
+    @Path("/{customerId}/tokens")
     @Produces(MediaType.APPLICATION_JSON)
     public Token getToken(@PathParam("customerId") String customerId) throws Exception {
         System.out.println("I am at get one TOken");
@@ -83,7 +86,7 @@ public class CustomerResources {
     }
 
     @GET
-    @Path("/reports/{customerId}")
+    @Path("/{customerId}/reports")
     @Produces(MediaType.APPLICATION_JSON)
     public List<PaymentCustomer> getReport(@PathParam("customerId") String customerId) throws Exception {
         return reportingService.sendRetrieveCustomerReportEvent(customerId);
