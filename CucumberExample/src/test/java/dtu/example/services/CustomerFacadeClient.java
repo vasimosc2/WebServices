@@ -3,7 +3,6 @@ package dtu.example.services;
 import dtu.example.models.Customer;
 import dtu.example.models.Token;
 import dtu.example.models.TokenInt;
-import jakarta.ws.rs.Path;
 import jakarta.ws.rs.client.Client;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
@@ -13,7 +12,7 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
 
-public class CustomerFacadeService {
+public class CustomerFacadeClient {
 
     Client c = ClientBuilder.newClient();
     WebTarget target = c.target("http://localhost:8087/");

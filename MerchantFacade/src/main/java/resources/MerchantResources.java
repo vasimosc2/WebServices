@@ -30,6 +30,14 @@ public class MerchantResources{
     public List<String> merchants() {
         return merchantService.getMerchantIds();
     }
+
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.TEXT_PLAIN)
+    public Response register(Merchant merchant) throws Exception {
+        String merchantId = merchantService.sendRegisterEvent(merchant);
+        return Response.ok().entity(merchantId).build(); // this returns to the test and gives a 200 status with the item
+    }
     
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -45,13 +53,6 @@ public class MerchantResources{
        return merchantService.retireAccount(merchantId);
     }
 
-    @POST
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response register(Merchant merchant) throws Exception {
-        String merchantId = merchantService.sendRegisterEvent(merchant);
-        return Response.ok().entity(merchantId).build(); // this returns to the test and gives a 200 status with the item
-    }
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)

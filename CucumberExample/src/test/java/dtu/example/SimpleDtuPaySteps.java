@@ -7,8 +7,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import dtu.example.models.Customer;
 import dtu.example.models.Merchant;
 import dtu.example.models.Token;
-import dtu.example.services.CustomerFacadeService;
-import dtu.example.services.MerchantFacadeService;
+import dtu.example.services.CustomerFacadeClient;
+import dtu.example.services.MerchantFacadeClient;
 // import dtu.example.services.SimpleDtuPayService;
 import dtu.ws.fastmoney.BankService;
 import dtu.ws.fastmoney.BankServiceException_Exception;
@@ -31,8 +31,8 @@ public class SimpleDtuPaySteps {
     // private int paymentAmount;
     // private SimpleDtuPayService dtupay = new SimpleDtuPayService();
 
-    private CustomerFacadeService dtupayCustomerFacade = new CustomerFacadeService();
-    private MerchantFacadeService dtupayMerchantFacade = new MerchantFacadeService();
+    private CustomerFacadeClient dtupayCustomerFacade = new CustomerFacadeClient();
+    private MerchantFacadeClient dtupayMerchantFacade = new MerchantFacadeClient();
 
     private BankService bankService = new BankServiceService().getBankServicePort();
     private boolean successful = false;

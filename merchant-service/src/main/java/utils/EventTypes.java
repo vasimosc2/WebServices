@@ -23,8 +23,8 @@ public class EventTypes {
     public static final String RETIRE_CUSTOMER_REQUEST_SUCCESS = "RetireCustomerRequestSuccess";
     public static final String RETIRE_CUSTOMER_REQUEST_FAILED = "RetireCustomerRequestFailed";
 
-    public static final String REGISTER_MERCHANT_REQUEST = "RegisterMerchantRequest";
-    public static final String REGISTER_MERCHANT_REQUEST_SUCCESS = "RegisterMerchantRequestSuccess";
+    public static final String REGISTER_MERCHANT_REQUESTED = "RegisterMerchantRequested";
+    public static final String MERCHANT_REGISTERED = "MerchantRegistered";
     public static final String REGISTER_MERCHANT_REQUEST_FAILED = "RegisterMerchantRequestFailed";
 
     public static final String GET_MERCHANT_REQUEST = "GetMerchantRequest";

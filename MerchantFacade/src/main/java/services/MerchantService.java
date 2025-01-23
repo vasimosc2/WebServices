@@ -3,6 +3,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import static utils.EventTypes.*;
+import static utils.EventTypes.MERCHANT_REGISTERED;
+
 import com.google.gson.Gson;
 
 
@@ -35,8 +37,8 @@ public class MerchantService implements EventReceiver  {
 
     public void receiveEvent(Event eventIn) {
         switch (eventIn.getEventType()) {
-            case "RegisterMerchantSuccessful":
-                System.out.println("I got a RegisterMerchantSuccessful");
+            case MERCHANT_REGISTERED:
+                System.out.println("I got a MERCHANT_REGISTERED");
                 String merchantId = (String) eventIn.getArguments()[0];
                 registerResult.complete(merchantId);
                 break;
@@ -82,7 +84,7 @@ public class MerchantService implements EventReceiver  {
 
 
     public String sendRegisterEvent(Merchant merchant) throws Exception{
-        String eventType = REGISTER_MERCHANT_REQUEST;
+        String eventType = REGISTER_MERCHANT_REQUESTED;
         Object[] arguments = new Object[]{merchant};
         Event event = new Event(eventType, arguments);
         registerResult = new CompletableFuture<>();

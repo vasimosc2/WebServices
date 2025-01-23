@@ -29,14 +29,14 @@ public class MerchantEventService implements EventReceiver {
     @Override
     public void receiveEvent(Event eventIn) throws Exception {
         switch (eventIn.getEventType()) {
-            case REGISTER_MERCHANT_REQUEST:
+            case REGISTER_MERCHANT_REQUESTED:
                 try {
                     System.out.println("Hello from RegisterMerchant");
                     Merchant merchant = gson.fromJson(gson.toJson(eventIn.getArguments()[0]), Merchant.class);
                     System.out.println(merchant.getFirstName());
                     String merchantId = service.register(merchant);
                     System.out.println(merchantId);
-                    Event eventOut = new Event(REGISTER_MERCHANT_REQUEST_SUCCESS, new Object[]{merchantId});
+                    Event eventOut = new Event(MERCHANT_REGISTERED, new Object[]{merchantId});
 
                     eventSender.sendEvent(eventOut);
                 } catch (Exception e) {
