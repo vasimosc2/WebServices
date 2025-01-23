@@ -47,11 +47,11 @@ public class SimpleDtuPaySteps {
 
     @And("the customer1 is registered with the bank with an initial balance of {int} kr")
     public void theCustomerIsRegisteredWithTheBankWithAnInitialBalanceOfKr1(int money) throws BankServiceException_Exception {
-        User user = new User();
-        user.setFirstName(customer1.getFirstName());
-        user.setLastName(customer1.getLastName());
-        user.setCprNumber(customer1.getCprNumber());
-        customerBankAccountId1 = bankService.createAccountWithBalance(user,BigDecimal.valueOf(money));
+        User user1 = new User();
+        user1.setFirstName(customer1.getFirstName());
+        user1.setLastName(customer1.getLastName());
+        user1.setCprNumber(customer1.getCprNumber());
+        customerBankAccountId1 = bankService.createAccountWithBalance(user1,BigDecimal.valueOf(money));
         customer1.setBankAccount(customerBankAccountId1);
         System.out.println(customerBankAccountId1);
     }
@@ -90,11 +90,11 @@ public class SimpleDtuPaySteps {
 
     @And("the customer2 is registered with the bank with an initial balance of {int} kr")
     public void theCustomerIsRegisteredWithTheBankWithAnInitialBalanceOfKr(int money) throws BankServiceException_Exception {
-        User user = new User();
-        user.setFirstName(customer2.getFirstName());
-        user.setLastName(customer2.getLastName());
-        user.setCprNumber(customer2.getCprNumber());
-        customerBankAccountId2 = bankService.createAccountWithBalance(user,BigDecimal.valueOf(money));
+        User user2 = new User();
+        user2.setFirstName(customer2.getFirstName());
+        user2.setLastName(customer2.getLastName());
+        user2.setCprNumber(customer2.getCprNumber());
+        customerBankAccountId2 = bankService.createAccountWithBalance(user2,BigDecimal.valueOf(money));
         customer2.setBankAccount(customerBankAccountId2);
         System.out.println(customerBankAccountId2);
     }
@@ -102,8 +102,8 @@ public class SimpleDtuPaySteps {
 
     @And("the customer2 is registered with Simple DTU Pay using their bank account")
     public void theCustomerIsRegisteredWithSimpleDTUPayUsingTheirBankAccount() {
-        assertNotNull(customer1.getCprNumber());
-        assertNotNull(customer1.getBankAccount());
+        assertNotNull(customer2.getCprNumber());
+        assertNotNull(customer2.getBankAccount());
         customerId2 = dtupay.register(customer2);
         System.out.println("SANTI customer id: " + customerId2);
     }
@@ -233,18 +233,18 @@ public class SimpleDtuPaySteps {
 
     */
 
-    @After
-    public void cleanupBankAccounts() throws BankServiceException_Exception {
-        if (customer1 != null && customer1.getBankAccount() != null) {
-            bankService.retireAccount(customer1.getBankAccount());
-        }
-        if (customer2 != null && customer2.getBankAccount() != null) {
-            bankService.retireAccount(customer2.getBankAccount());
-        }
-        if (merchant != null && merchant.getBankAccount() != null) {
-            bankService.retireAccount(merchant.getBankAccount());
-        }
-    }
+    // @After
+    // public void cleanupBankAccounts() throws BankServiceException_Exception {
+    //     if (customer1 != null && customer1.getBankAccount() != null) {
+    //         bankService.retireAccount(customer1.getBankAccount());
+    //     }
+    //     if (customer2 != null && customer2.getBankAccount() != null) {
+    //         bankService.retireAccount(customer2.getBankAccount());
+    //     }
+    //     if (merchant != null && merchant.getBankAccount() != null) {
+    //         bankService.retireAccount(merchant.getBankAccount());
+    //     }
+    // }
 
     
     
