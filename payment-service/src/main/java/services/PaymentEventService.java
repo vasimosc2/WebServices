@@ -79,8 +79,9 @@ public class PaymentEventService implements EventReceiver {
                     Merchant merchant = correlationMerchant.get(correlationId).get();
 
                     System.out.println("I got a customer: " + customer.getFirstName());
+                    System.out.println("And the customer bankaccount is" + customer.getBankAccount());
                     System.out.println("I got the merchant: " + merchant.getFirstName());
-                    
+                    System.out.println("And the merchant bankaccount is" + merchant.getBankAccount());
                     System.out.println("Lets make the transaction");
                     // Process the payment
                     MoneyTransferredObject moneyTransfer = service.requestPayment(customer, merchant, bankPay.getMoney(), bankPay.getTokenId());

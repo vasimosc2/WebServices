@@ -26,7 +26,7 @@ public class SimpleDtuPaySteps {
     
     private Customer customer1,customer2;
     private Merchant merchant;
-    private String customerId1, customerId2, merchantId, customerBankAccountId, merchantBankAccountId;
+    private String customerId1, customerId2, merchantId, customerBankAccountId1,customerBankAccountId2, merchantBankAccountId;
     private Token customerToken1, customerToken2;
     private SimpleDtuPayService dtupay = new SimpleDtuPayService();
     private BankService bankService = new BankServiceService().getBankServicePort();
@@ -51,8 +51,9 @@ public class SimpleDtuPaySteps {
         user.setFirstName(customer1.getFirstName());
         user.setLastName(customer1.getLastName());
         user.setCprNumber(customer1.getCprNumber());
-        customerBankAccountId = bankService.createAccountWithBalance(user,BigDecimal.valueOf(money));
-        customer1.setBankAccount(customerBankAccountId);
+        customerBankAccountId1 = bankService.createAccountWithBalance(user,BigDecimal.valueOf(money));
+        customer1.setBankAccount(customerBankAccountId1);
+        System.out.println(customerBankAccountId1);
     }
 
 
@@ -93,8 +94,9 @@ public class SimpleDtuPaySteps {
         user.setFirstName(customer2.getFirstName());
         user.setLastName(customer2.getLastName());
         user.setCprNumber(customer2.getCprNumber());
-        customerBankAccountId = bankService.createAccountWithBalance(user,BigDecimal.valueOf(money));
-        customer2.setBankAccount(customerBankAccountId);
+        customerBankAccountId2 = bankService.createAccountWithBalance(user,BigDecimal.valueOf(money));
+        customer2.setBankAccount(customerBankAccountId2);
+        System.out.println(customerBankAccountId2);
     }
 
 
