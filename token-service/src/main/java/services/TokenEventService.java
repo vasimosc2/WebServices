@@ -5,6 +5,7 @@ import com.google.gson.Gson;
 import messaging.Event;
 import messaging.EventReceiver;
 import messaging.EventSender;
+import models.BankPay;
 import models.TokenInt;
 import models.Token;
 import services.interfaces.ITokenService;

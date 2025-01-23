@@ -124,10 +124,27 @@ public class SimpleDtuPaySteps {
         assertTrue(successful);
     }
 
+    @And("the balance of the customer at the bank is {int} kr")
+    public void theBalanceOfTheCustomerAtTheBankIsKr(int money) throws BankServiceException_Exception {
+        assertEquals(BigDecimal.valueOf((double) money), bankService.getAccount(customer.getBankAccount()).getBalance());
+    }
+
     @And("the balance of the merchant at the bank is {int} kr")
     public void checkMerchantBalance(int money) throws BankServiceException_Exception{
         assertEquals(BigDecimal.valueOf((double) money), bankService.getAccount(merchant.getBankAccount()).getBalance());
     }
+
+    @After
+    public void cleanupBankAccounts() throws BankServiceException_Exception {
+        if (customer != null && bankService.getAccount(customerBankAccountId) != null) {
+            bankService.retireAccount(customer.getBankAccount());
+        }
+        if (merchant != null && bankService.getAccount(merchantBankAccountId) != null) {
+            bankService.retireAccount(merchant.getBankAccount());
+        }
+    }
+
+
 
     /* 
 
@@ -150,29 +167,4 @@ public class SimpleDtuPaySteps {
      */
 
 
-    @After
-    public void cleanupBankAccounts() throws BankServiceException_Exception {
-        if (customer != null && bankService.getAccount(customerBankAccountId) != null) {
-            bankService.retireAccount(customer.getBankAccount());
-        }
-        if (merchant != null && bankService.getAccount(merchantBankAccountId) != null) {
-            bankService.retireAccount(merchant.getBankAccount());
-        }
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    */
 }

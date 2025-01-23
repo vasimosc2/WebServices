@@ -31,14 +31,9 @@ public class PaymentService implements EventReceiver {
     @Override
     public void receiveEvent(Event eventIn) throws Exception {
         switch (eventIn.getEventType()) {
+
             case PAYMENT_REQUEST_SUCCESS:
                 System.out.println("I got PaymentSuccessful");
-                String tokenId = gson.fromJson(gson.toJson(eventIn.getArguments()[0]), String.class);
-
-                Event eventOut = new Event(SET_TOKEN_AS_USED_REQUEST, new Object[]{tokenId});
-                System.out.println("Sending to the Token Service .....");
-                eventSender.sendEvent(eventOut);
-
                 requestPaymentResult.complete(true);
                 break;
             case PAYMENT_REQUEST_FAILED:
