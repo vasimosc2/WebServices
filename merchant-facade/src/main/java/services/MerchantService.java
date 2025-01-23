@@ -19,7 +19,7 @@ public class MerchantService implements EventReceiver  {
     private CompletableFuture<String> registerResult;
     private CompletableFuture<Merchant> GetMerchantResult;
     private CompletableFuture<Response> retireMerchant;
-    private CompletableFuture<Boolean> requestPaymentResult;
+
 
 
     private EventSender eventSender;
@@ -125,14 +125,14 @@ public class MerchantService implements EventReceiver  {
         return retireMerchant.join();
     }
 
-    public boolean sendPaymentEvent(BankPay bankpay) throws Exception{
-        String eventType = PAYMENT_REQUEST;
-        Object[] arguments = new Object[]{bankpay};
-        Event event = new Event(eventType, arguments);
-        requestPaymentResult = new CompletableFuture<>();
-        eventSender.sendEvent(event);
-
-        return requestPaymentResult.join();
-
-    }
+//    public boolean sendPaymentEvent(BankPay bankpay) throws Exception{
+//        String eventType = PAYMENT_REQUEST;
+//        Object[] arguments = new Object[]{bankpay};
+//        Event event = new Event(eventType, arguments);
+//        requestPaymentResult = new CompletableFuture<>();
+//        eventSender.sendEvent(event);
+//
+//        return requestPaymentResult.join();
+//
+//    }
 }

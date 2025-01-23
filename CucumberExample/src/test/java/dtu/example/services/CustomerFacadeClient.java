@@ -1,6 +1,7 @@
 package dtu.example.services;
 
 import dtu.example.models.Customer;
+import dtu.example.models.PaymentCustomer;
 import dtu.example.models.Token;
 import dtu.example.models.TokenInt;
 import jakarta.ws.rs.client.Client;
@@ -10,6 +11,8 @@ import jakarta.ws.rs.client.WebTarget;
 import jakarta.ws.rs.core.GenericType;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+
+import java.util.List;
 
 
 public class CustomerFacadeClient {
@@ -28,24 +31,6 @@ public class CustomerFacadeClient {
             }
             return null;
         }
-    
-    
-    /*
-        public Customer getCustomer(String cprNumber){
-            Response response = target.path("customers/" + cprNumber).request().get();
-            if (response.getStatus() == 200) {
-                return response.readEntity(new GenericType<>() {
-                });
-            }
-    
-            return null;
-        }
-    
-        public Response deleteCustomer(String cprNumber) {
-            return target.path("customers/"+ cprNumber).request().delete();
-        }
-
-     */
 
     
     
@@ -64,6 +49,19 @@ public class CustomerFacadeClient {
         public Token getUnusedTokenFromCustomer(String customerId) {
             System.out.println("request one unused token from customer");
             Response response = target.path("customers/" + customerId + "/tokens")
+                    .request()
+                    .get();
+
+            if (response.getStatus() == 200) {
+                return response.readEntity(new GenericType<>() {
+                });
+            }
+            return null;
+        }
+
+        public List<PaymentCustomer> getCustomerPaymentReport(String customerId) {
+            System.out.println("request payment report for customer");
+            Response response = target.path("customers/" + customerId + "/reports")
                     .request()
                     .get();
 

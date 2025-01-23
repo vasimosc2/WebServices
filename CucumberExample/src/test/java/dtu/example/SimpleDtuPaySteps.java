@@ -65,14 +65,14 @@ public class SimpleDtuPaySteps {
     public void theCustomerIsRegisteredWithSimpleDTUPayUsingTheirBankAccount1() {
         assertNotNull(customer1.getCprNumber());
         assertNotNull(customer1.getBankAccount());
-        customerId1 = dtupay.register(customer1);
+        customerId1 = dtupayCustomerFacade.register(customer1);
         System.out.println("SANTI customer id: " + customerId1);
     }
 
     @Then("the customer1 generates {int} tokens")
     public void the_customer_requests_tokens1(int tokenAmount) {
         System.out.println("I am at the tokenRequest");
-        boolean isSuccess = dtupay.generateTokens(customerId1, tokenAmount);
+        boolean isSuccess = dtupayCustomerFacade.generateTokens(customerId1, tokenAmount);
         assertTrue(isSuccess);
     }
 
@@ -108,14 +108,14 @@ public class SimpleDtuPaySteps {
     public void theCustomerIsRegisteredWithSimpleDTUPayUsingTheirBankAccount() {
         assertNotNull(customer2.getCprNumber());
         assertNotNull(customer2.getBankAccount());
-        customerId2 = dtupay.register(customer2);
+        customerId2 = dtupayCustomerFacade.register(customer2);
         System.out.println("SANTI customer id: " + customerId2);
     }
 
     @Then("the customer2 generates {int} tokens")
     public void the_customer_requests_tokens(int tokenAmount) {
         System.out.println("I am at the tokenRequest");
-        boolean isSuccess = dtupay.generateTokens(customerId2, tokenAmount);
+        boolean isSuccess = dtupayCustomerFacade.generateTokens(customerId2, tokenAmount);
         assertTrue(isSuccess);
     }
 
@@ -124,8 +124,8 @@ public class SimpleDtuPaySteps {
 
     @And("Both customers retrieves a token")
     public void BothTakeToken(){
-        customerToken1 = dtupay.requestTokenFromCustomer(customerId1);
-        customerToken2 = dtupay.requestTokenFromCustomer(customerId2);
+        customerToken1 = dtupayCustomerFacade.getUnusedTokenFromCustomer(customerId1);
+        customerToken2 = dtupayCustomerFacade.getUnusedTokenFromCustomer(customerId2);
         System.out.println("The Id for the first token is :");
         System.out.println(customerToken1.getId());
         System.out.println("The Id for the second token is :");
@@ -138,10 +138,10 @@ public class SimpleDtuPaySteps {
         System.out.println("I am ready to initiate a payment");
 
         var thread1 = new Thread(() -> {
-            result.complete(dtupay.maketransfer(money1, customerToken1.getId(), merchantId));
+            result.complete(dtupayMerchantFacade.maketransfer(money1, customerToken1.getId(), merchantId));
         });
         var thread2 = new Thread(() -> {
-            result2.complete(dtupay.maketransfer(money2, customerToken2.getId(), merchantId));
+            result2.complete(dtupayMerchantFacade.maketransfer(money2, customerToken2.getId(), merchantId));
         });
         thread1.start();
         thread2.start();
@@ -161,7 +161,7 @@ public class SimpleDtuPaySteps {
     @And("the customer retrieves a token")
     public void the_merchant_asks_for_a_token_from_the_customer() {
         System.out.println("I am ready to get one Token");
-        customerToken1 = dtupay.requestTokenFromCustomer(customerId1);
+        customerToken1 = dtupayCustomerFacade.getUnusedTokenFromCustomer(customerId1);
         System.out.println(customerToken1.getId());
         assertNotNull(customerToken1.getId());
     }
@@ -190,7 +190,7 @@ public class SimpleDtuPaySteps {
     public void theMerchantIsRegisteredWithSimpleDTUPayUsingTheirBankAccount() {
         assertNotNull(merchant.getCprNumber());
         assertNotNull(merchant.getBankAccount());
-        merchantId = dtupay.register(merchant);
+        merchantId = dtupayMerchantFacade.register(merchant);
         System.out.println("SANTI merchant id: " + merchantId);
     }
 
@@ -198,7 +198,7 @@ public class SimpleDtuPaySteps {
     @When("the merchant initiates a payment for {int} kr")
     public void theMerchantInitiatesAPaymentForKrGivenTheTokenInPosition(int money ) {
         System.out.println("I am ready to initiate a payment");
-        successful = dtupay.maketransfer(money, customerToken1.getId(), merchantId);
+        successful = dtupayMerchantFacade.maketransfer(money, customerToken1.getId(), merchantId);
         System.out.println(successful);
     }
 

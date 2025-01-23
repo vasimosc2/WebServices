@@ -13,17 +13,22 @@ import jakarta.ws.rs.core.Response;
 import messaging.rabbitmq.merchant.MerchantFactory;
 
 import messaging.rabbitmq.payment.PaymentFactory;
+import messaging.rabbitmq.reporting.ReportingFactory;
 import models.BankPay;
 import models.Merchant;
+import models.PaymentMerchant;
 import services.MerchantService;
 import services.PaymentService;
+import services.ReportingService;
 
 
 @Path("/merchants")
 public class MerchantResources{
-    MerchantService merchantService = MerchantFactory.getService();
+    private final MerchantService merchantService = MerchantFactory.getService();
 
-    PaymentService paymentService = PaymentFactory.getService();
+    private final PaymentService paymentService = PaymentFactory.getService();
+
+    private final ReportingService reportingService = ReportingFactory.getService();
     
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -61,6 +66,13 @@ public class MerchantResources{
     public Response setBankPayment(BankPay bankpay) throws Exception {
         boolean successful = paymentService.sendPaymentEvent(bankpay);
         return Response.ok().entity(successful).build();
+    }
+
+    @GET
+    @Path("/{merchantId}/reports")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<PaymentMerchant> getReport(@PathParam("merchantId") String merchantId) throws Exception {
+        return reportingService.sendRetrieveMerchantReportEvent(merchantId);
     }
 
 

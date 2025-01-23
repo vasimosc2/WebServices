@@ -2,6 +2,10 @@ package utils;
 
 public class EventTypes {
 
+    public static final String MERCHANT_REPORTS_GENERATED = "MerchantReportsGenerated";
+
+    public static final String MERCHANT_REPORTS_REQUESTED = "MerchantReportsRequested";
+
 
 
     public static final String TOKENS_REQUEST = "TokensRequest";

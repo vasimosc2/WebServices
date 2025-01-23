@@ -24,8 +24,6 @@ public class PaymentService implements EventReceiver {
     private Map<String,CompletableFuture<Boolean>> correlations = new ConcurrentHashMap<>();
 
 
-//    private CompletableFuture<Token> getTokenResult;
-//    private CompletableFuture<Boolean> retireCustomerTokensResult;
 
 
     private EventSender eventSender;

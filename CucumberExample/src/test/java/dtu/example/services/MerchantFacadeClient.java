@@ -1,9 +1,12 @@
 package dtu.example.services;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import dtu.example.models.BankPay;
 import dtu.example.models.Merchant;
+import dtu.example.models.PaymentCustomer;
+import dtu.example.models.PaymentMerchant;
 import jakarta.ws.rs.client.Client;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
@@ -56,6 +59,20 @@ public class MerchantFacadeClient {
             return false;
         }
         return true;
+    }
+
+
+    public List<PaymentMerchant> getMerchantPaymentReport(String customerId) {
+        System.out.println("request payment report for customer");
+        Response response = target.path("merchants/" + customerId + "/reports")
+                .request()
+                .get();
+
+        if (response.getStatus() == 200) {
+            return response.readEntity(new GenericType<>() {
+            });
+        }
+        return null;
     }
 
 
