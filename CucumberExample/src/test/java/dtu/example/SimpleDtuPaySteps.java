@@ -129,21 +129,21 @@ public class SimpleDtuPaySteps {
     }
 
     
-    @When("the merchant initiates a payment for {int} kr for both Clients at the same time")
-    public void theMerchantInitiatesAPaymentForKrBoth(int money ) throws InterruptedException, ExecutionException {
+    @When("the merchant initiates a payment for {int} kr {int} for both Clients at the same time")
+    public void theMerchantInitiatesAPaymentForKrBoth(int money1 , int money2 ) throws InterruptedException, ExecutionException {
         System.out.println("I am ready to initiate a payment");
 
         var thread1 = new Thread(() -> {
-			result.complete(dtupay.maketransfer(money, customerToken1.getId(), merchantId));
+			result.complete(dtupay.maketransfer(money1, customerToken1.getId(), merchantId));
 		});
 		var thread2 = new Thread(() -> {
-			result2.complete(dtupay.maketransfer(money, customerToken2.getId(), merchantId));
+			result2.complete(dtupay.maketransfer(money2, customerToken2.getId(), merchantId));
 		});
 		thread1.start();
 		thread2.start();
 
-        // thread1.join();
-        // thread2.join();
+        thread1.join();
+        thread2.join();
         // System.out.println(result.get());
         // System.out.println(result2.get());
         // assertTrue(result.get());
@@ -200,6 +200,12 @@ public class SimpleDtuPaySteps {
 
     @And("the balance of the customer1 at the bank is {int} kr")
     public void checkCustomerBalance(int money) throws BankServiceException_Exception{
+        System.out.println(
+                "After transaction in step customer1 has " + bankService.getAccount(customer1.getBankAccount()).getBalance()
+            );
+        System.out.println(
+            "After transaction in step customer2 has " + bankService.getAccount(customer2.getBankAccount()).getBalance()
+        );
         assertEquals(BigDecimal.valueOf((double) money), bankService.getAccount(customer1.getBankAccount()).getBalance());
     }
 
@@ -233,18 +239,18 @@ public class SimpleDtuPaySteps {
 
     */
 
-    // @After
-    // public void cleanupBankAccounts() throws BankServiceException_Exception {
-    //     if (customer1 != null && customer1.getBankAccount() != null) {
-    //         bankService.retireAccount(customer1.getBankAccount());
-    //     }
-    //     if (customer2 != null && customer2.getBankAccount() != null) {
-    //         bankService.retireAccount(customer2.getBankAccount());
-    //     }
-    //     if (merchant != null && merchant.getBankAccount() != null) {
-    //         bankService.retireAccount(merchant.getBankAccount());
-    //     }
-    // }
+    @After
+    public void cleanupBankAccounts() throws BankServiceException_Exception {
+        if (customer1 != null && customer1.getBankAccount() != null) {
+            bankService.retireAccount(customer1.getBankAccount());
+        }
+        if (customer2 != null && customer2.getBankAccount() != null) {
+            bankService.retireAccount(customer2.getBankAccount());
+        }
+        if (merchant != null && merchant.getBankAccount() != null) {
+            bankService.retireAccount(merchant.getBankAccount());
+        }
+    }
 
     
     

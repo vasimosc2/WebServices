@@ -28,9 +28,13 @@ public class PaymentService implements IPaymentService {
 
         try {
             System.out.println(customer.getFirstName());
-            System.out.println(String.format("Before transaction customer has ", bankService.getAccount(customer.getBankAccount()).getBalance()));
+            System.out.println(
+                "Before transaction customer has " + bankService.getAccount(customer.getBankAccount()).getBalance()
+            );
             bankService.transferMoneyFromTo(customer.getBankAccount(), merchant.getBankAccount(), money, "Random Reason");
-            System.out.println(String.format("After transaction customer has ", bankService.getAccount(customer.getBankAccount()).getBalance()));
+            System.out.println(
+                "after transaction customer has " + bankService.getAccount(customer.getBankAccount()).getBalance()
+            );
         } catch (BankServiceException_Exception e) {
             e.printStackTrace();
             throw new PaymentException("Payment failed because of: " + e.getMessage());
