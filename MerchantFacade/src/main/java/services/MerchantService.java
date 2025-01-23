@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import static utils.EventTypes.*;
 import com.google.gson.Gson;
+
+
 import jakarta.ws.rs.core.Response;
 import messaging.Event;
 import messaging.EventReceiver;
@@ -13,7 +15,7 @@ import models.Merchant;
 
 public class MerchantService implements EventReceiver  {
     private List<String> merchantIds = new ArrayList<>();
-
+    private CompletableFuture<Boolean> requestPaymentResult;
     private CompletableFuture<String> registerResult;
     private CompletableFuture<Merchant> GetMerchantResult;
     private CompletableFuture<Response> retireMerchant;
