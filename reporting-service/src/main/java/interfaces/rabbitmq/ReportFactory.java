@@ -2,6 +2,7 @@ package interfaces.rabbitmq;
 
 import messaging.EventSender;
 import services.ReportEventService;
+import services.ReportService;
 
 
 public class ReportFactory {

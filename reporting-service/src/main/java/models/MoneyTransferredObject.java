@@ -2,18 +2,20 @@ package models;
 
 import lombok.Getter;
 
+import java.math.BigDecimal;
+
 @Getter
 public class MoneyTransferredObject {
+    private String tokenId;
     private String customerId;
     private String merchantId;
-    private String amount;
-    private String tokenId;
+    private BigDecimal amount;
 
-    public MoneyTransferredObject(String customerId, String merchantId, String amount, String tokenId) {
+    public MoneyTransferredObject(String tokenId, String customerId, String merchantId, BigDecimal amount) {
+        this.tokenId = tokenId;
         this.customerId = customerId;
         this.merchantId = merchantId;
         this.amount = amount;
-        this.tokenId = tokenId;
     }
 
     public MoneyTransferredObject() {}

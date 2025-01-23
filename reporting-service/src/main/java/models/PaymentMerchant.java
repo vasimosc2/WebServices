@@ -8,8 +8,13 @@ import java.math.BigDecimal;
 @Getter
 @Setter
 public class PaymentMerchant {
-    private BigDecimal amount;
     private String tokenId;
+    private BigDecimal amount;
+
+    public PaymentMerchant(String tokenId, BigDecimal amount) {
+        this.tokenId = tokenId;
+        this.amount = amount;
+    }
 
     public PaymentMerchant() {}
 }

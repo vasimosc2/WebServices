@@ -5,15 +5,14 @@ import com.google.gson.Gson;
 import messaging.Event;
 import messaging.EventReceiver;
 import messaging.EventSender;
-import models.TokenInt;
-import models.BankPay;
-import models.Token;
+import models.*;
 import services.interfaces.IReportService;
 
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import jakarta.ws.rs.core.Response;
+import static utils.EventTypes.*;
 
 public class ReportEventService implements EventReceiver {
 
@@ -32,51 +31,30 @@ public class ReportEventService implements EventReceiver {
     @Override
     public void receiveEvent(Event eventIn) throws Exception {
         switch (eventIn.getEventType()) {
-            case "RequestTokens":
-                try {
-                    System.out.println("Hello from RequestTokens");
-                    TokenInt tokenInt = gson.fromJson(gson.toJson(eventIn.getArguments()[0]), TokenInt.class);
-                    
-                    System.out.println(tokenInt.getCustomerId());
-
-                    Response response = service.getCustomerPaymentReport(tokenInt);
-
-                    Event eventOut = new Event("RequestTokensSuccessfull", new Object[]{response.getStatus()});
-                    System.out.println("Ready to send back");
-                    eventSender.sendEvent(eventOut);
-                    
-                } catch (Exception e) {
-                    Event eventOut = new Event("RequestTokensFailed", new Object[]{e.getMessage()});
-                    eventSender.sendEvent(eventOut);
-                }
+            case MONEY_TRANSFERRED:
+                System.out.println("Hello from MoneyTransferred Event");
+                MoneyTransferredObject moneyTransferredObject = gson.fromJson(gson.toJson(eventIn.getArguments()[0]), MoneyTransferredObject.class);
+                service.addMoneyTransferredToRepos(moneyTransferredObject);
                 break;
-            case "RequestGetToken":
-                try {
-                    System.out.println("Hello from RequestGetToken");
-                    String customerId = gson.fromJson(gson.toJson(eventIn.getArguments()[0]), String.class);
-                    
-                    Token Token = service.getFirstToken(customerId);
-                    System.out.println(Token.getId());
-                    Event eventOut = new Event("GetTokenSuccessfull", new Object[]{Token});
-                    eventSender.sendEvent(eventOut);
-                } catch (Exception e) {
-                    Event eventOut = new Event("GetTokenFailed", new Object[]{e.getMessage()});
-                    eventSender.sendEvent(eventOut);
-                }
+            case CUSTOMER_REPORTS_REQUESTED:
+                System.out.println("Hello from CustomerReportsRequested Event");
+                String customerId = gson.fromJson(gson.toJson(eventIn.getArguments()[0]), String.class);
+                List<PaymentCustomer> customerPaymentsReport = service.getCustomerPaymentReport(customerId);
+                Event eventOut = new Event(CUSTOMER_REPORTS_GENERATED, new Object[]{customerPaymentsReport});
+                eventSender.sendEvent(eventOut);
                 break;
-                
-            case "GetCustomerIdFromTokenId":
-                try {
-                    System.out.println("Hello form GetCustomerIdFromTokenId");
-                    BankPay BankPay = gson.fromJson(gson.toJson(eventIn.getArguments()[0]), BankPay.class);
-                    String customerId = service.getCustomerIdByTokenIdForPayment(BankPay.getTokenId());
-                    Event eventOut = new Event("SuccessfullGotTheCustomerID", new Object[]{customerId});
-                    System.out.println("I am contacting Customer Service ...");
-                    eventSender.sendEvent(eventOut);
-                } catch (Exception e) {
-                    Event eventOut = new Event("FailureGotTheCustomerID", new Object[]{e.getMessage()});
-                    eventSender.sendEvent(eventOut);
-                }
+            case MERCHANT_REPORTS_REQUESTED:
+                System.out.println("Hello from MerchantReportsRequested Event");
+                String merchantId = gson.fromJson(gson.toJson(eventIn.getArguments()[0]), String.class);
+                List<PaymentMerchant> merchantPaymentsReport = service.getMerchantPaymentReport(merchantId);
+                Event eventOut2 = new Event(MERCHANT_REPORTS_GENERATED, new Object[]{merchantPaymentsReport});
+                eventSender.sendEvent(eventOut2);
+                break;
+            case MANAGER_REPORTS_REQUESTED:
+                System.out.println("Hello from ManagerReportsRequested Event");
+                List<Payment> managerPaymentsReport = service.getManagerPaymentReport();
+                Event eventOut3 = new Event(MANAGER_REPORTS_SUCCESSFUL_GENERATED, new Object[]{managerPaymentsReport});
+                eventSender.sendEvent(eventOut3);
                 break;
             default:
                 LOGGER.log(Level.WARNING, "Ignored event with type: " + eventIn.getEventType() + ". Event: " + eventIn.toString());
