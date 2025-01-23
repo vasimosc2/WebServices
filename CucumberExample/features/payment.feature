@@ -10,4 +10,3 @@ Feature: Payment
     And the merchant is registered with Simple DTU Pay using their bank account
     When the merchant initiates a payment for 3 kr
     Then the payment is successful
-    And delete the customer and merchant
