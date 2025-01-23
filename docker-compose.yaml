@@ -59,12 +59,36 @@ services:
     environment:
       - RABBITMQ_HOST=rabbitmq
 
+  report:
+    build: ./reporting-service
+    image: report
+    container_name: report
+    ports:
+      - "8088:8088" # Map container's 8080 to host's 8084
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    environment:
+      - RABBITMQ_HOST=rabbitmq
+
   merchantfacade:
-    build: ./MerchantFacade
+    build: ./merchant-facade
     image: merchantfacade
     container_name: merchantfacade
     ports:
       - "8086:8086" # Map container's 8080 to host's 8084
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    environment:
+      - RABBITMQ_HOST=rabbitmq
+
+  customerfacade:
+    build: ./customer-facade
+    image: customerfacade
+    container_name: customerfacade
+    ports:
+      - "8087:8087" # Map container's 8080 to host's 8084
     depends_on:
       rabbitmq:
         condition: service_healthy

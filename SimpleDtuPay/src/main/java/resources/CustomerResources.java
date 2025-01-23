@@ -69,6 +69,7 @@ public class CustomerResources {
         public Response requestTokens(TokenInt tokenInt) throws Exception {
             System.out.println("I reached DTUPay");
             boolean successful = tokenService.sendRequestTokensEvent(tokenInt);
+            System.out.println("We will have successful");
             if (successful) {
                 return Response.ok().build();
             } else {

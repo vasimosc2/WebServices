@@ -6,7 +6,6 @@ import messaging.Event;
 import messaging.EventReceiver;
 import messaging.EventSender;
 import models.TokenInt;
-import models.BankPay;
 import models.Token;
 import services.interfaces.ITokenService;
 
@@ -34,7 +33,7 @@ public class TokenEventService implements EventReceiver {
     @Override
     public void receiveEvent(Event eventIn) throws Exception {
         switch (eventIn.getEventType()) {
-            case TOKENS_REQUEST:
+            case TOKENS_GENERATION_REQUESTED:
                 try {
                     System.out.println("Hello from RequestTokens");
                     TokenInt tokenInt = gson.fromJson(gson.toJson(eventIn.getArguments()[0]), TokenInt.class);
@@ -43,7 +42,7 @@ public class TokenEventService implements EventReceiver {
 
                     Response response = service.requestTokens(tokenInt);
 
-                    Event eventOut = new Event(TOKENS_REQUEST_SUCCESS, new Object[]{response.getStatus()});
+                    Event eventOut = new Event(TOKENS_GENERATED, new Object[]{response.getStatus()});
                     System.out.println("Ready to send back");
                     eventSender.sendEvent(eventOut);
                     
@@ -52,16 +51,16 @@ public class TokenEventService implements EventReceiver {
                     eventSender.sendEvent(eventOut);
                 }
                 break;
-            case GET_FIRST_TOKEN_REQUEST:
+            case GET_FIRST_TOKEN_REQUESTED:
                 try {
-                    System.out.println("Hello from RequestGetToken");
+                    System.out.println("Hello from RequestGetOne Token");
                     String customerId = gson.fromJson(gson.toJson(eventIn.getArguments()[0]), String.class);
                     System.out.println(customerId);
                     Token Token = service.getFirstToken(customerId);
-                    Event eventOut = new Event(GET_FIRST_TOKEN_REQUEST_SUCCESS, new Object[]{Token});
+                    Event eventOut = new Event(GET_FIRST_TOKEN_RETRIEVED, new Object[]{Token});
                     eventSender.sendEvent(eventOut);
                 } catch (Exception e) {
-                    Event eventOut = new Event(GET_FIRST_TOKEN_REQUEST_FAILED, new Object[]{e.getMessage()});
+                    Event eventOut = new Event(GET_FIRST_TOKEN_NOT_RETRIEVED, new Object[]{e.getMessage()});
                     eventSender.sendEvent(eventOut);
                 }
                 break;
