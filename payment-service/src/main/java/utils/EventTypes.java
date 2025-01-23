@@ -52,6 +52,8 @@ public class EventTypes {
     public static final String PAYMENT_REQUEST_SUCCESS = "PaymentRequestSuccess";
     public static final String PAYMENT_REQUEST_FAILED = "PaymentRequestFailed";
 
+    public static final String MONEY_TRANSFERRED = "MoneyTransferred";
+
 
 
 }

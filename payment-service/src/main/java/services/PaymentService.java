@@ -6,9 +6,8 @@ import dtu.ws.fastmoney.BankService;
 import dtu.ws.fastmoney.BankServiceException_Exception;
 import dtu.ws.fastmoney.BankServiceService;
 import exceptions.PaymentException;
-import infrastructure.repositories.PaymentMap;
+import infrastructure.repositories.Payments;
 import infrastructure.repositories.interfaces.IPayments;
-import jakarta.ws.rs.core.Response;
 import models.*;
 import services.interfaces.IPaymentService;
 
@@ -16,16 +15,16 @@ import services.interfaces.IPaymentService;
 @jakarta.enterprise.context.ApplicationScoped
 public class PaymentService implements IPaymentService {
 
-    private final IPayments paymentmap = PaymentMap.getInstance();
+    private final IPayments payments = Payments.getInstance();
 
     BankService bankService = new BankServiceService().getBankServicePort();
 
     public void clear() {
-        paymentmap.clear();
+        payments.clear();
     }
 
     @Override
-    public Response requestPayment(Customer customer, Merchant merchant, BigDecimal money, String tokenId) throws PaymentException {
+    public MoneyTransferredObject requestPayment(Customer customer, Merchant merchant, BigDecimal money, String tokenId) throws PaymentException {
 
         try {
             bankService.transferMoneyFromTo(customer.getBankAccount(), merchant.getBankAccount(), money, "Random Reason");
@@ -34,28 +33,11 @@ public class PaymentService implements IPaymentService {
             throw new PaymentException("Payment failed because of: " + e.getMessage());
         }
 
-        PaymentCustomer paymentCustomer = new PaymentCustomer();
-        paymentCustomer.setAmount(money);
-        paymentCustomer.setTokenId(tokenId);
-        paymentCustomer.setMerchantId(merchant.getId());
+        MoneyTransferredObject moneyTransefer = new MoneyTransferredObject(tokenId,customer.getId(),merchant.getId(),money);
 
-        paymentmap.updateCustomerStore(customer.getId(), paymentCustomer);
+        payments.addMoneyTransferredObject(moneyTransefer);
 
-        PaymentMerchant paymentMerchant = new PaymentMerchant();
-        paymentMerchant.setAmount(money);
-        paymentMerchant.setTokenId(tokenId);
-
-        paymentmap.updateMerchantStore(merchant.getId(), paymentMerchant);
-
-        PaymentManager paymentManager = new PaymentManager();
-        paymentManager.setAmount(money);
-        paymentManager.setTokenId(tokenId);
-        paymentManager.setCustomerId(customer.getId());
-        paymentManager.setMerchantId(merchant.getId());
-
-        paymentmap.addPaymentManager(paymentManager);
-
-        return Response.status(Response.Status.OK).build();
+        return moneyTransefer;
     }
 
 

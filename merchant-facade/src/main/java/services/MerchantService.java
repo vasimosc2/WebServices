@@ -72,13 +72,13 @@ public class MerchantService implements EventReceiver  {
                 retireMerchant.complete(Response.status(404).entity("Delete successful").build());
                 break;
 
+                
+
             default:
                 System.out.println("Ignored event in Rest with type: " + eventIn.getEventType() + ". Event: " + eventIn.toString());
                 break;
         }
     }
-
-
 
 
 

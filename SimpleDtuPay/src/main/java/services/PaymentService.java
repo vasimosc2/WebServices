@@ -22,7 +22,7 @@ public class PaymentService implements EventReceiver {
 
 
     private EventSender eventSender;
-    private final Gson gson = new Gson();
+   
 
     public PaymentService(EventSender eventSender)  {
         this.eventSender = eventSender;
@@ -33,12 +33,6 @@ public class PaymentService implements EventReceiver {
         switch (eventIn.getEventType()) {
             case PAYMENT_REQUEST_SUCCESS:
                 System.out.println("I got PaymentSuccessful");
-                String tokenId = gson.fromJson(gson.toJson(eventIn.getArguments()[0]), String.class);
-
-                Event eventOut = new Event(SET_TOKEN_AS_USED_REQUEST, new Object[]{tokenId});
-                System.out.println("Sending to the Token Service .....");
-                eventSender.sendEvent(eventOut);
-
                 requestPaymentResult.complete(true);
                 break;
             case PAYMENT_REQUEST_FAILED:

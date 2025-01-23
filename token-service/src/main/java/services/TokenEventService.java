@@ -5,6 +5,7 @@ import com.google.gson.Gson;
 import messaging.Event;
 import messaging.EventReceiver;
 import messaging.EventSender;
+import models.BankPay;
 import models.TokenInt;
 import models.Token;
 import services.interfaces.ITokenService;
@@ -65,36 +66,23 @@ public class TokenEventService implements EventReceiver {
                 }
                 break;
 
-            case GET_CUSTOMER_ID_BY_TOKEN_ID_REQUEST:
+            case PAYMENT_REQUEST:
                 try {
-                    System.out.println("Hello form GetCustomerIdFromTokenId");
-                    String tokenId = gson.fromJson(gson.toJson(eventIn.getArguments()[0]), String.class);
+                    System.out.println("Hello from PaymentRequested in Token_Service");
+                    BankPay bankPay = gson.fromJson(gson.toJson(eventIn.getArguments()[0]), BankPay.class);
 
-                    if (service.isTokenValid(tokenId)) {
-                        String customerId = service.getCustomerIdByTokenIdForPayment(tokenId);
+                    if (service.isTokenValid(bankPay.getTokenId())) { // here I have ensure that the token exist and I have turn it to used = true
+                        String customerId = service.getCustomerIdByTokenIdForPayment(bankPay.getTokenId());
                         Event eventOut = new Event(GET_CUSTOMER_BY_CUSTOMER_ID_REQUEST, new Object[]{customerId});
                         System.out.println("I am contacting Customer Service ...");
                         eventSender.sendEvent(eventOut);
                     } else {
                         System.out.println("Token Not Valid");
-                        Event eventOut = new Event(GET_CUSTOMER_ID_BY_TOKEN_ID_REQUEST_FAILED, new Object[]{tokenId});
+                        Event eventOut = new Event(GET_CUSTOMER_ID_BY_TOKEN_ID_REQUEST_FAILED, new Object[]{bankPay.getTokenId()});
                         eventSender.sendEvent(eventOut);
                     }
                 } catch (Exception e) {
                     Event eventOut = new Event("FailureGotTheCustomerID", new Object[]{e.getMessage()});
-                    eventSender.sendEvent(eventOut);
-                }
-                break;
-            case SET_TOKEN_AS_USED_REQUEST:
-                try {
-                    System.out.println("Hello from SetTokenAsUsed");
-                    String tokenId = gson.fromJson(gson.toJson(eventIn.getArguments()[0]), String.class);
-                    service.markTokenAsUsed(tokenId);
-                    Event eventOut = new Event(SET_TOKEN_AS_USED_REQUEST_SUCCESS, new Object[]{tokenId});
-                    System.out.println("I am contacting DTU Pay ...");
-                    eventSender.sendEvent(eventOut);
-                } catch (Exception e) {
-                    Event eventOut = new Event(SET_TOKEN_AS_USED_REQUEST_FAILED, new Object[]{e.getMessage()});
                     eventSender.sendEvent(eventOut);
                 }
                 break;
