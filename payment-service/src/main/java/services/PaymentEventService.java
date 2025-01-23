@@ -1,22 +1,17 @@
 package services;
 import com.google.gson.Gson;
 
-
-import interfaces.rabbitmq.payment.PaymentSender;
 import messaging.Event;
 import messaging.EventReceiver;
 import messaging.EventSender;
 import models.BankPay;
 import models.Customer;
 import models.Merchant;
+import models.MoneyTransferredObject;
 import services.interfaces.IPaymentService;
-
-import java.math.BigDecimal;
 import java.util.concurrent.CompletableFuture;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import jakarta.ws.rs.core.Response;
 
 import static utils.EventTypes.*;
 
@@ -28,9 +23,8 @@ public class PaymentEventService implements EventReceiver {
     
     private final IPaymentService service;
 
-    private CompletableFuture<Customer> Future_customer  = new CompletableFuture<>();
-    private CompletableFuture<Merchant> Future_merchant =  new CompletableFuture<>();
-    private BigDecimal amount;
+    private CompletableFuture<Customer> Future_customer;
+    private CompletableFuture<Merchant> Future_merchant;
 
     private final Gson gson = new Gson();
 
@@ -46,46 +40,38 @@ public class PaymentEventService implements EventReceiver {
                 try {
                     System.out.println("Hello from RequestPayment at the PaymentService");
                     BankPay bankPay = gson.fromJson(gson.toJson(eventIn.getArguments()[0]), BankPay.class);
-
-                    System.out.println(bankPay.getMoney());
-                    System.out.println(bankPay.getMerchantId());
-                    System.out.println(bankPay.getTokenId());
-
+                    
                     Future_customer = new CompletableFuture<>();
+                    Future_merchant = new CompletableFuture<>();
 
-                    // Step 2: Send event to retrieve Customer
-                    Event eventOut1 = new Event(GET_CUSTOMER_ID_BY_TOKEN_ID_REQUEST, new Object[]{bankPay.getTokenId()});
-                    System.out.println("Sending to the Token Service .....");
-                    eventSender.sendEvent(eventOut1);
+                    System.out.println("Futures have been created. Waiting for them to be completed...");
 
-                    // Step 3: Chain actions after Customer retrieval
-                    Future_customer.thenAcceptAsync(customer -> {
+                    CompletableFuture<Void> allFutures = CompletableFuture.allOf(Future_customer, Future_merchant);
+
+                    allFutures.thenAcceptAsync(voidResult -> {
                         try {
-                            System.out.println("I got a customer: " + customer.getFirstName());
+                            // Retrieve the results from the futures
+                            Customer customer = Future_customer.get();
+                            Merchant merchant = Future_merchant.get();
 
-                            // Step 4: Send event to retrieve Merchant
-                            Future_merchant = new CompletableFuture<>();
-                            Event eventOut2 = new Event(GET_MERCHANT_BY_MERCHANT_ID_REQUEST, new Object[]{bankPay.getMerchantId()});
-                            System.out.println("Sending to the Merchant Service ....");
+                            System.out.println("I got a customer: " + customer.getFirstName());
+                            System.out.println("I got the merchant: " + merchant.getFirstName());
+
+                            // Step 4: Process the payment
+                            MoneyTransferredObject moneyTransfer = service.requestPayment(customer, merchant, bankPay.getMoney(), bankPay.getTokenId()); // TODO potential a bool for that
+
+                            // Step 5: Send success event
+
+                            Event eventOut1 = new Event(PAYMENT_REQUEST_SUCCESS, new Object[]{});
+                            Event eventOut2 = new Event(MONEY_TRANSFERRED, new Object[]{moneyTransfer});
+
+                            System.out.println("I am sending a PaymentSuccessful to Report and MerchantFacede ....");
+                            eventSender.sendEvent(eventOut1);
                             eventSender.sendEvent(eventOut2);
 
-                            // Step 5: Chain actions after Merchant retrieval
-                            Future_merchant.thenAcceptAsync(merchant -> {
-                                try {
-                                    System.out.println("I got the merchant: " + merchant.getFirstName());
-
-                                    service.requestPayment(customer, merchant, bankPay.getMoney(), bankPay.getTokenId());
-
-                                    // Step 6: Send success event
-                                    Event eventOut3 = new Event(PAYMENT_REQUEST_SUCCESS, new Object[]{bankPay.getTokenId()});
-                                    System.out.println("I am sending a PaymentSuccessful ....");
-                                    eventSender.sendEvent(eventOut3);
-                                } catch (Exception e) {
-                                    System.err.println("Error in merchant processing: " + e.getMessage());
-                                }
-                            });
+                            
                         } catch (Exception e) {
-                            System.err.println("Error in customer processing: " + e.getMessage());
+                            System.err.println("Error processing payment: " + e.getMessage());
                         }
                     });
                 } catch (Exception e) {
@@ -109,15 +95,5 @@ public class PaymentEventService implements EventReceiver {
                 break;
         }
     }
-
-//    public Customer sendRequestCustomerByTokenIdEvent(String tokenId) throws Exception{
-//        String eventType = "RequestCustomerByTokenEvent";
-//        Object[] arguments = new Object[]{tokenId};
-//        Event event = new Event(eventType, arguments);
-//        CompletableFuture<Customer> requestCustomerByTokenIdResult = new CompletableFuture<>();
-//        eventSender.sendEvent(event);
-//
-//        return requestCustomerByTokenIdResult.join();
-//    }
 
 }

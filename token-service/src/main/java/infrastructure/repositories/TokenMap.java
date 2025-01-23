@@ -57,24 +57,6 @@ public class TokenMap implements ITokens {
     }
 
     @Override
-    public void invalidateToken(String tokenId) throws TokenException {
-
-        for (Map.Entry<String, List<Token>> entry : tokenStore.entrySet()) {
-            List<Token> tokens = entry.getValue();
-            for (Token t : tokens) {
-                if (t.getId().equals(tokenId)) {
-                    System.out.println("Token " + tokenId + " has following usedValue: " + tokenStore.get(entry.getKey()));
-                    t.setUsed(true);
-                    System.out.println("Token " + tokenId + " marked as used USEDVALUE: " + tokenStore.get(entry.getKey()) + " for customer: " + entry.getKey());
-                    return;
-                }
-            }
-        }
-        System.out.println("Token with ID: " + tokenId + " not found");
-        throw new TokenException("Token with ID: " + tokenId + " not found");
-    }
-
-    @Override
     public String getCustomerIdByTokenId(String tokenId) throws TokenException {
         for (Map.Entry<String, List<Token>> entry : tokenStore.entrySet()) {
             List<Token> tokens = entry.getValue();
@@ -93,20 +75,18 @@ public class TokenMap implements ITokens {
         for (Map.Entry<String, List<Token>> entry : tokenStore.entrySet()) {
             List<Token> tokens = entry.getValue();
             for (Token t : tokens) {
-                if (t.getId().equals(tokenId)) {
-                    return !t.getUsed();
+                if (t.getId().equals(tokenId)) { // I found a token
+                    if(t.getUsed() == false){
+                        t.setUsed(true); // Here I invalidate the token
+                        return true;
+                    }
+                    else{
+                        return false;
+                    }
                 }
             }
         }
         throw new TokenException("Token with ID: " + tokenId + " not found");
-    }
-
-
-
-    @Override
-    public void add(Map<String, List<Token>> obj) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'add'");
     }
 
    
