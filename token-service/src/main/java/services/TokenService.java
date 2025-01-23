@@ -9,7 +9,6 @@ import services.interfaces.ITokenService;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 
@@ -24,7 +23,7 @@ public class TokenService implements ITokenService {
         tokenmap.clear();
     }
 
-    @Override// TODO here ensure that he can x+y <= 6
+    @Override
     public Response requestTokens(TokenInt tokenInt) throws TokenException {
         if (tokenInt.getAmount() < 1 || tokenInt.getAmount() > 5) {
             throw new TokenException("You can only request 1 to 5 tokens");
