@@ -26,7 +26,6 @@ public class SimpleDtuPaySteps {
     private Merchant merchant;
     private String customerId, merchantId, customerBankAccountId, merchantBankAccountId;
     private Token customerToken;
-    private int paymentAmount;
     private SimpleDtuPayService dtupay = new SimpleDtuPayService();
     private BankService bankService = new BankServiceService().getBankServicePort();
     private boolean successful = false;
@@ -53,8 +52,8 @@ public class SimpleDtuPaySteps {
 
     @And("the customer is registered with Simple DTU Pay using their bank account")
     public void theCustomerIsRegisteredWithSimpleDTUPayUsingTheirBankAccount() {
-        assertNotNull(customer.getCprNumber()); //maybe not needed
-        assertNotNull(customer.getBankAccount()); //maybe not needed
+        assertNotNull(customer.getCprNumber());
+        assertNotNull(customer.getBankAccount());
         customerId = dtupay.register(customer);
         System.out.println("SANTI customer id: " + customerId);
     }

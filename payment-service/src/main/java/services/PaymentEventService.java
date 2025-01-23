@@ -1,17 +1,14 @@
 package services;
 import com.google.gson.Gson;
 
-
-import interfaces.rabbitmq.payment.PaymentSender;
 import messaging.Event;
 import messaging.EventReceiver;
 import messaging.EventSender;
 import models.BankPay;
 import models.Customer;
 import models.Merchant;
+import models.MoneyTransferredObject;
 import services.interfaces.IPaymentService;
-
-import java.math.BigDecimal;
 import java.util.concurrent.CompletableFuture;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -28,7 +25,6 @@ public class PaymentEventService implements EventReceiver {
 
     private CompletableFuture<Customer> Future_customer;
     private CompletableFuture<Merchant> Future_merchant;
-    private BigDecimal amount;
 
     private final Gson gson = new Gson();
 
@@ -44,10 +40,7 @@ public class PaymentEventService implements EventReceiver {
                 try {
                     System.out.println("Hello from RequestPayment at the PaymentService");
                     BankPay bankPay = gson.fromJson(gson.toJson(eventIn.getArguments()[0]), BankPay.class);
-
-                    // Store the money value
                     
-
                     Future_customer = new CompletableFuture<>();
                     Future_merchant = new CompletableFuture<>();
 
@@ -65,12 +58,18 @@ public class PaymentEventService implements EventReceiver {
                             System.out.println("I got the merchant: " + merchant.getFirstName());
 
                             // Step 4: Process the payment
-                            service.requestPayment(customer, merchant, bankPay.getMoney(), bankPay.getTokenId()); // TODO potential a bool for that
+                            MoneyTransferredObject moneyTransfer = service.requestPayment(customer, merchant, bankPay.getMoney(), bankPay.getTokenId()); // TODO potential a bool for that
 
                             // Step 5: Send success event
-                            Event eventOut3 = new Event(PAYMENT_REQUEST_SUCCESS, new Object[]{});
-                            System.out.println("I am sending a PaymentSuccessful ....");
-                            eventSender.sendEvent(eventOut3);
+
+                            Event eventOut1 = new Event(PAYMENT_REQUEST_SUCCESS, new Object[]{});
+                            Event eventOut2 = new Event(MONEY_TRANSFERRED, new Object[]{moneyTransfer});
+
+                            System.out.println("I am sending a PaymentSuccessful to Report and MerchantFacede ....");
+                            eventSender.sendEvent(eventOut1);
+                            eventSender.sendEvent(eventOut2);
+
+                            
                         } catch (Exception e) {
                             System.err.println("Error processing payment: " + e.getMessage());
                         }
@@ -96,15 +95,5 @@ public class PaymentEventService implements EventReceiver {
                 break;
         }
     }
-
-//    public Customer sendRequestCustomerByTokenIdEvent(String tokenId) throws Exception{
-//        String eventType = "RequestCustomerByTokenEvent";
-//        Object[] arguments = new Object[]{tokenId};
-//        Event event = new Event(eventType, arguments);
-//        CompletableFuture<Customer> requestCustomerByTokenIdResult = new CompletableFuture<>();
-//        eventSender.sendEvent(event);
-//
-//        return requestCustomerByTokenIdResult.join();
-//    }
 
 }

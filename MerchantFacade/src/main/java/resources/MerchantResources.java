@@ -23,7 +23,7 @@ import services.PaymentService;
 public class MerchantResources{
     MerchantService merchantService = MerchantFactory.getService();
 
-    
+    PaymentService paymentService = PaymentFactory.getService();
     
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -33,16 +33,16 @@ public class MerchantResources{
     
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("/{cprNumber}")
-    public Merchant getCprNumber(@PathParam("cprNumber") String cprNumber) throws Exception {
-        return merchantService.GetMerchantByCpr(cprNumber);
+    @Path("/{merchantId}")
+    public Merchant getMerchantByMerchantId(@PathParam("merchantId") String merchantId) throws Exception {
+        return merchantService.getMerchantByMerchantId(merchantId);
     }
 
     @DELETE
-    @Path("/{cprNumber}")
-    public Response retireAccount(@PathParam("cprNumber") String cprNumber) throws Exception {
-        System.out.println(cprNumber);
-       return merchantService.retireAccount(cprNumber);
+    @Path("/{merchantId}")
+    public Response retireAccount(@PathParam("merchantId") String merchantId) throws Exception {
+        System.out.println(merchantId);
+       return merchantService.retireAccount(merchantId);
     }
 
     @POST
@@ -57,8 +57,8 @@ public class MerchantResources{
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/payments")
-    public Response makePayment(BankPay bankpay) throws Exception {
-        boolean successful = merchantService.sendPaymentEvent(bankpay);
+    public Response setBankPayment(BankPay bankpay) throws Exception {
+        boolean successful = paymentService.sendPaymentEvent(bankpay);
         return Response.ok().entity(successful).build();
     }
 

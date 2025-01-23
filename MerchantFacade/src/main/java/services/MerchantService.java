@@ -84,8 +84,6 @@ public class MerchantService implements EventReceiver  {
 
 
 
-
-
     public String sendRegisterEvent(Merchant merchant) throws Exception{
         String eventType = REGISTER_MERCHANT_REQUEST;
         Object[] arguments = new Object[]{merchant};
