@@ -3,7 +3,14 @@ set -e  # Exit immediately if a command exits with a non-zero status
 
 echo "Current directory: $(pwd)"
 
-./SimpleDtuPay/launch_service.sh
+# Facades
+# ./SimpleDtuPay/launch_service.sh
+
+./CustomerFacade/launch_service.sh
+./MerchantFacade/launch_service.sh
+# ./AccountFacade/launch_service.sh
+
+# Services
 ./customer-service/launch_service.sh
 ./merchant-service/launch_service.sh
 ./payment-service/launch_service.sh

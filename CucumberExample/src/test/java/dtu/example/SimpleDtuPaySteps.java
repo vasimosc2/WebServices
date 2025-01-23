@@ -7,7 +7,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import dtu.example.models.Customer;
 import dtu.example.models.Merchant;
 import dtu.example.models.Token;
-import dtu.example.services.SimpleDtuPayService;
+import dtu.example.services.CustomerFacadeService;
+import dtu.example.services.MerchantFacadeService;
+// import dtu.example.services.SimpleDtuPayService;
 import dtu.ws.fastmoney.BankService;
 import dtu.ws.fastmoney.BankServiceException_Exception;
 import dtu.ws.fastmoney.BankServiceService;
@@ -26,8 +28,12 @@ public class SimpleDtuPaySteps {
     private Merchant merchant;
     private String customerId, merchantId, customerBankAccountId, merchantBankAccountId;
     private Token customerToken;
-    private int paymentAmount;
-    private SimpleDtuPayService dtupay = new SimpleDtuPayService();
+    // private int paymentAmount;
+    // private SimpleDtuPayService dtupay = new SimpleDtuPayService();
+
+    private CustomerFacadeService dtupayCustomerFacade = new CustomerFacadeService();
+    private MerchantFacadeService dtupayMerchantFacade = new MerchantFacadeService();
+
     private BankService bankService = new BankServiceService().getBankServicePort();
     private boolean successful = false;
 
@@ -55,21 +61,21 @@ public class SimpleDtuPaySteps {
     public void theCustomerIsRegisteredWithSimpleDTUPayUsingTheirBankAccount() {
         assertNotNull(customer.getCprNumber()); //maybe not needed
         assertNotNull(customer.getBankAccount()); //maybe not needed
-        customerId = dtupay.register(customer);
+        customerId = dtupayCustomerFacade.register(customer);
         System.out.println("SANTI customer id: " + customerId);
     }
 
     @Then("the customer generates {int} tokens")
     public void the_customer_requests_tokens(int tokenAmount) {
         System.out.println("I am at the tokenRequest");
-        boolean isSuccess = dtupay.generateTokens(customerId, tokenAmount);
+        boolean isSuccess = dtupayCustomerFacade.generateTokens(customerId, tokenAmount);
         assertTrue(isSuccess);
     }
 
     @And("the customer retrieves a token")
     public void the_merchant_asks_for_a_token_from_the_customer() {
         System.out.println("I am ready to get one Token");
-        customerToken = dtupay.requestTokenFromCustomer(customerId);
+        customerToken = dtupayCustomerFacade.requestTokenFromCustomer(customerId);
         System.out.println(customerToken.getId());
         assertNotNull(customerToken.getId());
     }
@@ -98,7 +104,7 @@ public class SimpleDtuPaySteps {
     public void theMerchantIsRegisteredWithSimpleDTUPayUsingTheirBankAccount() {
         assertNotNull(merchant.getCprNumber()); 
         assertNotNull(merchant.getBankAccount());
-        merchantId = dtupay.register(merchant);
+        merchantId = dtupayMerchantFacade.register(merchant);
         System.out.println("SANTI merchant id: " + merchantId);
     }
 
@@ -106,7 +112,7 @@ public class SimpleDtuPaySteps {
     @When("the merchant initiates a payment for {int} kr")
     public void theMerchantInitiatesAPaymentForKrGivenTheTokenInPosition(int money ) {
         System.out.println("I am ready to initiate a payment");
-        successful = dtupay.maketransfer(money, customerToken.getId(), merchantId);
+        successful = dtupayMerchantFacade.maketransfer(money, customerToken.getId(), merchantId);
 
     }
 

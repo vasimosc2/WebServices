@@ -71,6 +71,18 @@ services:
     environment:
       - RABBITMQ_HOST=rabbitmq
 
+  customerfacade:
+    build: ./CustomerFacade
+    image: customerfacade
+    container_name: customerfacade
+    ports:
+      - "8087:8087" # Map container's 8080 to host's 8084
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    environment:
+      - RABBITMQ_HOST=rabbitmq
+
   rabbitmq:
     image: rabbitmq:3-management
     container_name: rabbitmq
