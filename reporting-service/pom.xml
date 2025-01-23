@@ -108,6 +108,27 @@
         <scope>test</scope>
     </dependency>
 
+
+    <!--  These two dependencies allow to run JUnit 4 tests and Cucumber tests. -->
+    <dependency>
+        <groupId>org.junit.vintage</groupId>
+        <artifactId>junit-vintage-engine</artifactId>
+        <version>5.10.0</version>
+        <scope>test</scope>
+    </dependency>
+    <dependency>
+        <groupId>org.junit.platform</groupId>
+        <artifactId>junit-platform-runner</artifactId>
+        <version>1.10.0</version>
+        <scope>test</scope>
+    </dependency>
+    <dependency>
+        <groupId>org.mockito</groupId>
+        <artifactId>mockito-core</artifactId>
+        <version>5.5.0</version>
+        <scope>test</scope>
+    </dependency>
+
     <!-- ################### ModelMapper DEPENDENCIES ################### -->
 
     <dependency>
