@@ -3,12 +3,23 @@ package infrastructure.repositories.interfaces;
 import java.util.List;
 import java.util.Map;
 
-import models.Payment;
-import models.Token;
+import models.PaymentCustomer;
+import models.PaymentManager;
+import models.PaymentMerchant;
 
-public interface IPayments extends IRepository<Map<String, Payment>> {
+public interface IPayments extends IRepository<Map<String, PaymentCustomer>> {
     void clear();
 
-    Payment get(String paymentId);
+    void updateCustomerStore(String customerId, PaymentCustomer paymentCustomer);
+
+    void updateMerchantStore(String merchantId, PaymentMerchant paymentMerchant);
+
+    void addPaymentManager(PaymentManager paymentManager);
+
+    List<PaymentCustomer> getPaymentsCustomer(String customerId);
+
+    List<PaymentMerchant> getPaymentsMerchant(String merchantId);
+
+    List<PaymentManager> getAllPayments();
 
 }

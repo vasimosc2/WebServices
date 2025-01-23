@@ -31,17 +31,17 @@ public class CustomerResources {
     }
 
     @GET
-    @Path("/{cprNumber}")
+    @Path("/{customerId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Customer getCustomerByCpr(@PathParam("cprNumber") String cprNumber) throws Exception {
-        return customerService.getCustomerByCpr(cprNumber);
+    public Customer getCustomerByCustomerId(@PathParam("customerId") String customerId) throws Exception {
+        return customerService.getCustomerByCustomerId(customerId);
     }
 
     @DELETE
-    @Path("/{cprNumber}")
-    public Response retireAccount(@PathParam("cprNumber") String cprNumber) throws Exception {
-        System.out.println("Retiring account for CPR number: " + cprNumber);
-        return customerService.retireAccount(cprNumber);
+    @Path("/{customerId}")
+    public Response retireAccount(@PathParam("customerId") String customerId) throws Exception {
+        System.out.println("Retiring account for Customer Id: " + customerId);
+        return customerService.retireAccount(customerId);
     }
 
     @POST

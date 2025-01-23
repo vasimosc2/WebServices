@@ -88,8 +88,17 @@ public class TokenMap implements ITokens {
         throw new TokenException("Token with ID: " + tokenId + " not found");
     }
 
-    public void updateTokenInTokenStore(String tokenId) {
-
+    @Override
+    public boolean checkTokenIsValid(String tokenId) throws TokenException {
+        for (Map.Entry<String, List<Token>> entry : tokenStore.entrySet()) {
+            List<Token> tokens = entry.getValue();
+            for (Token t : tokens) {
+                if (t.getId().equals(tokenId)) {
+                    return !t.getUsed();
+                }
+            }
+        }
+        throw new TokenException("Token with ID: " + tokenId + " not found");
     }
 
 

@@ -10,6 +10,8 @@ import messaging.Event;
 import messaging.EventReceiver;
 import messaging.EventSender;
 
+import static utils.EventTypes.*;
+
 public class TokenService implements EventReceiver {
     
     private CompletableFuture<Boolean> requestTokensResult;
@@ -27,19 +29,19 @@ public class TokenService implements EventReceiver {
     @Override
     public void receiveEvent(Event eventIn) {
         switch (eventIn.getEventType()) {
-            case "RequestTokensSuccessfull":
+            case TOKENS_REQUEST_SUCCESS:
                 System.out.println("I got a successfull Token request");
                 requestTokensResult.complete(true);
                 break;
-            case "RequestTokensFailed":
+            case TOKENS_REQUEST_FAILED:
                 requestTokensResult.complete(false);
                 break;
-            case "GetTokenSuccessfull":
+            case GET_FIRST_TOKEN_REQUEST_SUCCESS:
                 System.out.println("I got a successfull GetToken");
                 Token token = gson.fromJson(gson.toJson(eventIn.getArguments()[0]), Token.class);
                 getTokenResult.complete(token);
                 break;
-            case "GetTokenFailed":
+            case GET_FIRST_TOKEN_REQUEST_FAILED:
                 getTokenResult.complete(null);
                 break;
             case "CustomerRetirementSuccessful":
@@ -56,7 +58,7 @@ public class TokenService implements EventReceiver {
 
 
     public boolean sendRequestTokensEvent(TokenInt tokenInt) throws Exception{
-        String eventType = "RequestTokens";
+        String eventType = TOKENS_REQUEST;
         Object[] arguments = new Object[]{tokenInt};
         Event event = new Event(eventType, arguments);
         requestTokensResult = new CompletableFuture<>();
@@ -68,7 +70,7 @@ public class TokenService implements EventReceiver {
 
     public Token sendGetTokenRequest(String customerId) throws Exception{
         System.out.println("I reached RequestGetToken");
-        String eventType = "RequestGetToken";
+        String eventType = GET_FIRST_TOKEN_REQUEST;
         Object[] arguments = new Object[]{customerId};
         Event event = new Event(eventType, arguments);
         getTokenResult = new CompletableFuture<>();
