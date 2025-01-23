@@ -70,6 +70,7 @@ public class CustomerResources {
             System.out.println("I reached DTUPay");
             boolean successful = tokenService.sendRequestTokensEvent(tokenInt);
             if (successful) {
+                System.out.println("inside customer facade sucessful generation of tokens");
                 return Response.ok().build();
             } else {
                 return Response.status(Response.Status.BAD_REQUEST)

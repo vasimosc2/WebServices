@@ -1,6 +1,5 @@
 package messaging.rabbitmq.token;
 import messaging.EventSender;
-import services.TokenService;
 
 
 public class TokenFactory {

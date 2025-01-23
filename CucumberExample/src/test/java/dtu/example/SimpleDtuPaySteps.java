@@ -73,12 +73,14 @@ public class SimpleDtuPaySteps {
     }
 
     @And("the customer retrieves a token")
-    public void the_merchant_asks_for_a_token_from_the_customer() {
+    public void theCustomerRetrievesAToken() {
         System.out.println("I am ready to get one Token");
         customerToken = dtupayCustomerFacade.requestTokenFromCustomer(customerId);
         System.out.println(customerToken.getId());
         assertNotNull(customerToken.getId());
     }
+
+
      
      
     @Given("a merchant with name {string}, last name {string}, and CPR {string}")

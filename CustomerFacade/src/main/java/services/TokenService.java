@@ -65,7 +65,7 @@ public class TokenService implements EventReceiver {
         Event event = new Event(eventType, arguments);
         requestTokensResult = new CompletableFuture<>();
         eventSender.sendEvent(event);
-        
+        System.out.println("almost requestTokenResults join");
         return requestTokensResult.join();
 
     }
