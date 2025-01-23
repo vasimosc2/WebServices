@@ -5,7 +5,6 @@ import messaging.Event;
 import messaging.EventReceiver;
 import messaging.EventSender;
 import models.BankPay;
-import models.Customer;
 import models.PaymentManager;
 
 import java.util.List;
@@ -22,6 +21,7 @@ public class PaymentService implements EventReceiver {
     private CompletableFuture<List<PaymentManager>> ManagerPayments;
     private Map<String,CompletableFuture<Boolean>> correlations = new ConcurrentHashMap<>();
 
+    private String correlationId;
 
 
 
@@ -38,13 +38,18 @@ public class PaymentService implements EventReceiver {
             case PAYMENT_REQUEST_SUCCESS:
                 System.out.println("I got PaymentSuccessful");
 
-                String correlationId = gson.fromJson(gson.toJson(eventIn.getArguments()[0]), String.class);
+                correlationId = gson.fromJson(gson.toJson(eventIn.getArguments()[0]), String.class);
                 System.out.println("The correlationID is: ");
                 System.out.println(correlationId);
                 correlations.get(correlationId).complete(true);
                 break;
             case PAYMENT_REQUEST_FAILED:
                 requestPaymentResult.complete(false);
+                break;
+            case GET_CUSTOMER_ID_BY_TOKEN_ID_REQUEST_FAILED:
+                System.out.println("The Token was not valid");
+                correlationId = gson.fromJson(gson.toJson(eventIn.getArguments()[0]), String.class);
+                correlations.get(correlationId).complete(false);
                 break;
             default:
                 System.out.println("Ignored event with type: " + eventIn.getEventType() + ". Event: " + eventIn.toString());
@@ -53,7 +58,7 @@ public class PaymentService implements EventReceiver {
     }
 
 
-    public boolean sendPaymentEvent(BankPay bankpay) throws Exception{ // The Correlation must start from here Bitches
+    public boolean sendPaymentEvent(BankPay bankpay) throws Exception{
         String correlationId = UUID.randomUUID().toString();
         correlations.put(correlationId, new CompletableFuture<>());
 

@@ -185,7 +185,7 @@ public class SimpleDtuPaySteps {
     @And("the customer retrieves a token")
     public void the_merchant_asks_for_a_token_from_the_customer() {
         System.out.println("I am ready to get one Token");
-        customerToken = dtupayCustomerFacade.getUnusedTokenFromCustomer(customerId1);
+        customerToken = dtupayCustomerFacade.getUnusedTokenFromCustomer(customerId);
         System.out.println(customerToken.getId());
         assertNotNull(customerToken.getId());
     }
@@ -248,7 +248,9 @@ public class SimpleDtuPaySteps {
 
         thread1.join();
         thread2.join();
-        System.out.println("The result is : " + result.get());
+
+        assertTrue(result.get());
+        assertTrue(result2.get());
     }
 
 
