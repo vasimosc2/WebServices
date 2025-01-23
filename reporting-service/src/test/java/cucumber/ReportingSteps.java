@@ -44,7 +44,7 @@ public class ReportingSteps {
         System.out.println("listPaymentsMAnager.size() = " + listPaymentsMAnager.size());
 
         for ( Payment payment : listPaymentsMAnager) {
-            System.out.println("payment = " + payment.getCustomerId() + "," + payment.getTokenId() + "," + payment.getMerchantId() + "," + payment.getAmount());
+            System.out.println("SANTI payment = " + payment.getCustomerId() + "," + payment.getTokenId() + "," + payment.getMerchantId() + "," + payment.getAmount());
         }
 
         assert listPaymentsMAnager.size() == 4;
