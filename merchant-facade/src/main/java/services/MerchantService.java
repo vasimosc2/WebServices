@@ -6,8 +6,6 @@ import static utils.EventTypes.*;
 import static utils.EventTypes.MERCHANT_REGISTERED;
 
 import com.google.gson.Gson;
-
-
 import jakarta.ws.rs.core.Response;
 import messaging.Event;
 import messaging.EventReceiver;
@@ -21,6 +19,7 @@ public class MerchantService implements EventReceiver  {
     private CompletableFuture<String> registerResult;
     private CompletableFuture<Merchant> GetMerchantResult;
     private CompletableFuture<Response> retireMerchant;
+    private CompletableFuture<Boolean> requestPaymentResult;
 
 
     private EventSender eventSender;
@@ -71,7 +70,11 @@ public class MerchantService implements EventReceiver  {
             case "RetiremerchantByCprFailed":
                 retireMerchant.complete(Response.status(404).entity("Delete successful").build());
                 break;
-
+            
+            case PAYMENT_REQUEST_SUCCESS:
+                System.out.println("I got PaymentSuccessful");
+                requestPaymentResult.complete(true);
+                break;
                 
 
             default:

@@ -7,3 +7,4 @@ MerchantFacade/target/*
 payment-service/target/*
 token-service/target/*
 CucumberExample/target/*
+reporting-service/target/*
