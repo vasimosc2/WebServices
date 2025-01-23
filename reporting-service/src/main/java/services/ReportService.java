@@ -1,11 +1,13 @@
 package services;
 
+import infrastructure.repositories.ReportMap;
 import infrastructure.repositories.TokenMap;
+import infrastructure.repositories.interfaces.IReports;
 import infrastructure.repositories.interfaces.ITokens;
 import jakarta.ws.rs.core.Response;
 import models.Token;
 import models.TokenInt;
-import services.interfaces.ITokenService;
+import services.interfaces.IReportService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,16 +17,16 @@ import java.util.UUID;
 import exceptions.TokenException;
 
 @jakarta.enterprise.context.ApplicationScoped
-public class TokenService implements ITokenService {
+public class ReportService implements IReportService {
 
-    private final ITokens tokenmap = TokenMap.getInstance(); 
+    private final IReports reportRepo = ReportMap.getInstance();
 
     public void clear() {
-        tokenmap.clear();
+        reportRepo.clear();
     }
 
     @Override// TODO here ensure that he can x+y <= 6
-    public Response requestTokens(TokenInt tokenInt) throws TokenException {
+    public Response requestCustomerPaymentReport(TokenInt tokenInt) throws TokenException {
         if (tokenInt.getAmount() < 1 || tokenInt.getAmount() > 5) {
             throw new TokenException("You can only request 1 to 5 tokens");
         }

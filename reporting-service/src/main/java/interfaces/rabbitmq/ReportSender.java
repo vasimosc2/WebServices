@@ -11,9 +11,9 @@ import java.nio.charset.StandardCharsets;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class TokenSender implements EventSender {
+public class ReportSender implements EventSender {
 
-    private final static Logger LOGGER = Logger.getLogger(TokenSender.class.getName());
+    private final static Logger LOGGER = Logger.getLogger(ReportSender.class.getName());
 
 	private static final String EXCHANGE_NAME = "eventsExchange";
 	private static final String QUEUE_TYPE = "topic";

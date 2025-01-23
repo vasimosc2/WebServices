@@ -1,6 +1,6 @@
 package interfaces.rest;
 
-import interfaces.rabbitmq.TokenFactory;
+import interfaces.rabbitmq.ReportFactory;
 import io.quarkus.runtime.ShutdownEvent;
 import io.quarkus.runtime.StartupEvent;
 
@@ -26,7 +26,7 @@ public class RootApplication extends jakarta.ws.rs.core.Application {
         LOGGER.info("The application is starting... RabbitMQ host: " + System.getenv("RABBITMQ_HOST"));
         try {
             LOGGER.info("Starting RabbitMQ AccountEventService...");
-            new TokenFactory().getService();
+            new ReportFactory().getService();
         } catch (Exception e) {
             LOGGER.severe("Failed to start RabbitMQ AccountEventService...");
             e.printStackTrace();
@@ -44,7 +44,7 @@ public class RootApplication extends jakarta.ws.rs.core.Application {
         @GET
         @Produces(MediaType.TEXT_PLAIN)
         public String sayHello() {
-            return "Hello World from Token Service";
+            return "Hello World from Report Service";
         }
     }
 }

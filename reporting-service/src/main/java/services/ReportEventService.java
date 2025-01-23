@@ -8,23 +8,23 @@ import messaging.EventSender;
 import models.TokenInt;
 import models.BankPay;
 import models.Token;
-import services.interfaces.ITokenService;
+import services.interfaces.IReportService;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import jakarta.ws.rs.core.Response;
 
-public class TokenEventService implements EventReceiver {
+public class ReportEventService implements EventReceiver {
 
-    private final static Logger LOGGER = Logger.getLogger(TokenEventService.class.getName());
+    private final static Logger LOGGER = Logger.getLogger(ReportEventService.class.getName());
 
     private final EventSender eventSender;
     
-    private final ITokenService service;
+    private final IReportService service;
     private final Gson gson = new Gson();
 
-    public TokenEventService(EventSender eventSender, TokenService service) {
+    public ReportEventService(EventSender eventSender, ReportService service) {
         this.eventSender = eventSender;
         this.service = service;
     }
@@ -39,7 +39,7 @@ public class TokenEventService implements EventReceiver {
                     
                     System.out.println(tokenInt.getCustomerId());
 
-                    Response response = service.requestTokens(tokenInt);
+                    Response response = service.getCustomerPaymentReport(tokenInt);
 
                     Event eventOut = new Event("RequestTokensSuccessfull", new Object[]{response.getStatus()});
                     System.out.println("Ready to send back");

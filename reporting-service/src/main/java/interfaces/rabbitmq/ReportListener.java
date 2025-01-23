@@ -12,9 +12,9 @@ import java.nio.charset.StandardCharsets;
 import java.util.logging.Logger;
 import java.util.logging.Level;
 
-public class TokenListener {
+public class ReportListener {
 
-    private final static Logger LOGGER = Logger.getLogger(TokenListener.class.getName());
+    private final static Logger LOGGER = Logger.getLogger(ReportListener.class.getName());
 
 	private static final String EXCHANGE_NAME = "eventsExchange";
 	private static final String QUEUE_TYPE = "topic";
@@ -22,7 +22,7 @@ public class TokenListener {
 
 	EventReceiver service;
 
-	public TokenListener(EventReceiver service) {
+	public ReportListener(EventReceiver service) {
 		this.service = service;
 	}
 
