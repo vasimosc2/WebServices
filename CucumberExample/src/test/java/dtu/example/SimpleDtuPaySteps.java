@@ -205,7 +205,7 @@ public class SimpleDtuPaySteps {
 
     @And("the balance of the customer2 at the bank is {int} kr")
     public void checkCustomerBalance2(int money) throws BankServiceException_Exception{
-        assertEquals(BigDecimal.valueOf((double) money), bankService.getAccount(customer1.getBankAccount()).getBalance());
+        assertEquals(BigDecimal.valueOf((double) money), bankService.getAccount(customer2.getBankAccount()).getBalance());
     }
 
     @And("the balance of the merchant at the bank is {int} kr")

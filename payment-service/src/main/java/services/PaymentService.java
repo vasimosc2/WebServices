@@ -27,7 +27,10 @@ public class PaymentService implements IPaymentService {
     public MoneyTransferredObject requestPayment(Customer customer, Merchant merchant, BigDecimal money, String tokenId) throws PaymentException {
 
         try {
+            System.out.println(customer.getFirstName());
+            System.out.println(String.format("Before transaction customer has ", bankService.getAccount(customer.getBankAccount()).getBalance()));
             bankService.transferMoneyFromTo(customer.getBankAccount(), merchant.getBankAccount(), money, "Random Reason");
+            System.out.println(String.format("After transaction customer has ", bankService.getAccount(customer.getBankAccount()).getBalance()));
         } catch (BankServiceException_Exception e) {
             e.printStackTrace();
             throw new PaymentException("Payment failed because of: " + e.getMessage());

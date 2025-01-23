@@ -1,18 +1,18 @@
 Feature: Payment
   Scenario: Successful Payment
-    Given a customer1 with name "Vasilis", last name "Moschou", and CPR "4aa444rqeeewerpiu244423322133111"
+    Given a customer1 with name "Vasilis", last name "Moschou", and CPR "4aa444rqeeewerpiu2444233dd22133111"
     And the customer1 is registered with the bank with an initial balance of 1000 kr
     And the customer1 is registered with Simple DTU Pay using their bank account
     And the customer1 generates 5 tokens
-    Given a customer2 with name "xristina", last name "vagena", and CPR "eu44kd44rqwerwewepiu244423322111122"
+    Given a customer2 with name "xristina", last name "vagena", and CPR "eu44kd44rqwerwewrrepiu244423322111122"
     And the customer2 is registered with the bank with an initial balance of 1000 kr
     And the customer2 is registered with Simple DTU Pay using their bank account
     And the customer2 generates 5 tokens
-    Given a merchant with name "Jan", last name "ariel", and CPR "aaaMillwe33122222ewewwe22www223111"
+    Given a merchant with name "Jan", last name "ariel", and CPR "aaaMillwe3312ttt2222ewewwe22www223111"
     And the merchant is registered with the bank with an initial balance of 1000 kr
     And the merchant is registered with Simple DTU Pay using their bank account
     And Both customers retrieves a token
     When the merchant initiates a payment for 200 kr for both Clients at the same time
     And the balance of the customer1 at the bank is 800 kr
     And the balance of the customer2 at the bank is 800 kr
-    And the balance of the merchant at the bank is 1200 kr
+    And the balance of the merchant at the bank is 1400 kr
