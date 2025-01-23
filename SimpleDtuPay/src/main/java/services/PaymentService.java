@@ -6,7 +6,9 @@ import messaging.EventReceiver;
 import messaging.EventSender;
 import models.BankPay;
 import models.Customer;
+import models.PaymentManager;
 
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 import static utils.EventTypes.*;
@@ -14,6 +16,7 @@ import static utils.EventTypes.*;
 public class PaymentService implements EventReceiver {
 
     private CompletableFuture<Boolean> requestPaymentResult;
+    private CompletableFuture<List<PaymentManager>> ManagerPayments;
 //    private CompletableFuture<Token> getTokenResult;
 //    private CompletableFuture<Boolean> retireCustomerTokensResult;
 
@@ -58,5 +61,16 @@ public class PaymentService implements EventReceiver {
         return requestPaymentResult.join();
 
     }
+
+    public List<PaymentManager> getAllPayments() throws Exception {
+        String eventType = "RequestAllPayments";
+        Object[] arguments = new Object[]{};
+        Event event = new Event(eventType, arguments);
+        ManagerPayments = new CompletableFuture<>();
+        eventSender.sendEvent(event);
+
+        return ManagerPayments.join();
+    }
+
 
 }

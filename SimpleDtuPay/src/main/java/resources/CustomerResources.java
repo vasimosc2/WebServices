@@ -23,7 +23,6 @@ import services.TokenService;
 public class CustomerResources {
 
     private final CustomerService customerService = CustomerFactory.getService();
-    private final TokenService tokenService = TokenFactory.getService();
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
