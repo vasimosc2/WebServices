@@ -80,10 +80,11 @@ public class PaymentEventService implements EventReceiver {
 
                     System.out.println("I got a customer: " + customer.getFirstName());
                     System.out.println("I got the merchant: " + merchant.getFirstName());
-
+                    
+                    System.out.println("Lets make the transaction");
                     // Process the payment
                     MoneyTransferredObject moneyTransfer = service.requestPayment(customer, merchant, bankPay.getMoney(), bankPay.getTokenId());
-
+                    System.out.println("Lets make the transaction done ....");
                     // Send success events
                     Event eventOut1 = new Event(PAYMENT_REQUEST_SUCCESS, new Object[]{correlationId});
                     Event eventOut2 = new Event(MONEY_TRANSFERRED, new Object[]{moneyTransfer});
