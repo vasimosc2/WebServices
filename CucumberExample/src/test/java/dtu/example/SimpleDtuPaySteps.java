@@ -70,8 +70,8 @@ public class SimpleDtuPaySteps {
 
     @And("the customer is registered with Simple DTU Pay using their bank account")
     public void theCustomerIsRegisteredWithSimpleDTUPayUsingTheirBankAccount() {
-        assertNotNull(customer1.getCprNumber());
-        assertNotNull(customer1.getBankAccount());
+        assertNotNull(customer.getCprNumber());
+        assertNotNull(customer.getBankAccount());
         customerId = dtupayCustomerFacade.register(customer);
         System.out.println("SANTI customer id: " + customerId);
     }
@@ -85,7 +85,7 @@ public class SimpleDtuPaySteps {
 
 
 
-    // ------------        Register Customer 1 for Correlation  ---------------------------- 
+    // ------------  Register Customer 1 for Correlation  ---------------------------- 
 
 
 
@@ -222,18 +222,16 @@ public class SimpleDtuPaySteps {
     }
 
 
+
+
+    // ---------  Merchant Initiates Payments -------------
+
     @When("the merchant initiates a payment for {int} kr")
     public void theMerchantInitiatesAPaymentForKrGivenTheTokenInPosition(int money ) {
         System.out.println("I am ready to initiate a payment");
         successful = dtupayMerchantFacade.maketransfer(money, customerToken1.getId(), merchantId);
         System.out.println(successful);
     }
-
-
-
-
-
-    //  -------------------     2 Payments at the Same Time   -----------------------------
 
     @When("the merchant initiates a payment for {int} kr {int} for both Clients at the same time")
     public void theMerchantInitiatesAPaymentForKrBoth(int money1 , int money2 ) throws InterruptedException, ExecutionException {
@@ -252,6 +250,19 @@ public class SimpleDtuPaySteps {
         thread2.join();
         System.out.println("The result is : " + result.get());
     }
+
+
+
+        // ------ Fault Senario -----------
+
+    @When("the merchant initiates two payments for {int} kr")
+    public void theMerchantInitiatesAPaymentWithSameToken(int money ){
+            System.out.println("I am ready to initiate a payment");
+            successful = dtupayMerchantFacade.maketransfer(money, customerToken1.getId(), merchantId);
+            successful = dtupayMerchantFacade.maketransfer(money, customerBankAccountId, merchantId); // Second Time with the same Token
+            System.out.println(successful);
+        }
+
 
 
 
@@ -288,7 +299,6 @@ public class SimpleDtuPaySteps {
     public void checkMerchantBalance(int money) throws BankServiceException_Exception{
         assertEquals(BigDecimal.valueOf((double) money), bankService.getAccount(merchant.getBankAccount()).getBalance());
     }
-
 
     @After
     public void cleanupBankAccounts() throws BankServiceException_Exception {
