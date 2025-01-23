@@ -64,10 +64,11 @@ public class MerchantEventService implements EventReceiver {
                 try {
                     System.out.println("Hello from PaymentRequested at MerchantService");
                     BankPay bankpay = gson.fromJson(gson.toJson(eventIn.getArguments()[0]), BankPay.class);
+                    String correladtionId = gson.fromJson(gson.toJson(eventIn.getArguments()[1]), String.class);
                     System.out.println(String.format("I am at Merchant Service at Paymentrequest and the id of the merchant is : %s", bankpay.getMerchantId()));
 
                     Merchant Merchant = service.getMerchantById(bankpay.getMerchantId());
-                    Event eventOut = new Event(GET_MERCHANT_BY_MERCHANT_ID_REQUEST_SUCCESS, new Object[]{Merchant});
+                    Event eventOut = new Event(GET_MERCHANT_BY_MERCHANT_ID_REQUEST_SUCCESS, new Object[]{Merchant,correladtionId});
                     eventSender.sendEvent(eventOut);
                 } catch (Exception e) {
                     //TODO event created but never caught anywhere it should be caught on payment service
