@@ -1,5 +1,6 @@
 package infrastructure.repositories;
 
+import exceptions.account.AccountNotFoundException;
 import models.Customer;
 import infrastructure.repositories.interfaces.ICustomers;
 
@@ -11,10 +12,10 @@ public class CustomersList implements ICustomers {
 
     private static CustomersList instance = null;
 
-    private final List<Customer> Customers;
+    private final List<Customer> customers;
 
     private CustomersList() {
-        Customers = new ArrayList<>();
+        customers = new ArrayList<>();
     }
 
     public static CustomersList getInstance() {
@@ -25,43 +26,44 @@ public class CustomersList implements ICustomers {
 
     @Override
     public void clear() {
-        Customers.clear();
+        customers.clear();
     }
 
     @Override
     public void add(Customer Customer) {
-        Customers.add(Customer);
+        customers.add(Customer);
     }
 
 
 
     @Override
-    public Customer getByCpr(String cpr) {
-        return Customers.stream()
-                .filter(a -> a.getCprNumber().equals(cpr))
-                .findAny()
-                .orElse(null);
-    }
-
-    @Override
-    public Customer getByCustomerId(String customerId) {
-        return Customers.stream()
+    public Customer getById(String customerId) {
+        return customers.stream()
                 .filter(a -> a.getId().equals(customerId))
                 .findAny()
                 .orElse(null);
     }
 
     @Override
-    public void remove(String cpr) {
-        Customer Customer = getByCpr(cpr);
-        if (Customer != null) {
-            Customers.remove(Customer);
+    public Customer getByCpr(String cpr) {
+        return customers.stream()
+                .filter(a -> a.getCprNumber().equals(cpr))
+                .findAny()
+                .orElse(null);
+    }
+
+    @Override
+    public void remove(String customerId) throws AccountNotFoundException {
+        Customer customer = getById(customerId);
+        if (customer != null) {
+            customers.remove(customer);
         }
+        throw new AccountNotFoundException("Customer with customerID (" + customerId + ") is not found!");
     }
 
     @Override
     public List<Customer> getAll() {
-        return Customers;
+        return customers;
     }
 
 }

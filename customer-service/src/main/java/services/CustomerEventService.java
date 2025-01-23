@@ -12,6 +12,8 @@ import services.interfaces.ICustomerService;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import static utils.EventTypes.*;
+
 public class CustomerEventService implements EventReceiver {
 
     private final static Logger LOGGER = Logger.getLogger(CustomerEventService.class.getName());
@@ -29,14 +31,14 @@ public class CustomerEventService implements EventReceiver {
     @Override
     public void receiveEvent(Event eventIn) throws Exception {
         switch (eventIn.getEventType()) {
-            case "RegisterCustomer":
+            case REGISTER_CUSTOMER_REQUEST:
                 try {
                     System.out.println("Hello from RegisterCustomer");
                     Customer customer = gson.fromJson(gson.toJson(eventIn.getArguments()[0]), Customer.class);
                     System.out.println(customer.getFirstName());
                     String customerId = service.register(customer);
                     System.out.println(customerId);
-                    Event eventOut = new Event("RegisterCustomerSuccessfull", new Object[]{customerId});
+                    Event eventOut = new Event(REGISTER_CUSTOMER_REQUEST_SUCCESS, new Object[]{customerId});
 
                     eventSender.sendEvent(eventOut);
                 } catch (Exception e) {
@@ -44,22 +46,22 @@ public class CustomerEventService implements EventReceiver {
                     eventSender.sendEvent(eventOut);
                 }
                 break;
-            case "GetCustomer":
+            case GET_CUSTOMER_REQUEST:
                 try {
                     System.out.println("Hello from GetCustomer");
-                    String cprNumber = gson.fromJson(gson.toJson(eventIn.getArguments()[0]), String.class);
-                    System.out.println(String.format("I am at CustomerEventService: %s", cprNumber));
+                    String customerId = gson.fromJson(gson.toJson(eventIn.getArguments()[0]), String.class);
+                    System.out.println(String.format("I am at CustomerEventService: %s", customerId));
 
-                    Customer Customer = service.get(cprNumber);
-                    Event eventOut = new Event("GetCustomerSuccessfull", new Object[]{Customer});
+                    Customer Customer = service.getAccount(customerId);
+                    Event eventOut = new Event(GET_CUSTOMER_REQUEST_SUCCESS, new Object[]{Customer});
                     eventSender.sendEvent(eventOut);
                 } catch (Exception e) {
-                    Event eventOut = new Event("GetCustomerFailed", new Object[]{e.getMessage()});
+                    Event eventOut = new Event(GET_CUSTOMER_REQUEST_FAILED, new Object[]{e.getMessage()});
                     eventSender.sendEvent(eventOut);
                 }
                 break;
             
-            case "SuccessfullGotTheCustomerID":
+            case GET_CUSTOMER_BY_CUSTOMER_ID_REQUEST:
                 try {
                     System.out.println("Hello from SuccessfullgotTheCustomerID");
                     String customerId = gson.fromJson(gson.toJson(eventIn.getArguments()[0]), String.class);
@@ -68,25 +70,26 @@ public class CustomerEventService implements EventReceiver {
                     Customer Customer = service.getCustomerById(customerId);
                     System.out.println("I found the customer and I will send SuccessfullGotCustomerForCustomerID .....");
                     System.out.println(Customer.getFirstName());
-                    Event eventOut = new Event("SuccessfullGotCustomerForCustomerID", new Object[]{Customer});
+                    Event eventOut = new Event(GET_CUSTOMER_BY_CUSTOMER_ID_REQUEST_SUCCESS, new Object[]{Customer});
                     eventSender.sendEvent(eventOut);
-                    
+
                 } catch (Exception e) {
-                    Event eventOut = new Event("GetCustomerFailed", new Object[]{e.getMessage()});
+                    Event eventOut = new Event(GET_CUSTOMER_BY_CUSTOMER_ID_REQUEST_FAILED, new Object[]{e.getMessage()});
                     eventSender.sendEvent(eventOut);
                 }
                 break;
-            
-            case "RetireCustomer":
+
+            case RETIRE_CUSTOMER_REQUEST:
                 try {
                     System.out.println("Hello from RetireCustomer");
-                    String cpr = (String) eventIn.getArguments()[0];
-                    String customerId = service.retireAccountByCpr(cpr);
+                    String customerId = (String) eventIn.getArguments()[0];
+                    String customerIDResponse = service.retireAccount(customerId);
+                    System.out.println("customerId input: " + customerId + " customerId output: " + customerIDResponse);
 
-                    Event eventOut = new Event("RetireCustomerByCprSuccessfull", new Object[]{customerId});
+                    Event eventOut = new Event(RETIRE_CUSTOMER_REQUEST_SUCCESS, new Object[]{customerIDResponse});
                     eventSender.sendEvent(eventOut);
                 } catch (Exception e) {
-                    Event eventOut = new Event("RetireCustomerByCprFailed", new Object[]{e.getMessage()});
+                    Event eventOut = new Event(RETIRE_CUSTOMER_REQUEST_FAILED, new Object[]{e.getMessage()});
                     eventSender.sendEvent(eventOut);
                 }
                 break;

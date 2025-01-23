@@ -1,6 +1,7 @@
 package infrastructure.repositories;
 
 
+import exceptions.account.AccountNotFoundException;
 import models.Merchant;
 import infrastructure.repositories.interfaces.IMerchants;
 
@@ -12,10 +13,10 @@ public class MerchantsList implements IMerchants {
 
     private static MerchantsList instance = null;
 
-    private final List<Merchant> Merchants;
+    private final List<Merchant> merchants;
 
     private MerchantsList() {
-        Merchants = new ArrayList<>();
+        merchants = new ArrayList<>();
     }
 
     public static MerchantsList getInstance() {
@@ -26,36 +27,37 @@ public class MerchantsList implements IMerchants {
 
     @Override
     public void clear() {
-        Merchants.clear();
+        merchants.clear();
     }
 
     @Override
     public void add(Merchant Customer) {
-        Merchants.add(Customer);
-    }
-
-    @Override
-    public Merchant getByCpr(String cpr) {
-        return Merchants.stream()
-                .filter(a -> a.getCprNumber().equals(cpr))
-                .findAny()
-                .orElse(null);
+        merchants.add(Customer);
     }
 
     @Override
     public Merchant getById(String merchantId) {
-        return Merchants.stream()
+        return merchants.stream()
                 .filter(a -> a.getId().equals(merchantId))
                 .findAny()
                 .orElse(null);
     }
 
     @Override
-    public void remove(String cpr) {
-        Merchant Merchant = getByCpr(cpr);
-        if (Merchant != null) {
-            Merchants.remove(Merchant);
+    public Merchant getByCpr(String cpr) {
+        return merchants.stream()
+                .filter(a -> a.getCprNumber().equals(cpr))
+                .findAny()
+                .orElse(null);
+    }
+
+    @Override
+    public void remove(String merchantId) throws AccountNotFoundException {
+        Merchant merchant = getById(merchantId);
+        if (merchant != null) {
+            merchants.remove(merchant);
         }
+        throw new AccountNotFoundException("Merchant with merchantID (" + merchantId + ") is not found!");
     }
 
 }

@@ -8,9 +8,10 @@ import com.google.gson.Gson;
 import messaging.Event;
 import messaging.EventReceiver;
 import messaging.EventSender;
-import models.CustInt;
 import models.Customer;
 import jakarta.ws.rs.core.Response;
+
+import static utils.EventTypes.*;
 
 public class CustomerService implements EventReceiver {
 
@@ -35,27 +36,27 @@ public class CustomerService implements EventReceiver {
 
     public void receiveEvent(Event eventIn) {
         switch (eventIn.getEventType()) {
-            case "RegisterCustomerSuccessfull":
+            case REGISTER_CUSTOMER_REQUEST_SUCCESS:
                 System.out.println("I got a RegisterCustomerSuccessfull");
                 String customerId = (String) eventIn.getArguments()[0];
                 registerResult.complete(customerId); 
                 break;
 
-            case "RegisterCustomerFailed":
+            case REGISTER_CUSTOMER_REQUEST_FAILED:
                 registerResult.complete(null);
                 break;
 
-            case "GetCustomerSuccessfull":
+            case GET_CUSTOMER_REQUEST_SUCCESS:
                 System.out.println("I got a GetCustomerSucessfull");
                 Customer customer = gson.fromJson(gson.toJson(eventIn.getArguments()[0]), Customer.class);
                 getCustomerResult.complete(customer);
                 break;
 
-            case "GetCustomerFailed":
+            case GET_CUSTOMER_REQUEST_FAILED:
                 getCustomerResult.complete(null);
                 break;
 
-            case "RetireCustomerByCprSuccessfull":
+            case RETIRE_CUSTOMER_REQUEST_SUCCESS:
                 System.out.println("I got a RetireCustomerByCprSuccessfull");
                 boolean removed = customerIds.removeIf(c -> c.equals((String) eventIn.getArguments()[0]));
 
@@ -65,8 +66,8 @@ public class CustomerService implements EventReceiver {
                 retireCustomer.complete(Response.status(200).entity("Delete successful").build());
                 break;
 
-            case "RetireCustomerByCprFailed":
-                retireCustomer.complete(Response.status(404).entity("Delete successful").build());
+            case RETIRE_CUSTOMER_REQUEST_FAILED:
+                retireCustomer.complete(Response.status(404).entity("Delete not successful").build());
                 break;
 
             default:
@@ -81,7 +82,7 @@ public class CustomerService implements EventReceiver {
 
 
     public String sendRegisterEvent(Customer customer) throws Exception{
-        String eventType = "RegisterCustomer";
+        String eventType = REGISTER_CUSTOMER_REQUEST;
         Object[] arguments = new Object[]{customer};
         Event event = new Event(eventType, arguments);
         registerResult = new CompletableFuture<>();
@@ -100,9 +101,9 @@ public class CustomerService implements EventReceiver {
 
 
 
-    public Customer getCustomerByCpr(String cprNumber) throws Exception {
-        String eventType = "GetCustomer";
-        Object[] arguments = new Object[]{cprNumber};
+    public Customer getCustomerByCustomerId(String customerId) throws Exception {
+        String eventType = GET_CUSTOMER_REQUEST;
+        Object[] arguments = new Object[]{customerId};
         Event event = new Event(eventType,arguments);
         getCustomerResult = new CompletableFuture<>();
 
@@ -113,9 +114,9 @@ public class CustomerService implements EventReceiver {
 
 
 
-    public Response retireAccount(String cprNumber) throws Exception {
-        String eventType = "RetireCustomer";
-        Object[] arguments = new Object[]{cprNumber};
+    public Response retireAccount(String customerId) throws Exception {
+        String eventType = RETIRE_CUSTOMER_REQUEST;
+        Object[] arguments = new Object[]{customerId};
         Event event = new Event(eventType,arguments);
         retireCustomer = new CompletableFuture<>();
         eventSender.sendEvent(event);
