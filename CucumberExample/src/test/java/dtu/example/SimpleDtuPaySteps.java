@@ -33,7 +33,8 @@ public class SimpleDtuPaySteps {
     private boolean successful = false;
 
 
-    private CompletableFuture<Boolean> result, result2;
+    CompletableFuture<Boolean> result = new CompletableFuture<>();
+    CompletableFuture<Boolean> result2 = new CompletableFuture<>();
 
     @Given("a customer1 with name {string}, last name {string}, and CPR {string}")
     public void aCustomerWithNameLastNameAndCPR1(String string, String string2, String string3) {
