@@ -1,23 +1,22 @@
 package services;
 
-import dtu.ws.fastmoney.*;
+
 
 
 import exceptions.account.AccountExistsException;
 import exceptions.account.AccountNotFoundException;
-import exceptions.account.BankAccountException;
 import infrastructure.repositories.MerchantsList;
 import infrastructure.repositories.interfaces.IMerchants;
 import models.Merchant;
 import services.interfaces.IMerchantService;
 
-import java.math.BigDecimal;
+
 import java.util.UUID;
 
 @jakarta.enterprise.context.ApplicationScoped
 public class MerchantService implements IMerchantService {
 
-    private final BankService bankService = new BankServiceService().getBankServicePort();
+  
 
     private final IMerchants repo = MerchantsList.getInstance(); 
 
@@ -81,25 +80,6 @@ public class MerchantService implements IMerchantService {
         return potentialMerchant != null;
     }
 
-    private String registerBankAccount(Merchant merchant, int money)
-            throws BankAccountException {
-
-        User user = new User();
-        user.setCprNumber(merchant.getCprNumber());
-        user.setFirstName(merchant.getFirstName());
-        user.setLastName(merchant.getLastName());
-
-        // try to create a bank account for the user
-        String bankId;
-        try {
-            bankId = bankService.createAccountWithBalance(user, BigDecimal.valueOf(money));
-        } catch (BankServiceException_Exception e) {
-            throw new BankAccountException("Failed to create bank account" +
-                    " for account with cpr (" + merchant.getCprNumber() + ")");
-        }
-
-        return bankId;
-    }
 
 
 

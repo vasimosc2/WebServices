@@ -2,8 +2,6 @@ package services.interfaces;
 import models.Customer;
 import exceptions.account.AccountExistsException;
 import exceptions.account.AccountNotFoundException;
-import exceptions.account.BankAccountException;
-import dtu.ws.fastmoney.BankServiceException_Exception;
 
 
 

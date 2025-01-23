@@ -1,4 +1,9 @@
 .mvn
 .vscode
-code-with-quarkus/target/*
-env.sh
+SimpleDtuPay/target/*
+customer-service/target/*
+merchant-service/target/*
+MerchantFacade/target/*
+payment-service/target/*
+token-service/target/*
+CucumberExample/target/*
