@@ -82,6 +82,7 @@ public class CustomerResources {
         @Consumes(MediaType.APPLICATION_JSON)
         @Produces(MediaType.APPLICATION_JSON)
         public Token getToken(String customerId) throws Exception {
+            System.out.println("I am at getTOken");
             return tokenService.sendGetTokenRequest(customerId);
         }
     }

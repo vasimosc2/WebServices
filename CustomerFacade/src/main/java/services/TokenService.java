@@ -39,6 +39,7 @@ public class TokenService implements EventReceiver {
             case GET_FIRST_TOKEN_REQUEST_SUCCESS:
                 System.out.println("I got a successfull GetToken");
                 Token token = gson.fromJson(gson.toJson(eventIn.getArguments()[0]), Token.class);
+                System.out.println(token.getId());
                 getTokenResult.complete(token);
                 break;
             case GET_FIRST_TOKEN_REQUEST_FAILED:
@@ -59,6 +60,7 @@ public class TokenService implements EventReceiver {
 
     public boolean sendRequestTokensEvent(TokenInt tokenInt) throws Exception{
         String eventType = TOKENS_REQUEST;
+        System.out.println("we are sending request of token event");
         Object[] arguments = new Object[]{tokenInt};
         Event event = new Event(eventType, arguments);
         requestTokensResult = new CompletableFuture<>();
@@ -74,8 +76,9 @@ public class TokenService implements EventReceiver {
         Object[] arguments = new Object[]{customerId};
         Event event = new Event(eventType, arguments);
         getTokenResult = new CompletableFuture<>();
+        
         eventSender.sendEvent(event);
-
+        System.out.println("We are here in sendGetTokenRequest");
         return getTokenResult.join();
     }
 }

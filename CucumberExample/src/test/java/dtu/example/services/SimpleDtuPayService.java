@@ -97,6 +97,7 @@ public class SimpleDtuPayService {
         }
     
         public Token requestTokenFromCustomer(String customerId) {
+            System.out.println("I am gettting out of CucumberExample");
             return target.path("customers/tokens/getToken")
                     .request()
                     .post(Entity.entity(customerId, MediaType.APPLICATION_JSON), Token.class);

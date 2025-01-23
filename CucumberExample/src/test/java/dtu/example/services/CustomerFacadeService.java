@@ -100,6 +100,7 @@ public class CustomerFacadeService {
         }
     
         public Token requestTokenFromCustomer(String customerId) {
+            System.out.println("request token from customer");
             return target.path("customers/tokens/getToken")
                     .request()
                     .post(Entity.entity(customerId, MediaType.APPLICATION_JSON), Token.class);
