@@ -43,6 +43,7 @@ public class PaymentService implements EventReceiver {
                 System.out.println("I got PaymentSuccessful");
                 
                 String correlationId = gson.fromJson(gson.toJson(eventIn.getArguments()[0]), String.class);
+                System.out.println("The correlationID is: ");
                 System.out.println(correlationId);
                 correlations.get(correlationId).complete(true);
                 break;
