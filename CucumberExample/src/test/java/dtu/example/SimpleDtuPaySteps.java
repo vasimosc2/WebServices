@@ -106,8 +106,18 @@ public class SimpleDtuPaySteps {
     public void theMerchantInitiatesAPaymentForKrGivenTheTokenInPosition(int money ) {
         System.out.println("I am ready to initiate a payment");
         successful = dtupay.maketransfer(money, customerToken.getId(), merchantId);
-
+        System.out.println(successful);
     }
+    @And("the balance of the customer at the bank is {int} kr")
+    public void checkCustomerBalance(int money) throws BankServiceException_Exception{
+        assertEquals(BigDecimal.valueOf((double) money), bankService.getAccount(customer.getBankAccount()).getBalance());
+    }
+
+    @And("the balance of the merchant at the bank is {int} kr")
+    public void checkMerchantBalance(int money) throws BankServiceException_Exception{
+        assertEquals(BigDecimal.valueOf((double) money), bankService.getAccount(merchant.getBankAccount()).getBalance());
+    }
+
 
     @Then("the payment is successful")
     public void sucess(){
