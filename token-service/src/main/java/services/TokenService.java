@@ -99,11 +99,6 @@ public class TokenService implements ITokenService {
         return tokenmap.checkTokenIsValid(tokenId);
     }
 
-    @Override
-    public void markTokenAsUsed(String tokenId) throws TokenException {
-        tokenmap.invalidateToken(tokenId);
-    }
-
 
 
 

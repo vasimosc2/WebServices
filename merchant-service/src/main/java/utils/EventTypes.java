@@ -39,5 +39,7 @@ public class EventTypes {
     public static final String GET_MERCHANT_BY_MERCHANT_ID_REQUEST_SUCCESS = "GetMerchantByMerchantIdRequestSuccess";
     public static final String GET_MERCHANT_BY_MERCHANT_ID_REQUEST_FAILED = "GetMerchantByMerchantIdRequestFailed";
 
+    public static final String PAYMENT_REQUEST = "PaymentRequest";
+
 
 }

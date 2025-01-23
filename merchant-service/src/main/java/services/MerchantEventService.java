@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import messaging.Event;
 import messaging.EventReceiver;
 import messaging.EventSender;
+import models.BankPay;
 import models.Merchant;
 import services.interfaces.IMerchantService;
 
@@ -58,21 +59,23 @@ public class MerchantEventService implements EventReceiver {
                     eventSender.sendEvent(eventOut);
                 }
                 break;
-            case GET_MERCHANT_BY_MERCHANT_ID_REQUEST:
-                try {
-                    System.out.println("Hello from GetMerchantByMerchantId");
-                    String merchantId = gson.fromJson(gson.toJson(eventIn.getArguments()[0]), String.class);
-                    System.out.println(String.format("I am at MerchnatEventService: %s", merchantId));
 
-                    Merchant Merchant = service.getMerchantById(merchantId);
+            case PAYMENT_REQUEST:
+                try {
+                    System.out.println("Hello from PaymentRequested at MerchantService");
+                    BankPay bankpay = gson.fromJson(gson.toJson(eventIn.getArguments()[0]), BankPay.class);
+                    System.out.println(String.format("I am at Merchant Service at Paymentrequest and the id of the merchant is : %s", bankpay.getMerchantId()));
+
+                    Merchant Merchant = service.getMerchantById(bankpay.getMerchantId());
                     Event eventOut = new Event(GET_MERCHANT_BY_MERCHANT_ID_REQUEST_SUCCESS, new Object[]{Merchant});
                     eventSender.sendEvent(eventOut);
                 } catch (Exception e) {
-                    //TODO event created but never caught anywhere
+                    //TODO event created but never caught anywhere it should be caught on payment service
                     Event eventOut = new Event(GET_MERCHANT_BY_MERCHANT_ID_REQUEST_FAILED, new Object[]{e.getMessage()});
                     eventSender.sendEvent(eventOut);
                 }
                 break;
+
             case RETIRE_MERCHANT_REQUEST:
                 try {
                     System.out.println("Hello from Retiremerchant");

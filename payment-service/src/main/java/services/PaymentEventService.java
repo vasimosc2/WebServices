@@ -16,8 +16,6 @@ import java.util.concurrent.CompletableFuture;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import jakarta.ws.rs.core.Response;
-
 import static utils.EventTypes.*;
 
 public class PaymentEventService implements EventReceiver {
@@ -28,8 +26,8 @@ public class PaymentEventService implements EventReceiver {
     
     private final IPaymentService service;
 
-    private CompletableFuture<Customer> Future_customer  = new CompletableFuture<>();
-    private CompletableFuture<Merchant> Future_merchant =  new CompletableFuture<>();
+    private CompletableFuture<Customer> Future_customer;
+    private CompletableFuture<Merchant> Future_merchant;
     private BigDecimal amount;
 
     private final Gson gson = new Gson();
@@ -47,45 +45,34 @@ public class PaymentEventService implements EventReceiver {
                     System.out.println("Hello from RequestPayment at the PaymentService");
                     BankPay bankPay = gson.fromJson(gson.toJson(eventIn.getArguments()[0]), BankPay.class);
 
-                    System.out.println(bankPay.getMoney());
-                    System.out.println(bankPay.getMerchantId());
-                    System.out.println(bankPay.getTokenId());
+                    // Store the money value
+                    
 
                     Future_customer = new CompletableFuture<>();
+                    Future_merchant = new CompletableFuture<>();
 
-                    // Step 2: Send event to retrieve Customer
-                    Event eventOut1 = new Event(GET_CUSTOMER_ID_BY_TOKEN_ID_REQUEST, new Object[]{bankPay.getTokenId()});
-                    System.out.println("Sending to the Token Service .....");
-                    eventSender.sendEvent(eventOut1);
+                    System.out.println("Futures have been created. Waiting for them to be completed...");
 
-                    // Step 3: Chain actions after Customer retrieval
-                    Future_customer.thenAcceptAsync(customer -> {
+                    CompletableFuture<Void> allFutures = CompletableFuture.allOf(Future_customer, Future_merchant);
+
+                    allFutures.thenAcceptAsync(voidResult -> {
                         try {
+                            // Retrieve the results from the futures
+                            Customer customer = Future_customer.get();
+                            Merchant merchant = Future_merchant.get();
+
                             System.out.println("I got a customer: " + customer.getFirstName());
+                            System.out.println("I got the merchant: " + merchant.getFirstName());
 
-                            // Step 4: Send event to retrieve Merchant
-                            Future_merchant = new CompletableFuture<>();
-                            Event eventOut2 = new Event(GET_MERCHANT_BY_MERCHANT_ID_REQUEST, new Object[]{bankPay.getMerchantId()});
-                            System.out.println("Sending to the Merchant Service ....");
-                            eventSender.sendEvent(eventOut2);
+                            // Step 4: Process the payment
+                            service.requestPayment(customer, merchant, bankPay.getMoney(), bankPay.getTokenId()); // TODO potential a bool for that
 
-                            // Step 5: Chain actions after Merchant retrieval
-                            Future_merchant.thenAcceptAsync(merchant -> {
-                                try {
-                                    System.out.println("I got the merchant: " + merchant.getFirstName());
-
-                                    service.requestPayment(customer, merchant, bankPay.getMoney(), bankPay.getTokenId());
-
-                                    // Step 6: Send success event
-                                    Event eventOut3 = new Event(PAYMENT_REQUEST_SUCCESS, new Object[]{bankPay.getTokenId()});
-                                    System.out.println("I am sending a PaymentSuccessful ....");
-                                    eventSender.sendEvent(eventOut3);
-                                } catch (Exception e) {
-                                    System.err.println("Error in merchant processing: " + e.getMessage());
-                                }
-                            });
+                            // Step 5: Send success event
+                            Event eventOut3 = new Event(PAYMENT_REQUEST_SUCCESS, new Object[]{});
+                            System.out.println("I am sending a PaymentSuccessful ....");
+                            eventSender.sendEvent(eventOut3);
                         } catch (Exception e) {
-                            System.err.println("Error in customer processing: " + e.getMessage());
+                            System.err.println("Error processing payment: " + e.getMessage());
                         }
                     });
                 } catch (Exception e) {

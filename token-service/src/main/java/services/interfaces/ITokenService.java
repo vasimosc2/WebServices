@@ -10,8 +10,5 @@ public interface ITokenService {
     Response requestTokens(TokenInt tokenInt) throws TokenException;
     Token getFirstToken(String id) throws TokenException ;
     String getCustomerIdByTokenIdForPayment(String tokenId) throws TokenException;
-
-    void markTokenAsUsed(String tokenId) throws TokenException;
-
     boolean isTokenValid(String tokenId) throws TokenException;
 }
