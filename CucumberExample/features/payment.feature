@@ -1,5 +1,5 @@
 Feature: Payment
-  Scenario: Successful Payment
+  Scenario: Double Payment
     Given a customer1 with name "Vasilis", last name "Moschou", and CPR "gfdgdfsgfdgsdf"
     And the customer1 is registered with the bank with an initial balance of 1000 kr
     And the customer1 is registered with Simple DTU Pay using their bank account
@@ -16,3 +16,17 @@ Feature: Payment
     And the balance of the customer1 at the bank is 800 kr
     And the balance of the customer2 at the bank is 600 kr
     And the balance of the merchant at the bank is 1500 kr
+  
+  Scenario: Simple Paymnet
+    Given a customer with name "John", last name "Doe", and CPR "1234567890reas"
+    And the customer is registered with the bank with an initial balance of 500 kr
+    And the customer is registered with Simple DTU Pay using their bank account
+    And the customer generates 3 tokens
+    Given a merchant with name "Jane", last name "Smith", and CPR "0987654321readasd"
+    And the merchant is registered with the bank with an initial balance of 200 kr
+    And the merchant is registered with Simple DTU Pay using their bank account
+    And the customer retrieves a token
+    When the merchant initiates a payment for 100 kr
+    Then the payment is successful
+    And the balance of the customer at the bank is 400 kr
+    And the balance of the merchant at the bank is 300 kr

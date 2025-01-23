@@ -26,10 +26,10 @@ import java.util.concurrent.ExecutionException;
 
 public class SimpleDtuPaySteps {
     
-    private Customer customer1,customer2;
+    private Customer customer, customer1,customer2;
     private Merchant merchant;
-    private String customerId1, customerId2, merchantId, customerBankAccountId1,customerBankAccountId2, merchantBankAccountId;
-    private Token customerToken1, customerToken2;
+    private String customerId,customerId1, customerId2, merchantId, customerBankAccountId, customerBankAccountId1,customerBankAccountId2, merchantBankAccountId;
+    private Token customerToken, customerToken1, customerToken2;
     private CustomerFacadeClient dtupayCustomerFacade = new CustomerFacadeClient();
     private MerchantFacadeClient dtupayMerchantFacade = new MerchantFacadeClient();
 
@@ -39,6 +39,55 @@ public class SimpleDtuPaySteps {
 
     CompletableFuture<Boolean> result = new CompletableFuture<>();
     CompletableFuture<Boolean> result2 = new CompletableFuture<>();
+
+
+
+
+
+
+    // -------------------------------   Register One Customer ------------------
+
+    @Given("a customer with name {string}, last name {string}, and CPR {string}")
+    public void aCustomerWithNameLastNameAndCPR(String string, String string2, String string3) {
+        customer = new Customer();
+        customer.setFirstName(string);
+        customer.setLastName(string2);
+        customer.setCprNumber(string3);
+        assertNotNull(customer, "Customer creation failed");
+    }
+
+    @And("the customer is registered with the bank with an initial balance of {int} kr")
+    public void theCustomerIsRegisteredWithTheBankWithAnInitialBalanceOfKr(int money) throws BankServiceException_Exception {
+        User user = new User();
+        user.setFirstName(customer.getFirstName());
+        user.setLastName(customer.getLastName());
+        user.setCprNumber(customer.getCprNumber());
+        customerBankAccountId = bankService.createAccountWithBalance(user,BigDecimal.valueOf(money));
+        customer.setBankAccount(customerBankAccountId);
+        System.out.println(customerBankAccountId);
+    }
+
+
+    @And("the customer is registered with Simple DTU Pay using their bank account")
+    public void theCustomerIsRegisteredWithSimpleDTUPayUsingTheirBankAccount() {
+        assertNotNull(customer1.getCprNumber());
+        assertNotNull(customer1.getBankAccount());
+        customerId = dtupayCustomerFacade.register(customer);
+        System.out.println("SANTI customer id: " + customerId);
+    }
+
+    @Then("the customer generates {int} tokens")
+    public void the_customer_requests_tokens(int tokenAmount) {
+        System.out.println("I am at the tokenRequest");
+        boolean isSuccess = dtupayCustomerFacade.generateTokens(customerId, tokenAmount);
+        assertTrue(isSuccess);
+    }
+
+
+
+    // ------------        Register Customer 1 for Correlation  ---------------------------- 
+
+
 
     @Given("a customer1 with name {string}, last name {string}, and CPR {string}")
     public void aCustomerWithNameLastNameAndCPR1(String string, String string2, String string3) {
@@ -78,8 +127,8 @@ public class SimpleDtuPaySteps {
 
 
 
-
-
+    
+    // ------------  Register Customer 2 for Correlation  ---------------------------- 
 
 
 
@@ -93,7 +142,7 @@ public class SimpleDtuPaySteps {
     }
 
     @And("the customer2 is registered with the bank with an initial balance of {int} kr")
-    public void theCustomerIsRegisteredWithTheBankWithAnInitialBalanceOfKr(int money) throws BankServiceException_Exception {
+    public void theCustomerIsRegisteredWithTheBankWithAnInitialBalanceOfKr2(int money) throws BankServiceException_Exception {
         User user2 = new User();
         user2.setFirstName(customer2.getFirstName());
         user2.setLastName(customer2.getLastName());
@@ -105,7 +154,7 @@ public class SimpleDtuPaySteps {
 
 
     @And("the customer2 is registered with Simple DTU Pay using their bank account")
-    public void theCustomerIsRegisteredWithSimpleDTUPayUsingTheirBankAccount() {
+    public void theCustomerIsRegisteredWithSimpleDTUPayUsingTheirBankAccount2() {
         assertNotNull(customer2.getCprNumber());
         assertNotNull(customer2.getBankAccount());
         customerId2 = dtupayCustomerFacade.register(customer2);
@@ -113,14 +162,14 @@ public class SimpleDtuPaySteps {
     }
 
     @Then("the customer2 generates {int} tokens")
-    public void the_customer_requests_tokens(int tokenAmount) {
+    public void the_customer_requests_tokens2(int tokenAmount) {
         System.out.println("I am at the tokenRequest");
         boolean isSuccess = dtupayCustomerFacade.generateTokens(customerId2, tokenAmount);
         assertTrue(isSuccess);
     }
 
 
-
+    // ------    Get One Unsed Token ----------
 
     @And("Both customers retrieves a token")
     public void BothTakeToken(){
@@ -133,38 +182,16 @@ public class SimpleDtuPaySteps {
     }
 
 
-    @When("the merchant initiates a payment for {int} kr {int} for both Clients at the same time")
-    public void theMerchantInitiatesAPaymentForKrBoth(int money1 , int money2 ) throws InterruptedException, ExecutionException {
-        System.out.println("I am ready to initiate a payment");
-
-        var thread1 = new Thread(() -> {
-            result.complete(dtupayMerchantFacade.maketransfer(money1, customerToken1.getId(), merchantId));
-        });
-        var thread2 = new Thread(() -> {
-            result2.complete(dtupayMerchantFacade.maketransfer(money2, customerToken2.getId(), merchantId));
-        });
-        thread1.start();
-        thread2.start();
-
-        thread1.join();
-        thread2.join();
-        // System.out.println(result.get());
-        // System.out.println(result2.get());
-        // assertTrue(result.get());
-        // assertTrue(result2.get());
-    }
-
-
-
-
-
     @And("the customer retrieves a token")
     public void the_merchant_asks_for_a_token_from_the_customer() {
         System.out.println("I am ready to get one Token");
-        customerToken1 = dtupayCustomerFacade.getUnusedTokenFromCustomer(customerId1);
-        System.out.println(customerToken1.getId());
-        assertNotNull(customerToken1.getId());
+        customerToken = dtupayCustomerFacade.getUnusedTokenFromCustomer(customerId1);
+        System.out.println(customerToken.getId());
+        assertNotNull(customerToken.getId());
     }
+
+
+    // ---------    Register Merchant   ----------
 
 
     @Given("a merchant with name {string}, last name {string}, and CPR {string}")
@@ -202,19 +229,58 @@ public class SimpleDtuPaySteps {
         System.out.println(successful);
     }
 
+
+
+
+
+    //  -------------------     2 Payments at the Same Time   -----------------------------
+
+    @When("the merchant initiates a payment for {int} kr {int} for both Clients at the same time")
+    public void theMerchantInitiatesAPaymentForKrBoth(int money1 , int money2 ) throws InterruptedException, ExecutionException {
+        System.out.println("I am ready to initiate a payment");
+
+        var thread1 = new Thread(() -> {
+            result.complete(dtupayMerchantFacade.maketransfer(money1, customerToken1.getId(), merchantId));
+        });
+        var thread2 = new Thread(() -> {
+            result2.complete(dtupayMerchantFacade.maketransfer(money2, customerToken2.getId(), merchantId));
+        });
+        thread1.start();
+        thread2.start();
+
+        thread1.join();
+        thread2.join();
+        System.out.println("The result is : " + result.get());
+    }
+
+
+
+    @Then("the payment is successful") // This think if it should be used .....
+    public void sucess(){
+        assertTrue(successful);
+    }
+
+    
+    // ---------    Check Balances   -----------
+   
+    @And("the balance of the customer at the bank is {int} kr")
+    public void customerBalance(int money) throws BankServiceException_Exception{
+        System.out.println("After transaction in step customer has " + bankService.getAccount(customer2.getBankAccount()).getBalance());
+        assertEquals(BigDecimal.valueOf((double) money), bankService.getAccount(customer.getBankAccount()).getBalance() );
+    }
+
+    
+
     @And("the balance of the customer1 at the bank is {int} kr")
     public void checkCustomerBalance(int money) throws BankServiceException_Exception{
-        System.out.println(
-                "After transaction in step customer1 has " + bankService.getAccount(customer1.getBankAccount()).getBalance()
-        );
-        System.out.println(
-                "After transaction in step customer2 has " + bankService.getAccount(customer2.getBankAccount()).getBalance()
-        );
+        System.out.println("After transaction in step customer1 has " + bankService.getAccount(customer1.getBankAccount()).getBalance());
+        
         assertEquals(BigDecimal.valueOf((double) money), bankService.getAccount(customer1.getBankAccount()).getBalance());
     }
 
     @And("the balance of the customer2 at the bank is {int} kr")
     public void checkCustomerBalance2(int money) throws BankServiceException_Exception{
+        System.out.println("After transaction in step customer2 has " + bankService.getAccount(customer2.getBankAccount()).getBalance());
         assertEquals(BigDecimal.valueOf((double) money), bankService.getAccount(customer2.getBankAccount()).getBalance());
     }
 
@@ -224,27 +290,11 @@ public class SimpleDtuPaySteps {
     }
 
 
-    @Then("the payment is successful")
-    public void sucess(){
-        assertTrue(successful);
-    }
-
-    /*
-
-    @And("the balance of the customer at the bank is {int} kr")
-    public void customerBalance(int money) throws BankServiceException_Exception{
-        assertEquals(bankService.getAccount(customer.getBankAccount()).getBalance(), BigDecimal.valueOf(money));
-    }
-
-    @And("the balance of the merchant at the bank is {int} kr")
-    public void merchantBalance(int money) throws BankServiceException_Exception{
-        assertEquals(bankService.getAccount(merchant.getBankAccount()).getBalance(), BigDecimal.valueOf(money));
-    }
-
-    */
-
     @After
     public void cleanupBankAccounts() throws BankServiceException_Exception {
+        if (customer != null && customer.getBankAccount() != null) {
+            bankService.retireAccount(customer.getBankAccount());
+        }
         if (customer1 != null && customer1.getBankAccount() != null) {
             bankService.retireAccount(customer1.getBankAccount());
         }
@@ -258,50 +308,7 @@ public class SimpleDtuPaySteps {
 
 
 
-
-    /*
-    @Given("the customer is registered with Simple DTU Pay using their bank account")
-    public void theCustomerIsRegisteredWithSimpleDTUPayUsingTheirBankAccount() throws BankServiceException_Exception {
-        assertNotNull(customer.getCprNumber());
-        Account account = bankService.getAccount(customer.getBankAccount());
-        dtupay.register(account.getUser(),account.getId(),"customer");
-
-    }
-
-
-    @Given("a merchant with name {string}, last name {string}, and CPR {string}")
-    public void aMerchantWithNameLastNameAndCPR(String string, String string2, String string3) {
-        merchant = new Merchant();
-        merchant.setFirstName(string);
-        merchant.setLastName(string2);
-        merchant.setCprNumber(string3);
-        assertNotNull(merchant, "Customer creation failed");
-
-    }
-
-    @Given("the merchant is registered with the bank with an initial balance of {int} kr")
-    public void theMerchantIsRegisteredWithTheBankWithAnInitialBalanceOfKr(int money) throws BankServiceException_Exception {
-        User user = new User();
-        user.setFirstName(merchant.getFirstName());
-        user.setLastName(merchant.getLastName());
-        user.setCprNumber(merchant.getCprNumber());
-        merchantAccountId = bankService.createAccountWithBalance(user,BigDecimal.valueOf(money));
-        merchant.setBankAccount(merchantAccountId);
-    }
-
-
-    @Given("the merchant is registered with Simple DTU Pay using their bank account")
-    public void theMerchantIsRegisteredWithSimpleDTUPayUsingTheirBankAccount() throws BankServiceException_Exception {
-        assertNotNull(merchant.getCprNumber());
-        Account account = bankService.getAccount(merchant.getBankAccount());
-        dtupay.register(account.getUser(),account.getId(),"merchant");
-    }
-
-    @When("the merchant initiates a payment for {int} kr by the customer")
-    public void TransferMoney(int money){
-        successful = dtupay.maketransfer(money,customer,merchant);
-    }
-
+    /* 
 
 
     @Then("delete the customer and merchant")
