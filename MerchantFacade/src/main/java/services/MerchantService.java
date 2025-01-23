@@ -2,7 +2,7 @@ package services;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
-
+import static utils.EventTypes.*;
 import com.google.gson.Gson;
 import jakarta.ws.rs.core.Response;
 import messaging.Event;
@@ -80,7 +80,7 @@ public class MerchantService implements EventReceiver  {
 
 
     public String sendRegisterEvent(Merchant merchant) throws Exception{
-        String eventType = "RegisterMerchant";
+        String eventType = REGISTER_MERCHANT_REQUEST;
         Object[] arguments = new Object[]{merchant};
         Event event = new Event(eventType, arguments);
         registerResult = new CompletableFuture<>();
@@ -96,11 +96,9 @@ public class MerchantService implements EventReceiver  {
         return null;
     }
 
-
-
-    public Merchant GetMerchantByCpr(String cprNumber) throws Exception {
-        String eventType = "GetMerchant";
-        Object[] arguments = new Object[]{cprNumber};
+    public Merchant getMerchantByMerchantId(String merchantId) throws Exception {
+        String eventType = GET_MERCHANT_REQUEST;
+        Object[] arguments = new Object[]{merchantId};
         Event event = new Event(eventType,arguments);
         GetMerchantResult = new CompletableFuture<>();
 
@@ -111,9 +109,9 @@ public class MerchantService implements EventReceiver  {
 
 
 
-    public Response retireAccount(String cprNumber) throws Exception {
-        String eventType = "Retiremerchant";
-        Object[] arguments = new Object[]{cprNumber};
+    public Response retireAccount(String merchantId) throws Exception {
+        String eventType = RETIRE_MERCHANT_REQUEST;
+        Object[] arguments = new Object[]{merchantId};
         Event event = new Event(eventType,arguments);
         retireMerchant = new CompletableFuture<>();
         eventSender.sendEvent(event);
@@ -121,7 +119,7 @@ public class MerchantService implements EventReceiver  {
     }
 
     public boolean sendPaymentEvent(BankPay bankpay) throws Exception{
-        String eventType = "RequestPayment";
+        String eventType = PAYMENT_REQUEST;
         Object[] arguments = new Object[]{bankpay};
         Event event = new Event(eventType, arguments);
         requestPaymentResult = new CompletableFuture<>();
