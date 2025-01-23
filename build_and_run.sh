@@ -6,8 +6,8 @@ echo "Current directory: $(pwd)"
 # Facades
 # ./SimpleDtuPay/launch_service.sh
 
-./CustomerFacade/launch_service.sh
-./MerchantFacade/launch_service.sh
+./customer-facade/launch_service.sh
+./merchant-facade/launch_service.sh
 # ./AccountFacade/launch_service.sh
 
 # Services

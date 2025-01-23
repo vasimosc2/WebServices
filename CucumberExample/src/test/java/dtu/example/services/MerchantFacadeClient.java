@@ -29,9 +29,7 @@ public class MerchantFacadeClient {
             }
             return null;
         }
-    
-    
-    
+
         public Merchant getMerchant(String cprNumber){
             Response response = target.path("merchants/" + cprNumber).request().get();
             if (response.getStatus() == 200) {
@@ -45,27 +43,7 @@ public class MerchantFacadeClient {
         public Response deleteMerchant(String cprNumber) {
             return target.path("merchants/"+ cprNumber).request().delete();
         }
-    
-    
-        // public boolean generateTokens(String customerId, int tokenAmount) {
-        //     TokenInt tokenInt = new TokenInt();
-        //     tokenInt.setAmount(tokenAmount);
-        //     tokenInt.setCustomerId(customerId);
-            
-        //     System.out.println("I am ready to generate tokens");
-    
-        //     // This fails the test it should be pointing into a different Rest
-        //     Response response = target.path("customers/tokens/request")
-        //                                 .request()
-        //                                 .post(Entity.entity(tokenInt, MediaType.APPLICATION_JSON_TYPE));
-    
-        //     return response.getStatus() == Response.Status.OK.getStatusCode();
-        // }
-    
 
-    
-    
-        
     
     
         public boolean maketransfer(int moneyint, String tokenId, String merchantId) {

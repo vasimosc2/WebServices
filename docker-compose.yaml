@@ -60,7 +60,7 @@ services:
       - RABBITMQ_HOST=rabbitmq
 
   merchantfacade:
-    build: ./MerchantFacade
+    build: ./merchant-facade
     image: merchantfacade
     container_name: merchantfacade
     ports:
@@ -72,7 +72,7 @@ services:
       - RABBITMQ_HOST=rabbitmq
 
   customerfacade:
-    build: ./CustomerFacade
+    build: ./customer-facade
     image: customerfacade
     container_name: customerfacade
     ports:
