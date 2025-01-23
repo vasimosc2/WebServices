@@ -13,17 +13,21 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
 import messaging.rabbitmq.customer.CustomerFactory;
+import messaging.rabbitmq.reporting.ReportingFactory;
 import messaging.rabbitmq.token.TokenFactory;
 import models.Customer;
+import models.PaymentCustomer;
 import models.Token;
 import models.TokenInt;
 import services.CustomerService;
+import services.ReportingService;
 import services.TokenService;
 @Path("/customers")
 public class CustomerResources {
 
     private final CustomerService customerService = CustomerFactory.getService();
     private final TokenService tokenService = TokenFactory.getService();
+    private final ReportingService reportingService = ReportingFactory.getService();
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -77,5 +81,15 @@ public class CustomerResources {
         System.out.println("I am at get one TOken");
         return tokenService.sendGetOneTokenEvent(customerId);
     }
+
+    @GET
+    @Path("/reports/{customerId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<PaymentCustomer> getReport(@PathParam("customerId") String customerId) throws Exception {
+        return reportingService.sendRetrieveCustomerReportEvent(customerId);
+    }
+
+
+
 
 }

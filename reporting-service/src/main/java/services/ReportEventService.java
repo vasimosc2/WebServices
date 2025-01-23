@@ -53,7 +53,7 @@ public class ReportEventService implements EventReceiver {
             case MANAGER_REPORTS_REQUESTED:
                 System.out.println("Hello from ManagerReportsRequested Event");
                 List<Payment> managerPaymentsReport = service.getManagerPaymentReport();
-                Event eventOut3 = new Event(MANAGER_REPORTS_SUCCESSFUL_GENERATED, new Object[]{managerPaymentsReport});
+                Event eventOut3 = new Event(MANAGER_REPORTS_GENERATED, new Object[]{managerPaymentsReport});
                 eventSender.sendEvent(eventOut3);
                 break;
             default:
