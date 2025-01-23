@@ -4,12 +4,12 @@ public class EventTypes {
 
 
 
-    public static final String TOKENS_REQUEST = "TokensRequest";
-    public static final String TOKENS_REQUEST_SUCCESS = "TokensRequestSuccess";
+    public static final String TOKENS_GENERATION_REQUESTED = "TokensGenerationRequested";
+    public static final String TOKENS_GENERATED = "TokensGenerated";
     public static final String TOKENS_REQUEST_FAILED = "TokensRequestFailed";
 
-    public static final String GET_FIRST_TOKEN_REQUEST = "GetFirstTokenRequest";
-    public static final String GET_FIRST_TOKEN_REQUEST_SUCCESS = "GetFirstTokenRequestSuccess";
+    public static final String GET_FIRST_TOKEN_REQUESTED = "GetFirstTokenRequested";
+    public static final String GET_FIRST_TOKEN_RETRIEVED = "GetFirstTokenRetrieved";
     public static final String GET_FIRST_TOKEN_REQUEST_FAILED = "GetFirstTokenRequestFailed";
 
     public static final String REGISTER_CUSTOMER_REQUEST = "RegisterCustomerRequest";

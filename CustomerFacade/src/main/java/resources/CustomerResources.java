@@ -23,11 +23,20 @@ import services.TokenService;
 public class CustomerResources {
 
     private final CustomerService customerService = CustomerFactory.getService();
+    private final TokenService tokenService = TokenFactory.getService();
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public List<String> getAllCustomers() {
         return customerService.getCustomers();
+    }
+
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.TEXT_PLAIN)
+    public Response registerCustomer(Customer customer) throws Exception {
+        String customerId = customerService.sendRegisterEvent(customer);
+        return Response.ok().entity(customerId).build();
     }
 
     @GET
@@ -44,47 +53,29 @@ public class CustomerResources {
         return customerService.retireAccount(customerId);
     }
 
+
     @POST
+    @Path("/tokens")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response registerCustomer(Customer customer) throws Exception {
-        String customerId = customerService.sendRegisterEvent(customer);
-        return Response.ok().entity(customerId).build();
-    }
-
-    // Expose the TokenResources as a sub-resource
-    @Path("/tokens")
-    public TokenResources getTokenResources() {
-        return new TokenResources();
-    }
-
-    public static class TokenResources {
-
-        private final TokenService tokenService = TokenFactory.getService();
-
-        @POST
-        @Path("/request")
-        @Consumes(MediaType.APPLICATION_JSON)
-        @Produces(MediaType.APPLICATION_JSON)
-        public Response requestTokens(TokenInt tokenInt) throws Exception {
-            System.out.println("I reached DTUPay");
-            boolean successful = tokenService.sendRequestTokensEvent(tokenInt);
-            if (successful) {
-                System.out.println("inside customer facade sucessful generation of tokens");
-                return Response.ok().build();
-            } else {
-                return Response.status(Response.Status.BAD_REQUEST)
-                        .entity("Token request failed").build();
-            }
-        }
-
-        @POST
-        @Path("/getToken")
-        @Consumes(MediaType.APPLICATION_JSON)
-        @Produces(MediaType.APPLICATION_JSON)
-        public Token getToken(String customerId) throws Exception {
-            System.out.println("I am at getTOken");
-            return tokenService.sendGetTokenRequest(customerId);
+    public Response requestTokens(TokenInt tokenInt) throws Exception {
+        System.out.println("I reached DTUPay");
+        boolean successful = tokenService.sendGenerateTokensEvent(tokenInt);
+        if (successful) {
+            System.out.println("inside customer facade sucessful generation of tokens");
+            return Response.ok().build();
+        } else {
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity("Token request failed").build();
         }
     }
+
+    @GET
+    @Path("/tokens/{customerId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Token getToken(@PathParam("customerId") String customerId) throws Exception {
+        System.out.println("I am at get one TOken");
+        return tokenService.sendGetOneTokenEvent(customerId);
+    }
+
 }

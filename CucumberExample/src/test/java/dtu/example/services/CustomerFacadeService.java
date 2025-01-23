@@ -1,13 +1,8 @@
 package dtu.example.services;
 
-import java.math.BigDecimal;
-
-import dtu.example.models.BankPay;
 import dtu.example.models.Customer;
-import dtu.example.models.Merchant;
 import dtu.example.models.Token;
 import dtu.example.models.TokenInt;
-import dtu.ws.fastmoney.User;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.client.Client;
 import jakarta.ws.rs.client.ClientBuilder;
@@ -18,7 +13,6 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
 
-@Path("/customers")
 public class CustomerFacadeService {
 
     Client c = ClientBuilder.newClient();
@@ -37,21 +31,6 @@ public class CustomerFacadeService {
         }
     
     
-        // public String register(Merchant merchant){
-        //     Response response = target.path("merchants")
-        //                             .request()
-        //                             .post(Entity.entity(merchant, MediaType.APPLICATION_JSON));
-        //     if (response.getStatus() == 200) {
-        //         String result = response.readEntity(new GenericType<>() {
-        //         });
-    
-        //         return result.length() == 0 ? null : result;
-        //     }
-        //     return null;
-        // }
-    
-    
-    
     
         public Customer getCustomer(String cprNumber){
             Response response = target.path("customers/" + cprNumber).request().get();
@@ -66,22 +45,7 @@ public class CustomerFacadeService {
         public Response deleteCustomer(String cprNumber) {
             return target.path("customers/"+ cprNumber).request().delete();
         }
-    
-    
-    
-        // public Merchant getMerchant(String cprNumber){
-        //     Response response = target.path("merchants/" + cprNumber).request().get();
-        //     if (response.getStatus() == 200) {
-        //         return response.readEntity(new GenericType<>() {
-        //         });
-        //     }
-    
-        //     return null;
-        // }
-    
-        // public Response deleteMerchant(String cprNumber) {
-        //     return target.path("merchants/"+ cprNumber).request().delete();
-        // }
+
     
     
         public boolean generateTokens(String customerId, int tokenAmount) {
@@ -92,37 +56,24 @@ public class CustomerFacadeService {
             System.out.println("I am ready to generate tokens");
     
             // This fails the test it should be pointing into a different Rest
-            Response response = target.path("customers/tokens/request")
+            Response response = target.path("customers/tokens")
                                         .request()
                                         .post(Entity.entity(tokenInt, MediaType.APPLICATION_JSON_TYPE));
     
             return response.getStatus() == Response.Status.OK.getStatusCode();
         }
     
-        public Token requestTokenFromCustomer(String customerId) {
-            System.out.println("request token from customer");
-            return target.path("customers/tokens/getToken")
+        public Token getUnusedTokenFromCustomer(String customerId) {
+            System.out.println("request one unused token from customer");
+            Response response = target.path("customers/tokens/" + customerId)
                     .request()
-                    .post(Entity.entity(customerId, MediaType.APPLICATION_JSON), Token.class);
+                    .get();
+
+            if (response.getStatus() == 200) {
+                return response.readEntity(new GenericType<>() {
+                });
+            }
+            return null;
         }
-    
-    
-    
-    //     public boolean maketransfer(int moneyint, String tokenId, String merchantId) {
-    //         BigDecimal money = BigDecimal.valueOf(moneyint);
-    //         Response response = target.path("merchants/payments")
-    //                 .request()
-    //                 .post(Entity.entity(new BankPay(money, tokenId, merchantId), MediaType.APPLICATION_JSON));
-
-    //     if (response.getStatus() == Response.Status.BAD_REQUEST.getStatusCode()) {
-    //         return false;
-    //     }
-    //     return true;
-    // }
-
-
-
-
-   
     
 }

@@ -65,7 +65,7 @@ public class SimpleDtuPaySteps {
         System.out.println("SANTI customer id: " + customerId);
     }
 
-    @Then("the customer generates {int} tokens")
+    @And("the customer generates {int} tokens")
     public void the_customer_requests_tokens(int tokenAmount) {
         System.out.println("I am at the tokenRequest");
         boolean isSuccess = dtupayCustomerFacade.generateTokens(customerId, tokenAmount);
@@ -75,7 +75,7 @@ public class SimpleDtuPaySteps {
     @And("the customer retrieves a token")
     public void theCustomerRetrievesAToken() {
         System.out.println("I am ready to get one Token");
-        customerToken = dtupayCustomerFacade.requestTokenFromCustomer(customerId);
+        customerToken = dtupayCustomerFacade.getUnusedTokenFromCustomer(customerId);
         System.out.println(customerToken.getId());
         assertNotNull(customerToken.getId());
     }
