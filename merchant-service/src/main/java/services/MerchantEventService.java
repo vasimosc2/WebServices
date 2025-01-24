@@ -71,11 +71,11 @@ public class MerchantEventService implements EventReceiver {
                     System.out.println("Hello from PAYMENT_REQUESTED at MerchantService");
 
                     BankPay bankpay = gson.fromJson(gson.toJson(eventIn.getArguments()[0]), BankPay.class);
-                    correladtionId = gson.fromJson(gson.toJson(eventIn.getArguments()[1]), String.class);
+                    correlationId = gson.fromJson(gson.toJson(eventIn.getArguments()[1]), String.class);
                     System.out.println(String.format("I am at Merchant Service at Paymentrequest and the id of the merchant is : %s", bankpay.getMerchantId()));
 
                     Merchant Merchant = service.getMerchantById(bankpay.getMerchantId());
-                    Event eventOut = new Event(MERCHANT_BY_MERCHANT_ID_RETRIEVED, new Object[]{Merchant,correladtionId});
+                    Event eventOut = new Event(MERCHANT_BY_MERCHANT_ID_RETRIEVED, new Object[]{Merchant,correlationId});
                     eventSender.sendEvent(eventOut);
 
                 } catch (AccountNotFoundException e) {

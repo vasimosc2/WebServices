@@ -5,7 +5,7 @@ public class EventTypes {
     public static final String PAYMENT_HAS_SUCCEEDED = "PaymentHasSucceeded";
 
     public static final String GET_MERCHANT_BY_MERCHANT_ID_FAILED = "GetMerchantByMerchantIdFailed";
-    public static final String GET_CUSTOMER_BY_CUSTOMER_ID_FAILED = "GetCustomerByCustomerIdFailed";
+    public static final String GET_CUSTOMER_ID_BY_TOKEN_ID_FAILED = "GetCustomerIdByTokenIdFailed";
     public static final String PAYMENT_HAS_FAILED = "PaymentHasFailed";
 
     public static final String MERCHANT_REPORTS_GENERATED = "MerchantReportsGenerated";

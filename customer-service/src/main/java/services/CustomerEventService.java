@@ -47,7 +47,7 @@ public class CustomerEventService implements EventReceiver {
 
                 } catch (AccountExistsException ex) {
                     System.out.println("Registration failed: " + ex.getMessage());
-                    Event eventOut = new Event(REGISTER_CUSTOMER_REQUEST_FAILED, new Object[]{"Registration Failed"});
+                    Event eventOut = new Event(REGISTER_CUSTOMER_FAILED, new Object[]{"Registration Failed"});
                     eventSender.sendEvent(eventOut);
 
                 } catch (Exception e) {
@@ -86,12 +86,11 @@ public class CustomerEventService implements EventReceiver {
                     eventSender.sendEvent(eventOut);
 
                 } catch (Exception e) {
-                    Event eventOut = new Event(GET_CUSTOMER_BY_CUSTOMER_ID_REQUEST_FAILED, new Object[]{e.getMessage()});
-                    eventSender.sendEvent(eventOut);
+                    System.out.println("I am here: GET_CUSTOMER_BY_CUSTOMER_ID_FAILED");
                 }
                 break;
 
-            case RETIRE_CUSTOMER_REQUEST:
+            case RETIRE_CUSTOMER_REQUESTED:
                 try {
                     System.out.println("Hello from RetireCustomer");
                     String customerId = gson.fromJson(gson.toJson(eventIn.getArguments()[0]), String.class);

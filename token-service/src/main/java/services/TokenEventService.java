@@ -20,6 +20,7 @@ import java.util.logging.Logger;
 import jakarta.ws.rs.core.Response;
 
 import static utils.EventTypes.*;
+import static utils.EventTypes.CUSTOMER_RETIRED;
 
 public class TokenEventService implements EventReceiver {
 
@@ -82,7 +83,7 @@ public class TokenEventService implements EventReceiver {
                         eventSender.sendEvent(eventOut);
                     } else {
                         System.out.println("Token Not Valid");
-                        Event eventOut = new Event(GET_CUSTOMER_ID_BY_TOKEN_ID_REQUEST_FAILED, new Object[]{correlationId});
+                        Event eventOut = new Event(GET_CUSTOMER_ID_BY_TOKEN_ID_FAILED, new Object[]{correlationId});
                         eventSender.sendEvent(eventOut);
                     }
                 } catch (Exception e) {
@@ -90,7 +91,7 @@ public class TokenEventService implements EventReceiver {
                     eventSender.sendEvent(eventOut);
                 }
                 break;
-            case RETIRE_CUSTOMER_REQUEST_SUCCESS:
+            case CUSTOMER_RETIRED:
                 System.out.println(" I got a Retire Customer so I have to delete his tokens From DtuPay");
                 String customerId = gson.fromJson(gson.toJson(eventIn.getArguments()[0]), String.class);
                 service.deleteToken(customerId);

@@ -106,7 +106,7 @@ public class PaymentEventService implements EventReceiver {
                         System.out.println("Payment failed: " + e.getMessage());
 
                         // Send a bad request event
-                        Event badRequestEvent = new Event(PAYMENT_REQUEST_FAILED, new Object[]{correlationId});
+                        Event badRequestEvent = new Event(PAYMENT_HAS_FAILED, new Object[]{correlationId});
                         System.out.println("I am sending a PaymentFailed event due to: " + e.getMessage());
                         eventSender.sendEvent(badRequestEvent);
                 }
