@@ -32,13 +32,10 @@ public class TokenService implements ITokenService {
         }
 
         List<Token> unusedTokens = getUnusedTokens(tokenInt.getCustomerId());
-        if (unusedTokens.size() > 6) {
-            throw new TokenException(String.format("You already have %d tokens which exceed the maximum of 6, you can  generate more",unusedTokens.size()));
+        if (unusedTokens.size() > 1) {
+            throw new TokenException(String.format("You already have %d tokens which exceed the maximum of 2, you can  generate more",unusedTokens.size()));
         }
-
-        if (unusedTokens.size() + tokenInt.getAmount() > 6) {
-            throw new TokenException(String.format("You had %d and you asked for %d which exceeds the allowed 6 tokens", unusedTokens.size(), tokenInt.getAmount()));
-        }
+        
         List<Token> generatedTokens = new ArrayList<>();
 
         for(int i = 0; i < tokenInt.getAmount(); i++){
