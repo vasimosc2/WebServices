@@ -16,10 +16,12 @@ import dtu.ws.fastmoney.BankServiceException_Exception;
 import dtu.ws.fastmoney.BankServiceService;
 import dtu.ws.fastmoney.User;
 import io.cucumber.java.After;
+import io.cucumber.java.Before;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import io.cucumber.java.Scenario;
 
 import java.math.BigDecimal;
 import java.util.concurrent.CompletableFuture;
@@ -42,8 +44,10 @@ public class SimpleDtuPaySteps {
     CompletableFuture<Boolean> result2 = new CompletableFuture<>();
 
 
-
-
+    @Before
+    public void beforeScenario(Scenario scenario) {
+        System.out.println("Starting scenario: " + scenario.getName()); // Directly use the scenario object
+    }
 
 
     // -------------------------------   Register One Customer ------------------
@@ -280,7 +284,7 @@ public class SimpleDtuPaySteps {
    
     @And("the balance of the customer at the bank is {int} kr")
     public void customerBalance(int money) throws BankServiceException_Exception{
-        System.out.println("After transaction in step customer has " + bankService.getAccount(customer2.getBankAccount()).getBalance());
+        System.out.println("After transaction in step customer has " + bankService.getAccount(customer.getBankAccount()).getBalance());
         assertEquals(BigDecimal.valueOf((double) money), bankService.getAccount(customer.getBankAccount()).getBalance() );
     }
 
