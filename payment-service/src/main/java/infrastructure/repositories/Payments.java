@@ -1,6 +1,6 @@
 /**
  * @primary-author Vasileios Moschou (s222566)
- *
+ * @co-author Angelos Michelis (s232488)
  *
  */
 package infrastructure.repositories;

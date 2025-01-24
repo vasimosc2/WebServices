@@ -1,5 +1,10 @@
+/**
+ * @primary-author Jan Ariel Ocampo (s135214)
+ * @co-author Milla Kotilainen (s243587)
+ *
+ *
+ */
 package messaging.rabbitmq.customer;
-
 import com.google.gson.Gson;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;

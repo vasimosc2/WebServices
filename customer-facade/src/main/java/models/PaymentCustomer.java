@@ -1,8 +1,12 @@
+/**
+ * @primary-author Marcu Muro (s233662)
+ * @co-author Kaizhi Fan (s240047)
+ *
+ *
+ */
 package models;
-
 import lombok.Getter;
 import lombok.Setter;
-
 import java.math.BigDecimal;
 
 @Getter

@@ -1,3 +1,8 @@
+/**
+ * @primary-author Marcu Muro (s233662)
+ * @co-author Kaizhi Fan (s240047)
+ *
+ */
 package services;
 
 import org.modelmapper.ModelMapper;

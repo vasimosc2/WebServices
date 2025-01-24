@@ -1,13 +1,16 @@
+/**
+ * @primary-author Marcu Muro (s233662)
+ * @co-author Kaizhi Fan (s240047)
+ *
+ *
+ */
 package services;
-
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import messaging.Event;
 import messaging.EventReceiver;
 import messaging.EventSender;
 import models.Payment;
-
-
 import java.lang.reflect.Type;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;

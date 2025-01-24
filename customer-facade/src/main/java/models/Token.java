@@ -1,3 +1,9 @@
+/**
+ * @primary-author Vasileios Moschou (s222566)
+ * @co-author Milla Kotilainen (s243587)
+ *
+ *
+ */
 package models;
 
 public class Token {

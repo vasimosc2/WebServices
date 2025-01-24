@@ -1,3 +1,8 @@
+/**
+ * @primary-author Marcu Muro (s233662)
+ * @co-author Milla Kotilainen (s243587)
+ *
+ */
 package utils;
 
 public class EventTypes {

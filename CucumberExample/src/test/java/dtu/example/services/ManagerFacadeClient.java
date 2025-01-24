@@ -1,15 +1,17 @@
+/**
+ * @primary-author Marcu Muro (s233662)
+ * @co-author Kaizhi Fan (s240047)
+ *
+ *
+ */
+
 package dtu.example.services;
 
-import dtu.example.models.Customer;
 import dtu.example.models.Payment;
-import dtu.example.models.PaymentCustomer;
-import dtu.example.models.Token;
 import jakarta.ws.rs.client.Client;
 import jakarta.ws.rs.client.ClientBuilder;
-import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.client.WebTarget;
 import jakarta.ws.rs.core.GenericType;
-import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
 import java.util.List;

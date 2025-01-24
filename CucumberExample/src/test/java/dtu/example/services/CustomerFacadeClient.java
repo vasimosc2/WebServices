@@ -1,5 +1,10 @@
+/**
+ * @primary-author Marcu Muro (s233662)
+ * @co-author Jan Ariel Ocampo (s135214)
+ *
+ *
+ */
 package dtu.example.services;
-
 import dtu.example.models.Customer;
 import dtu.example.models.PaymentCustomer;
 import dtu.example.models.Token;

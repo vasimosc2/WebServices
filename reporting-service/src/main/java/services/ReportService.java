@@ -1,3 +1,8 @@
+/**
+ * @primary-author Marco Muro (s233662)
+ * @co-author Jan Ariel Ocampo s135214
+ *
+ */
 package services;
 
 import infrastructure.repositories.ReportMap;
@@ -7,10 +12,6 @@ import models.*;
 import services.interfaces.IReportService;
 
 import java.util.List;
-
-
-
-import exceptions.TokenException;
 
 @jakarta.enterprise.context.ApplicationScoped
 public class ReportService implements IReportService {

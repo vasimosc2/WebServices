@@ -1,3 +1,9 @@
+/**
+ * @primary-author Marcu Muro (s233662)
+ * @co-author Angelos Michelis (s232488)
+ *
+ *
+ */
 package models;
 
 import lombok.Getter;

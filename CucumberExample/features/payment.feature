@@ -1,3 +1,5 @@
+#@primary-author Vasileios Moschou (s222566)
+
 Feature: Payment
   Scenario: Double Payment
     Given a customer1 with name "Vasilis", last name "Moschou", and CPR "gfdgdfsewgfdgdfoedkmfdjmkdfdsfuyeytsfgdwtrfafdgfdadfadfgs332df"

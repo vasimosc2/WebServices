@@ -1,8 +1,12 @@
+/**
+ * @primary-author Jan Ariel Ocampo (s135214)
+ * @co-author Milla Kotilainen (s243587)
+ *
+ *
+ */
 package dtu.example.services;
-
 import java.math.BigDecimal;
 import java.util.List;
-
 import dtu.example.models.BankPay;
 import dtu.example.models.Merchant;
 import dtu.example.models.PaymentMerchant;

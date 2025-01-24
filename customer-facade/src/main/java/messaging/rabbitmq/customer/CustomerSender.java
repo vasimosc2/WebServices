@@ -1,13 +1,16 @@
+/**
+ * @primary-author Marcu Muro (s233662)
+ * @co-author Angelos Michelis (s232488)
+ *
+ *
+ */
 package messaging.rabbitmq.customer;
-
 import com.google.gson.Gson;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
-
 import messaging.Event;
 import messaging.EventSender;
-
 import java.nio.charset.StandardCharsets;
 import java.util.logging.Level;
 import java.util.logging.Logger;

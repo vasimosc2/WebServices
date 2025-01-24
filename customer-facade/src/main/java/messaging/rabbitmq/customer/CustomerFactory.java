@@ -1,3 +1,9 @@
+/**
+ * @primary-author Angelos Michelis (s232488)
+ * @co-author Kaizhi Fan (s240047)
+ *
+ *
+ */
 package messaging.rabbitmq.customer;
 import messaging.EventSender;
 import services.CustomerService;

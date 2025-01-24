@@ -1,3 +1,8 @@
+/**
+ * @primary-author Marco Muro (s233662)
+ * @co-author Angelos Michelis (s232488)
+ *
+ */
 package services;
 import com.google.gson.Gson;
 

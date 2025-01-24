@@ -1,3 +1,8 @@
+/**
+ * @primary-author Vasileios Moschou (s222566)
+ * @co-author Marcu Muro (s233662)
+ *
+ */
 package services.interfaces;
 import models.Customer;
 import exceptions.account.AccountExistsException;

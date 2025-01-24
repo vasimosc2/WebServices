@@ -1,3 +1,9 @@
+/**
+ * @primary-author Marcu Muro (s233662)
+ * @co-author Kaizhi Fan (s240047)
+ *
+ *
+ */
 package resources;
 import java.util.List;
 
