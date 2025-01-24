@@ -54,7 +54,7 @@ Feature: Payment
     And the customer is registered with the bank with an initial balance of 500 kr
     And the customer is registered with Simple DTU Pay using their bank account
     And the customer generates 3 tokens
-    And the customer generates 5 tokens second
+    And the customer generates 5 tokens
 
 
   
