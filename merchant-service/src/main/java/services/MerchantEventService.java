@@ -71,7 +71,6 @@ public class MerchantEventService implements EventReceiver {
                     Event eventOut = new Event(MERCHANT_BY_MERCHANT_ID_RETRIEVED, new Object[]{Merchant,correladtionId});
                     eventSender.sendEvent(eventOut);
                 } catch (Exception e) {
-                    //TODO event created but never caught anywhere it should be caught on payment service
                     Event eventOut = new Event(GET_MERCHANT_BY_MERCHANT_ID_FAILED, new Object[]{e.getMessage()});
                     eventSender.sendEvent(eventOut);
                 }

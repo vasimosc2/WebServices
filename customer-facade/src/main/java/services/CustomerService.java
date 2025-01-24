@@ -11,11 +11,10 @@ import messaging.EventSender;
 import models.Customer;
 import jakarta.ws.rs.core.Response;
 
+import static java.util.Objects.isNull;
 import static utils.EventTypes.*;
 
 public class CustomerService implements EventReceiver {
-
-    private List<String> customerIds = new ArrayList<>();
     private CompletableFuture<String> registerResult;
     private CompletableFuture<Customer> getCustomerResult;
     private CompletableFuture<Response> retireCustomer;
@@ -28,10 +27,6 @@ public class CustomerService implements EventReceiver {
     }
 
 
-
-    public List<String> getCustomers() {
-        return customerIds;
-    }
 
 
     public void receiveEvent(Event eventIn) {
@@ -56,9 +51,9 @@ public class CustomerService implements EventReceiver {
                 getCustomerResult.complete(null);
                 break;
 
-            case RETIRE_CUSTOMER_REQUEST_SUCCESS:
-                System.out.println("I got a RetireCustomerByCprSuccessfull");
-                boolean removed = customerIds.removeIf(c -> c.equals((String) eventIn.getArguments()[0]));
+            case CUSTOMER_RETIRED:
+                System.out.println("I got a CUSTOMER_RETIRED");
+                boolean removed = !isNull(eventIn.getArguments()[0]);
 
                 if (!removed) {
                     System.out.println("No customer found with CPR: " + eventIn.getArguments()[0]);
@@ -66,7 +61,7 @@ public class CustomerService implements EventReceiver {
                 retireCustomer.complete(Response.status(200).entity("Delete successful").build());
                 break;
 
-            case RETIRE_CUSTOMER_REQUEST_FAILED:
+            case RETIRE_CUSTOMER_FAILED:
                 retireCustomer.complete(Response.status(404).entity("Delete not successful").build());
                 break;
 
@@ -93,7 +88,6 @@ public class CustomerService implements EventReceiver {
     
 
         if(customerId!=null){
-            customerIds.add(customerId);
             return customerId;
         }
         return null;

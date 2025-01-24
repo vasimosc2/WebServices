@@ -2,6 +2,8 @@ package services;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+
+import static java.util.Objects.isNull;
 import static utils.EventTypes.*;
 import static utils.EventTypes.MERCHANT_REGISTERED;
 
@@ -14,8 +16,6 @@ import models.BankPay;
 import models.Merchant;
 
 public class MerchantService implements EventReceiver  {
-    private List<String> merchantIds = new ArrayList<>();
-    private CompletableFuture<Boolean> requestPaymentResult;
     private CompletableFuture<String> registerResult;
     private CompletableFuture<Merchant> GetMerchantResult;
     private CompletableFuture<Response> retireMerchant;
@@ -29,9 +29,7 @@ public class MerchantService implements EventReceiver  {
         this.eventSender = eventSender;
     }
 
-    public List<String> getMerchantIds() {
-        return merchantIds;
-    }
+
 
 
     public void receiveEvent(Event eventIn) {
@@ -58,7 +56,7 @@ public class MerchantService implements EventReceiver  {
 
             case MERCHANT_RETIRED:
                 System.out.println("I got a MERCHANT_RETIRED");
-                boolean removed = merchantIds.removeIf(c -> c.equals((String) eventIn.getArguments()[0]));
+                boolean removed = !isNull(eventIn.getArguments()[0]);
 
                 if (!removed) {
                     System.out.println("No Merchnat found with CPR: " + eventIn.getArguments()[0]);
@@ -90,7 +88,6 @@ public class MerchantService implements EventReceiver  {
         String merchantId = registerResult.join();
 
         if(merchantId!=null){
-            merchantIds.add(merchantId);
             return merchantId;
         }
         return null;

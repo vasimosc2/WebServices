@@ -27,11 +27,7 @@ public class CustomerResources {
     private final CustomerService customerService = CustomerFactory.getService();
     private final TokenService tokenService = TokenFactory.getService();
     private final ReportingService reportingService = ReportingFactory.getService();
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    public List<String> getAllCustomers() {
-        return customerService.getCustomers();
-    }
+
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)

@@ -27,12 +27,7 @@ public class MerchantResources{
     private final MerchantService merchantService = MerchantFactory.getService();
     private final PaymentService paymentService = PaymentFactory.getService();
     private final ReportingService reportingService = ReportingFactory.getService();
-    
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    public List<String> getAllMerchants() {
-        return merchantService.getMerchantIds();
-    }
+
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
