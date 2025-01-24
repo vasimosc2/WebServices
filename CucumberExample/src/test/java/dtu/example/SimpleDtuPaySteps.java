@@ -47,6 +47,7 @@ public class SimpleDtuPaySteps {
     public void beforeScenario(Scenario scenario) {
         System.out.println();
         System.out.println("Starting scenario: " + scenario.getName());
+        System.out.println();
     }
 
 
@@ -84,7 +85,13 @@ public class SimpleDtuPaySteps {
     public void the_customer_requests_tokens(int tokenAmount) {
         System.out.println("I am at the tokenRequest");
         boolean isSuccess = dtupayCustomerFacade.generateTokens(customerId, tokenAmount);
-        assertTrue(isSuccess);
+        if(tokenAmount <6){
+            assertTrue(isSuccess);
+        }
+        else{
+            assertFalse(isSuccess);
+        }
+        
     }
 
 
@@ -262,9 +269,9 @@ public class SimpleDtuPaySteps {
     @When("the merchant initiates two payments for {int} kr")
     public void theMerchantInitiatesAPaymentWithSameToken(int money ){
             System.out.println("I am ready to initiate a payment");
-            successful = dtupayMerchantFacade.maketransfer(money, customerToken1.getId(), merchantId);
+            successful = dtupayMerchantFacade.maketransfer(money, customerToken.getId(), merchantId);
             assertTrue(successful);
-            successful = dtupayMerchantFacade.maketransfer(money, customerBankAccountId, merchantId); // Second Time with the same Token
+            successful = dtupayMerchantFacade.maketransfer(money, customerToken.getId(), merchantId); // Second Time with the same Token
             assertFalse(successful);
         }
 

@@ -41,7 +41,7 @@ public class MerchantResources{
     @Produces(MediaType.TEXT_PLAIN)
     public Response register(Merchant merchant) throws Exception {
         String merchantId = merchantService.sendRegisterEvent(merchant);
-        return Response.ok().entity(merchantId).build(); // this returns to the test and gives a 200 status with the item
+        return Response.ok().entity(merchantId).build();
     }
     
     @GET

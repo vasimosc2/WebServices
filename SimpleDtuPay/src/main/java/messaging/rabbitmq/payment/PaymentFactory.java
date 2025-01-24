@@ -1,7 +1,6 @@
 package messaging.rabbitmq.payment;
 import messaging.EventSender;
 import services.PaymentService;
-import services.TokenService;
 
 
 public class PaymentFactory {

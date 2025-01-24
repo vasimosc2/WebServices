@@ -2,7 +2,6 @@ package services;
 
 import com.google.gson.Gson;
 
-import models.CustInt;
 import models.Customer;
 import messaging.Event;
 import messaging.EventReceiver;

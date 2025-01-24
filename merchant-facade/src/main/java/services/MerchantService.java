@@ -10,7 +10,6 @@ import jakarta.ws.rs.core.Response;
 import messaging.Event;
 import messaging.EventReceiver;
 import messaging.EventSender;
-import models.BankPay;
 import models.Merchant;
 
 public class MerchantService implements EventReceiver  {

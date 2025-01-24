@@ -71,7 +71,7 @@ public class TokenEventService implements EventReceiver {
                     System.out.println("Hello from PaymentRequested in Token_Service");
                     BankPay bankPay = gson.fromJson(gson.toJson(eventIn.getArguments()[0]), BankPay.class);
                     String correlationId = gson.fromJson(gson.toJson(eventIn.getArguments()[1]), String.class);
-                    if (service.isTokenValid(bankPay.getTokenId())) { // Question, here must I send it bank to MerchantFacade???
+                    if (service.isTokenValid(bankPay.getTokenId())) {
                         String customerId = service.getCustomerIdByTokenIdForPayment(bankPay.getTokenId());
                         Event eventOut = new Event(GET_CUSTOMER_BY_CUSTOMER_ID_REQUEST, new Object[]{customerId,correlationId});
                         System.out.println("I am contacting Customer Service ...");
