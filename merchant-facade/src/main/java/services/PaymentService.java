@@ -1,12 +1,17 @@
-package services;
+/**
+ * @primary-author Vasileios Moschou (s222566)
+ *
+ *
+ */
 
+
+package services;
 import com.google.gson.Gson;
 import messaging.Event;
 import messaging.EventReceiver;
 import messaging.EventSender;
 import models.BankPay;
 import models.PaymentManager;
-
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;

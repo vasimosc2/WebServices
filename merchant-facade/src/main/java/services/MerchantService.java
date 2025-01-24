@@ -1,3 +1,10 @@
+/**
+ * @primary-author Vasileios Moschou (s222566)
+ *
+ *
+ */
+
+
 package services;
 import java.util.ArrayList;
 import java.util.List;
@@ -124,14 +131,4 @@ public class MerchantService implements EventReceiver  {
         return retireMerchant.join();
     }
 
-//    public boolean sendPaymentEvent(BankPay bankpay) throws Exception{
-//        String eventType = PAYMENT_REQUEST;
-//        Object[] arguments = new Object[]{bankpay};
-//        Event event = new Event(eventType, arguments);
-//        requestPaymentResult = new CompletableFuture<>();
-//        eventSender.sendEvent(event);
-//
-//        return requestPaymentResult.join();
-//
-//    }
 }
