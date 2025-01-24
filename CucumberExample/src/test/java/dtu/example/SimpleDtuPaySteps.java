@@ -36,6 +36,7 @@ public class SimpleDtuPaySteps {
     private Merchant merchant;
     private String customerId,customerId1, customerId2, merchantId, customerBankAccountId, customerBankAccountId1,customerBankAccountId2, merchantBankAccountId;
     private Token customerToken, customerToken1, customerToken2;
+    private int tokensrequest = 0;
     private CustomerFacadeClient dtupayCustomerFacade = new CustomerFacadeClient();
     private MerchantFacadeClient dtupayMerchantFacade = new MerchantFacadeClient();
 
@@ -88,8 +89,10 @@ public class SimpleDtuPaySteps {
     @Then("the customer generates {int} tokens")
     public void the_customer_requests_tokens(int tokenAmount) {
         System.out.println("I am at the tokenRequest");
+        tokensrequest = tokensrequest +tokenAmount;
+        System.out.println("The tokens that the customer has requested so far" + tokensrequest);
         boolean isSuccess = dtupayCustomerFacade.generateTokens(customerId, tokenAmount);
-        if(tokenAmount <6){
+        if(tokensrequest <6){
             assertTrue(isSuccess);
         }
         else{

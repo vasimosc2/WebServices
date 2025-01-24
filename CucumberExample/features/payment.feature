@@ -48,5 +48,13 @@ Feature: Payment
     And the customer retrieves a token
     When the merchant initiates two payments for 100 kr
     Then the payment is fault
+  
+  Scenario: Request Exceeds Maximum Tokens
+    Given a customer with name "John", last name "Doe", and CPR "1234214grehtwr53267890reas"
+    And the customer is registered with the bank with an initial balance of 500 kr
+    And the customer is registered with Simple DTU Pay using their bank account
+    And the customer generates 3 tokens
+    And the customer generates 5 tokens second
+
 
   
