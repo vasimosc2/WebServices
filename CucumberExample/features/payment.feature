@@ -74,11 +74,11 @@ Feature: Payment
     And the customer is registered with Simple DTU Pay using their bank account error
   
   Scenario: Invalid MerchantId
-    Given a customer with name "John", last name "Doe", and CPR "1sgsfdg234sfg532632afdasdfadfssa7890reas"
+    Given a customer with name "John", last name "Doe", and CPR "1sgsfdg234sfg532632afd3wqewasdfadfssa7890reas"
     And the customer is registered with the bank with an initial balance of 500 kr
     And the customer is registered with Simple DTU Pay using their bank account
     And the customer generates 3 tokens
-    Given a merchant with name "Jane", last name "Smith", and CPR "098sgdfsdg76543r2r34321afd2bgdshjreadasd"
+    Given a merchant with name "Jane", last name "Smith", and CPR "098sgdfsdg76543r2r34321afd2bgdshjreadaadsfafdsd"
     And the merchant is registered with the bank with an initial balance of 200 kr
     And the merchant is registered with Simple DTU Pay using their bank account
     And the customer retrieves a token
