@@ -1,3 +1,8 @@
+/**
+ * @primary-author Vasileios Moschou (s222566)
+ *
+ *
+ */
 package services.interfaces;
 import models.Merchant;
 import exceptions.account.AccountExistsException;

@@ -1,3 +1,8 @@
+/**
+ * @primary-author Vasileios Moschou (s222566)
+ *
+ *
+ */
 package dtu.example.models;
 
 public class Customer {
@@ -43,4 +48,10 @@ public class Customer {
         this.bankAccount = bankAccount;
     }
 
+    public String getCustomerId(){
+        return customerId;
+    }
+    public void setCustomerId(String customerId){
+        this.customerId = customerId;
+    }
 }

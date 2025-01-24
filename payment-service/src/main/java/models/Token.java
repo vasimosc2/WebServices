@@ -1,3 +1,8 @@
+/**
+ * @primary-author Vasileios Moschou (s222566)
+ *
+ *
+ */
 package models;
 
 public class Token {

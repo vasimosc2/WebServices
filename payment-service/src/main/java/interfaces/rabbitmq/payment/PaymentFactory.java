@@ -1,5 +1,9 @@
+/**
+ * @primary-author Vasileios Moschou (s222566)
+ *
+ *
+ */
 package interfaces.rabbitmq.payment;
-
 import messaging.EventSender;
 import services.PaymentEventService;
 import services.PaymentService;

@@ -1,10 +1,12 @@
+/**
+ * @primary-author Vasileios Moschou (s222566)
+ *
+ *
+ */
 package infrastructure.repositories;
-
-
 import exceptions.TokenException;
 import models.Token;
 import infrastructure.repositories.interfaces.ITokens;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -15,15 +17,15 @@ public class TokenMap implements ITokens {
 
    private static TokenMap instance = null;
 
-    // Internal map to store tokens
+
     private final Map<String, List<Token>> tokenStore;
 
-    // Private constructor for singleton pattern
+
     private TokenMap() {
         tokenStore = new HashMap<>();
     }
 
-    // Public method to get the singleton instance
+
     public static TokenMap getInstance() {
         if (instance == null) {
             synchronized (TokenMap.class) {
@@ -49,7 +51,6 @@ public class TokenMap implements ITokens {
 
     @Override
     public void update(String customerId, Token token) {
-    // If the customerId exists, add the token to the list; otherwise, create a new list
     tokenStore.merge(customerId, new ArrayList<>(List.of(token)), (existingTokens, newTokens) -> {
         existingTokens.addAll(newTokens);
         return existingTokens;
@@ -75,9 +76,9 @@ public class TokenMap implements ITokens {
         for (Map.Entry<String, List<Token>> entry : tokenStore.entrySet()) {
             List<Token> tokens = entry.getValue();
             for (Token t : tokens) {
-                if (t.getId().equals(tokenId)) { // I found a token
+                if (t.getId().equals(tokenId)) {
                     if(t.getUsed() == false){
-                        t.setUsed(true); // Here I invalidate the token
+                        t.setUsed(true);
                         return true;
                     }
                     else{

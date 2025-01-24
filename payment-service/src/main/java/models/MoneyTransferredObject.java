@@ -1,7 +1,5 @@
 package models;
-
 import lombok.Getter;
-
 import java.math.BigDecimal;
 
 @Getter

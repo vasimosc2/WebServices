@@ -1,16 +1,15 @@
+/**
+ * @primary-author Vasileios Moschou (s222566)
+ *
+ *
+ */
 package services;
-
-
-
-
 import exceptions.account.AccountExistsException;
 import exceptions.account.AccountNotFoundException;
 import infrastructure.repositories.MerchantsList;
 import infrastructure.repositories.interfaces.IMerchants;
 import models.Merchant;
 import services.interfaces.IMerchantService;
-
-
 import java.util.UUID;
 
 @jakarta.enterprise.context.ApplicationScoped

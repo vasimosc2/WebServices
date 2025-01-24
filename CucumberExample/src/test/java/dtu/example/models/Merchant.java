@@ -1,3 +1,8 @@
+/**
+ * @primary-author Vasileios Moschou (s222566)
+ *
+ *
+ */
 package dtu.example.models;
 
 public class Merchant {
@@ -41,6 +46,14 @@ public class Merchant {
 
     public void setBankAccount(String bankAccount){
         this.bankAccount = bankAccount;
+    }
+
+    public String getMerchantId(){
+        return merchantId;
+    }
+
+    public void setMerchantId(String merchantId){
+        this.merchantId = merchantId;
     }
 
 

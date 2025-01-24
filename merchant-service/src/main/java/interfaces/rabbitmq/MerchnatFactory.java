@@ -1,5 +1,10 @@
-package interfaces.rabbitmq;
+/**
+ * @primary-author Vasileios Moschou (s222566)
+ *
+ *
+ */
 
+package interfaces.rabbitmq;
 import messaging.EventSender;
 import services.MerchantEventService;
 import services.MerchantService;

@@ -1,6 +1,5 @@
 package resources;
 import java.util.List;
-
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
@@ -11,7 +10,6 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import messaging.rabbitmq.merchant.MerchantFactory;
-
 import messaging.rabbitmq.payment.PaymentFactory;
 import messaging.rabbitmq.reporting.ReportingFactory;
 import models.BankPay;

@@ -1,16 +1,17 @@
+/**
+ * @primary-author Vasileios Moschou (s222566)
+ *
+ *
+ */
 package services;
-
 import com.google.gson.Gson;
-
 import models.Customer;
 import messaging.Event;
 import messaging.EventReceiver;
 import messaging.EventSender;
 import services.interfaces.ICustomerService;
-
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import static utils.EventTypes.*;
 
 public class CustomerEventService implements EventReceiver {

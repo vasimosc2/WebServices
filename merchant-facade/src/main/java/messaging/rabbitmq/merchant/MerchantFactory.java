@@ -1,3 +1,8 @@
+/**
+ * @primary-author Vasileios Moschou (s222566)
+ *
+ *
+ */
 package messaging.rabbitmq.merchant;
 import messaging.EventSender;
 import services.MerchantService;

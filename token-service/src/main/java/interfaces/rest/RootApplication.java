@@ -1,10 +1,12 @@
+/**
+ * @primary-author Vasileios Moschou (s222566)
+ *
+ *
+ */
 package interfaces.rest;
-
 import interfaces.rabbitmq.TokenFactory;
 import io.quarkus.runtime.ShutdownEvent;
 import io.quarkus.runtime.StartupEvent;
-
-
 import jakarta.enterprise.event.Observes;
 import jakarta.ws.rs.ApplicationPath;
 import jakarta.ws.rs.GET;

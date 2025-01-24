@@ -1,16 +1,18 @@
+/**
+ * @primary-author Vasileios Moschou (s222566)
+ *
+ *
+ */
 package services;
 import com.google.gson.Gson;
-
 import messaging.Event;
 import messaging.EventReceiver;
 import messaging.EventSender;
 import models.BankPay;
 import models.Merchant;
 import services.interfaces.IMerchantService;
-
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import static utils.EventTypes.*;
 
 public class MerchantEventService implements EventReceiver {
