@@ -270,8 +270,10 @@ public class SimpleDtuPaySteps {
     public void theMerchantInitiatesAPaymentWithSameToken(int money ){
             System.out.println("I am ready to initiate a payment");
             successful = dtupayMerchantFacade.maketransfer(money, customerToken.getId(), merchantId);
+            System.out.println("FirstTry was "+successful);
             assertTrue(successful);
             successful = dtupayMerchantFacade.maketransfer(money, customerToken.getId(), merchantId); // Second Time with the same Token
+            System.out.println("SecondTry was "+successful);
             assertFalse(successful);
         }
 

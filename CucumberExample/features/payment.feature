@@ -30,6 +30,12 @@ Feature: Payment
     Then the payment is successful
     And the balance of the customer at the bank is 400 kr
     And the balance of the merchant at the bank is 300 kr
+
+  Scenario: Request Too Many Tokens
+    Given a customer with name "John", last name "Doe", and CPR "1234532adad67890reas"
+    And the customer is registered with the bank with an initial balance of 500 kr
+    And the customer is registered with Simple DTU Pay using their bank account
+    And the customer generates 7 tokens
   
   Scenario: Invalid Token
     Given a customer with name "John", last name "Doe", and CPR "1234214grehtwr53267890reas"
@@ -43,3 +49,4 @@ Feature: Payment
     When the merchant initiates two payments for 100 kr
     Then the payment is fault
 
+  
