@@ -5,6 +5,7 @@
  */
 package services;
 import com.google.gson.Gson;
+import exceptions.account.AccountNotFoundException;
 import messaging.Event;
 import messaging.EventReceiver;
 import messaging.EventSender;
@@ -20,6 +21,7 @@ public class MerchantEventService implements EventReceiver {
     private final static Logger LOGGER = Logger.getLogger(MerchantEventService.class.getName());
 
     private final EventSender eventSender;
+    private String correlationId;
     
     private final IMerchantService service;
     private final Gson gson = new Gson();
@@ -65,16 +67,25 @@ public class MerchantEventService implements EventReceiver {
             case PAYMENT_REQUEST:
                 try {
                     System.out.println("Hello from PaymentRequested at MerchantService");
+                
                     BankPay bankpay = gson.fromJson(gson.toJson(eventIn.getArguments()[0]), BankPay.class);
-                    String correladtionId = gson.fromJson(gson.toJson(eventIn.getArguments()[1]), String.class);
-                    System.out.println(String.format("I am at Merchant Service at Paymentrequest and the id of the merchant is : %s", bankpay.getMerchantId()));
-
-                    Merchant Merchant = service.getMerchantById(bankpay.getMerchantId());
-                    Event eventOut = new Event(GET_MERCHANT_BY_MERCHANT_ID_REQUEST_SUCCESS, new Object[]{Merchant,correladtionId});
+                    correlationId = gson.fromJson(gson.toJson(eventIn.getArguments()[1]), String.class);
+                
+                    System.out.println(String.format("I am at Merchant Service at PaymentRequest and the id of the merchant is: %s", bankpay.getMerchantId()));
+ 
+                    Merchant merchant = service.getMerchantById(bankpay.getMerchantId());
+                
+                    Event eventOut = new Event(GET_MERCHANT_BY_MERCHANT_ID_REQUEST_SUCCESS, new Object[]{merchant, correlationId});
                     eventSender.sendEvent(eventOut);
+                
+                } catch (AccountNotFoundException e) {
+                    System.out.println("Merchant account not found: " + e.getMessage());
+                    Event eventOut = new Event(GET_MERCHANT_BY_MERCHANT_ID_REQUEST_FAILED, new Object[]{correlationId});
+                    eventSender.sendEvent(eventOut);
+                
                 } catch (Exception e) {
-                    //TODO event created but never caught anywhere it should be caught on payment service
-                    Event eventOut = new Event(GET_MERCHANT_BY_MERCHANT_ID_REQUEST_FAILED, new Object[]{e.getMessage()});
+                    System.err.println("An unexpected error occurred: " + e.getMessage());
+                    Event eventOut = new Event(GET_MERCHANT_BY_MERCHANT_ID_REQUEST_FAILED, new Object[]{correlationId != null ? correlationId : "Unknown correlationId"});
                     eventSender.sendEvent(eventOut);
                 }
                 break;

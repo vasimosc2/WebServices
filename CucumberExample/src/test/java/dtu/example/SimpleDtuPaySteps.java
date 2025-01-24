@@ -263,6 +263,13 @@ public class SimpleDtuPaySteps {
         System.out.println("The Single Payment was done :"+successful);
     }
 
+    @When("the merchant with id {string} initiates a payment for {int} kr")
+    public void theMerchantInitiatesAPaymentForKrGivenTheTokenInPositionWrongId(String merchantIdcustom, int money ) {
+        System.out.println("I am ready to initiate a payment");
+        successful = dtupayMerchantFacade.maketransfer(money, customerToken.getId(), merchantIdcustom);
+        System.out.println("The Single Payment was done : "+ successful);
+    }
+
     @When("the merchant initiates a payment for {int} kr {int} for both Clients at the same time")
     public void theMerchantInitiatesAPaymentForKrBoth(int money1 , int money2 ) throws InterruptedException, ExecutionException {
         System.out.println("I am ready to initiate a payment");

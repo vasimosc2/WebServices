@@ -22,7 +22,6 @@ import static utils.EventTypes.*;
 
 public class PaymentService implements EventReceiver {
 
-    private CompletableFuture<Boolean> requestPaymentResult;
     private CompletableFuture<List<PaymentManager>> ManagerPayments;
     private Map<String,CompletableFuture<Boolean>> correlations = new ConcurrentHashMap<>();
 
@@ -60,6 +59,11 @@ public class PaymentService implements EventReceiver {
                 System.out.println("On the failure Token" + correlationId);
                 correlations.get(correlationId).complete(false);
                 break;
+            case GET_MERCHANT_BY_MERCHANT_ID_REQUEST_FAILED:
+                System.out.println("I am at the MerchantFacade/PaymentService and The Merchant did not exist at DTU pay");
+                correlationId = gson.fromJson(gson.toJson(eventIn.getArguments()[0]), String.class);
+                System.out.println("On the failure Merchant Service" + correlationId);
+                correlations.get(correlationId).complete(false);
             default:
                 System.out.println("Ignored event with type: " + eventIn.getEventType() + ". Event: " + eventIn.toString());
                 break;
