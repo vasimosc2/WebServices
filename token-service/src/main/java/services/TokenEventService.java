@@ -78,7 +78,7 @@ public class TokenEventService implements EventReceiver {
                         eventSender.sendEvent(eventOut);
                     } else {
                         System.out.println("Token Not Valid");
-                        Event eventOut = new Event(GET_CUSTOMER_ID_BY_TOKEN_ID_REQUEST_FAILED, new Object[]{bankPay.getTokenId()});
+                        Event eventOut = new Event(GET_CUSTOMER_ID_BY_TOKEN_ID_REQUEST_FAILED, new Object[]{correlationId});
                         eventSender.sendEvent(eventOut);
                     }
                 } catch (Exception e) {

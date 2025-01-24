@@ -30,3 +30,15 @@ Feature: Payment
     Then the payment is successful
     And the balance of the customer at the bank is 400 kr
     And the balance of the merchant at the bank is 300 kr
+  
+  Scenario: Invalid Token
+    Given a customer with name "John", last name "Doe", and CPR "123453267890reas"
+    And the customer is registered with the bank with an initial balance of 500 kr
+    And the customer is registered with Simple DTU Pay using their bank account
+    And the customer generates 3 tokens
+    Given a merchant with name "Jane", last name "Smith", and CPR "098765434321readasd"
+    And the merchant is registered with the bank with an initial balance of 200 kr
+    And the merchant is registered with Simple DTU Pay using their bank account
+    And the customer retrieves a token
+    When the merchant initiates two payments for 100 kr
+    Then the payment is successful

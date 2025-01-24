@@ -10,7 +10,6 @@ import dtu.example.models.Merchant;
 import dtu.example.models.Token;
 import dtu.example.services.CustomerFacadeClient;
 import dtu.example.services.MerchantFacadeClient;
-// import dtu.example.services.SimpleDtuPayService;
 import dtu.ws.fastmoney.BankService;
 import dtu.ws.fastmoney.BankServiceException_Exception;
 import dtu.ws.fastmoney.BankServiceService;
@@ -46,7 +45,8 @@ public class SimpleDtuPaySteps {
 
     @Before
     public void beforeScenario(Scenario scenario) {
-        System.out.println("Starting scenario: " + scenario.getName()); // Directly use the scenario object
+        System.out.println();
+        System.out.println("Starting scenario: " + scenario.getName());
     }
 
 
@@ -69,7 +69,6 @@ public class SimpleDtuPaySteps {
         user.setCprNumber(customer.getCprNumber());
         customerBankAccountId = bankService.createAccountWithBalance(user,BigDecimal.valueOf(money));
         customer.setBankAccount(customerBankAccountId);
-        System.out.println(customerBankAccountId);
     }
 
 
@@ -111,7 +110,6 @@ public class SimpleDtuPaySteps {
         user1.setCprNumber(customer1.getCprNumber());
         customerBankAccountId1 = bankService.createAccountWithBalance(user1,BigDecimal.valueOf(money));
         customer1.setBankAccount(customerBankAccountId1);
-        System.out.println(customerBankAccountId1);
     }
 
 
@@ -154,7 +152,6 @@ public class SimpleDtuPaySteps {
         user2.setCprNumber(customer2.getCprNumber());
         customerBankAccountId2 = bankService.createAccountWithBalance(user2,BigDecimal.valueOf(money));
         customer2.setBankAccount(customerBankAccountId2);
-        System.out.println(customerBankAccountId2);
     }
 
 
@@ -274,10 +271,7 @@ public class SimpleDtuPaySteps {
 
 
 
-    @Then("the payment is successful") // This think if it should be used .....
-    public void sucess(){
-        assertTrue(successful);
-    }
+    
 
     
     // ---------    Check Balances   -----------
@@ -308,6 +302,12 @@ public class SimpleDtuPaySteps {
         assertEquals(BigDecimal.valueOf((double) money), bankService.getAccount(merchant.getBankAccount()).getBalance());
     }
 
+
+    @Then("the payment is successful") 
+    public void sucess(){
+        assertTrue(successful);
+    }
+
     @After
     public void cleanupBankAccounts() throws BankServiceException_Exception {
         if (customer != null && customer.getBankAccount() != null) {
@@ -325,6 +325,7 @@ public class SimpleDtuPaySteps {
     }
 
 
+    
 
     /* 
 
