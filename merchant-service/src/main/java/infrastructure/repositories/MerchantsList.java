@@ -1,6 +1,9 @@
+/**
+ * @primary-author Vasileios Moschou (s222566)
+ *
+ *
+ */
 package infrastructure.repositories;
-
-
 import exceptions.account.AccountNotFoundException;
 import models.Merchant;
 import infrastructure.repositories.interfaces.IMerchants;

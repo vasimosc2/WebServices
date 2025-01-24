@@ -1,7 +1,10 @@
+/**
+ * @primary-author Vasileios Moschou (s222566)
+ *
+ *
+ */
 package infrastructure.repositories.interfaces;
-
 import java.util.List;
-
 import exceptions.TokenException;
 import models.Token;
 
@@ -10,7 +13,7 @@ public interface ITokens{
     List<Token> get(String customerId);
     void update(String customerId, Token token);
     String getCustomerIdByTokenId(String tokenId) throws TokenException;
-
     boolean checkTokenIsValid(String tokenId) throws TokenException;
+    void deleteCustomerTokens(String customerId);
 
 }

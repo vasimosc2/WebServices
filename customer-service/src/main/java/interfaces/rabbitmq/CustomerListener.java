@@ -1,14 +1,16 @@
+/**
+ * @primary-author Vasileios Moschou (s222566)
+ *
+ *
+ */
 package interfaces.rabbitmq;
-
 import com.google.gson.Gson;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 import com.rabbitmq.client.DeliverCallback;
-
 import messaging.Event;
 import messaging.EventReceiver;
-
 import java.nio.charset.StandardCharsets;
 import java.util.logging.Logger;
 import java.util.logging.Level;

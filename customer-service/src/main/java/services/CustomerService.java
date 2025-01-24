@@ -1,10 +1,11 @@
+/**
+ * @primary-author Vasileios Moschou (s222566)
+ *
+ *
+ */
 package services;
-
-
-
 import exceptions.account.AccountExistsException;
 import exceptions.account.AccountNotFoundException;
-
 import infrastructure.repositories.CustomersList;
 import infrastructure.repositories.interfaces.ICustomers;
 import models.Customer;
@@ -24,23 +25,12 @@ public class CustomerService implements ICustomerService {
     public String register(Customer customer) throws AccountExistsException {
 
         if (isRegistered(customer)) {
-            throw new AccountExistsException("Customer with cpr (" + customer.getCprNumber() + ") already exists!");
+            throw new AccountExistsException("Customer with cpr (" + customer.getCprNumber() + ") already exists!"); // here I have to catch this and send a message back 
         }
         customer.setId("CUST-"+ UUID.randomUUID());
         repo.add(customer);
         return customer.getId();
         
-    }
-
-    @Override
-    public Customer getAccount(String customerId) throws AccountNotFoundException {
-        Customer customer = repo.getById(customerId);
-
-        if (customer == null) {
-            throw new AccountNotFoundException("Customer with customerID (" + customerId + ") is not found!");
-        }
-
-       return customer;
     }
 
 

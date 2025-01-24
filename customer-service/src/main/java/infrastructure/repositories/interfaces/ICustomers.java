@@ -1,5 +1,9 @@
+/**
+ * @primary-author Vasileios Moschou (s222566)
+ *
+ *
+ */
 package infrastructure.repositories.interfaces;
-
 import exceptions.account.AccountNotFoundException;
 import models.Customer;
 

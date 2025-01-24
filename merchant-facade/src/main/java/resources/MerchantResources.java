@@ -1,6 +1,5 @@
 package resources;
 import java.util.List;
-
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
@@ -11,7 +10,6 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import messaging.rabbitmq.merchant.MerchantFactory;
-
 import messaging.rabbitmq.payment.PaymentFactory;
 import messaging.rabbitmq.reporting.ReportingFactory;
 import models.BankPay;
@@ -34,7 +32,7 @@ public class MerchantResources{
     @Produces(MediaType.TEXT_PLAIN)
     public Response register(Merchant merchant) throws Exception {
         String merchantId = merchantService.sendRegisterEvent(merchant);
-        return Response.ok().entity(merchantId).build(); // this returns to the test and gives a 200 status with the item
+        return Response.ok().entity(merchantId).build();
     }
     
     @GET
@@ -58,7 +56,12 @@ public class MerchantResources{
     @Path("/payments")
     public Response setBankPayment(BankPay bankpay) throws Exception {
         boolean successful = paymentService.sendPaymentEvent(bankpay);
-        return Response.ok().entity(successful).build();
+        System.out.println("On the Merchant Resources I have "+ successful);
+        if (successful) {
+            return Response.ok().build();
+        } else {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
     }
 
     @GET

@@ -1,18 +1,19 @@
-package services;
+/**
+ * @primary-author Vasileios Moschou (s222566)
+ *
+ *
+ */
 
+package services;
 import infrastructure.repositories.TokenMap;
 import infrastructure.repositories.interfaces.ITokens;
 import jakarta.ws.rs.core.Response;
 import models.Token;
 import models.TokenInt;
 import services.interfaces.ITokenService;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
-
-
 import exceptions.TokenException;
 
 @jakarta.enterprise.context.ApplicationScoped
@@ -24,7 +25,7 @@ public class TokenService implements ITokenService {
         tokenmap.clear();
     }
 
-    @Override// TODO here ensure that he can x+y <= 6
+    @Override
     public Response requestTokens(TokenInt tokenInt) throws TokenException {
         if (tokenInt.getAmount() < 1 || tokenInt.getAmount() > 5) {
             throw new TokenException("You can only request 1 to 5 tokens");
@@ -82,9 +83,6 @@ public class TokenService implements ITokenService {
                                     .findFirst()
                                     .orElseThrow(() -> new TokenException("No unused tokens found for customer with ID: " + customerId));
 
-        // token should be invalidated only after it has been used in a successfull payment
-        // tokenmap.invalidateToken(customerId,tokenToReturn);
-
         return tokenToReturn;
     }
 
@@ -97,6 +95,10 @@ public class TokenService implements ITokenService {
     @Override
     public boolean isTokenValid(String tokenId) throws TokenException {
         return tokenmap.checkTokenIsValid(tokenId);
+    }
+    @Override
+    public void deleteToken(String customerId){
+        tokenmap.deleteCustomerTokens(customerId);
     }
 
 

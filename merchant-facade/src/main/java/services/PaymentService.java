@@ -1,3 +1,10 @@
+/**
+ * @primary-author Vasileios Moschou (s222566)
+ *
+ *
+ */
+
+
 package services;
 
 import com.google.gson.Gson;
@@ -18,10 +25,10 @@ import static utils.EventTypes.*;
 
 public class PaymentService implements EventReceiver {
 
-    private CompletableFuture<Boolean> requestPaymentResult;
     private CompletableFuture<List<PaymentManager>> ManagerPayments;
     private Map<String,CompletableFuture<Boolean>> correlations = new ConcurrentHashMap<>();
 
+    private String correlationId;
 
 
 
@@ -38,24 +45,28 @@ public class PaymentService implements EventReceiver {
             case PAYMENT_HAS_SUCCEEDED:
                 System.out.println("I got PAYMENT_HAS_SUCCEEDED");
 
-                String correlationId = gson.fromJson(gson.toJson(eventIn.getArguments()[0]), String.class);
+                correlationId = gson.fromJson(gson.toJson(eventIn.getArguments()[0]), String.class);
                 System.out.println("The correlationID is: ");
                 System.out.println(correlationId);
                 correlations.get(correlationId).complete(true);
                 break;
-            case GET_MERCHANT_BY_MERCHANT_ID_FAILED:
-                System.out.println("I got GET_MERCHANT_BY_MERCHANT_ID_FAILED");
-                String error1 = gson.fromJson(gson.toJson(eventIn.getArguments()[0]), String.class);
-                correlations.get(error1).complete(false);
-                break;
-            case GET_CUSTOMER_BY_CUSTOMER_ID_FAILED:
-                System.out.println("I got GET_CUSTOMER_BY_CUSTOMER_ID_FAILED");
-                String error2 = gson.fromJson(gson.toJson(eventIn.getArguments()[0]), String.class);
-                correlations.get(error2).complete(false);
-                break;
             case PAYMENT_HAS_FAILED:
-                requestPaymentResult.complete(false);
+                System.out.println("I got failed Payment");
+                correlationId = gson.fromJson(gson.toJson(eventIn.getArguments()[0]), String.class);
+                System.out.println("The correlationId of the Failed Payment is :" + correlationId);
+                correlations.get(correlationId).complete(false);
                 break;
+            case GET_CUSTOMER_ID_BY_TOKEN_ID_REQUEST_FAILED:
+                System.out.println("I am at the MerchantFacade/PaymentService and The Token was not valid");
+                correlationId = gson.fromJson(gson.toJson(eventIn.getArguments()[0]), String.class);
+                System.out.println("On the failure Token" + correlationId);
+                correlations.get(correlationId).complete(false);
+                break;
+            case GET_MERCHANT_BY_MERCHANT_ID_FAILED:
+                System.out.println("I am at the MerchantFacade/PaymentService and The Merchant did not exist at DTU pay");
+                correlationId = gson.fromJson(gson.toJson(eventIn.getArguments()[0]), String.class);
+                System.out.println("On the failure Merchant Service" + correlationId);
+                correlations.get(correlationId).complete(false);
             default:
                 System.out.println("Ignored event with type: " + eventIn.getEventType() + ". Event: " + eventIn.toString());
                 break;
@@ -63,7 +74,7 @@ public class PaymentService implements EventReceiver {
     }
 
 
-    public boolean sendPaymentEvent(BankPay bankpay) throws Exception{ // The Correlation must start from here Bitches
+    public boolean sendPaymentEvent(BankPay bankpay) throws Exception{
         String correlationId = UUID.randomUUID().toString();
         correlations.put(correlationId, new CompletableFuture<>());
 

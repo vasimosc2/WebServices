@@ -1,5 +1,9 @@
+/**
+ * @primary-author Vasileios Moschou (s222566)
+ *
+ *
+ */
 package models;
-
 public class TokenInt {
     
     private String customerId;

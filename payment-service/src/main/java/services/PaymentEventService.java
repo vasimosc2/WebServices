@@ -1,6 +1,14 @@
+/**
+ * @primary-author Vasileios Moschou (s222566)
+ *
+ *
+ */
+
+
 package services;
 import com.google.gson.Gson;
 
+import exceptions.PaymentException;
 import messaging.Event;
 import messaging.EventReceiver;
 import messaging.EventSender;
@@ -82,11 +90,11 @@ public class PaymentEventService implements EventReceiver {
                     System.out.println("And the customer bankaccount is" + customer.getBankAccount());
                     System.out.println("I got the merchant: " + merchant.getFirstName());
                     System.out.println("And the merchant bankaccount is" + merchant.getBankAccount());
-                    System.out.println("Lets make the transaction with "+ correlationId) ;
-                    System.out.println("with amount" + bankPay.getMoney());
+                    
+                     try {
                     // Process the payment
                     MoneyTransferredObject moneyTransfer = service.requestPayment(customer, merchant, bankPay.getMoney(), bankPay.getTokenId());
-                    System.out.println("Lets make the transaction done ....");
+
                     // Send success events
                     Event eventOut1 = new Event(PAYMENT_HAS_SUCCEEDED, new Object[]{correlationId});
                     Event eventOut2 = new Event(MONEY_TRANSFERRED, new Object[]{moneyTransfer});
@@ -94,11 +102,18 @@ public class PaymentEventService implements EventReceiver {
                     System.out.println("I am sending a PaymentSuccessful to Report and MerchantFacade ....");
                     eventSender.sendEvent(eventOut1);
                     eventSender.sendEvent(eventOut2);
+                    } catch (PaymentException e) {
+                        System.out.println("Payment failed: " + e.getMessage());
+
+                        // Send a bad request event
+                        Event badRequestEvent = new Event(PAYMENT_REQUEST_FAILED, new Object[]{correlationId});
+                        System.out.println("I am sending a PaymentFailed event due to: " + e.getMessage());
+                        eventSender.sendEvent(badRequestEvent);
+                }
 
                 } catch (Exception e) {
                     System.err.println("Error processing payment: " + e.getMessage());
                 } finally {
-                    // Clean up the futures
                     correlationCustomer.remove(correlationId);
                     correlationMerchant.remove(correlationId);
                 }

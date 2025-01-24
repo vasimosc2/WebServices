@@ -38,7 +38,9 @@ public class CustomerService implements EventReceiver {
                 break;
 
             case REGISTER_CUSTOMER_FAILED:
-                registerResult.complete(null);
+                System.out.println("I got a Failed RegisterCustomer");
+                String errormessage = gson.fromJson(gson.toJson(eventIn.getArguments()[0]), String.class);
+                registerResult.complete(errormessage);
                 break;
 
             case CUSTOMER_RETRIEVED:

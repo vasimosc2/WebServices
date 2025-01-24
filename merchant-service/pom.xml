@@ -31,7 +31,6 @@
 
 <dependencies>
 
-    <!-- ################### QUARKUS DEPENDENCIES ################### -->
     <dependency>
         <groupId>io.quarkus</groupId>
         <artifactId>quarkus-container-image-docker</artifactId>
@@ -74,7 +73,6 @@
         <scope>test</scope>
     </dependency>
 
-    <!-- ################### CUCUMBER DEPENDENCIES ################### -->
     <dependency>
         <groupId>io.cucumber</groupId>
         <artifactId>cucumber-java</artifactId>
@@ -108,7 +106,7 @@
         <scope>test</scope>
     </dependency>
 
-    <!-- ################### ModelMapper DEPENDENCIES ################### -->
+
 
     <dependency>
         <groupId>org.modelmapper</groupId>
@@ -126,14 +124,13 @@
         <version>2.32</version>
     </dependency>
 
-    <!-- ################### RABBITMQ DEPENDENCIES ################### -->
     <dependency>
         <groupId>com.rabbitmq</groupId>
         <artifactId>amqp-client</artifactId>
         <version>5.10.0</version>
     </dependency>
 
-    <!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
+
     <dependency>
       <groupId>com.google.code.gson</groupId>
       <artifactId>gson</artifactId>

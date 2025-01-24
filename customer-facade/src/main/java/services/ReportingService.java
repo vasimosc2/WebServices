@@ -5,7 +5,6 @@ import com.google.gson.reflect.TypeToken;
 import messaging.Event;
 import messaging.EventReceiver;
 import messaging.EventSender;
-import models.Customer;
 import models.PaymentCustomer;
 
 

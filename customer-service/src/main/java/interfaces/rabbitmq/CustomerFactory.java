@@ -1,5 +1,9 @@
+/**
+ * @primary-author Vasileios Moschou (s222566)
+ *
+ *
+ */
 package interfaces.rabbitmq;
-
 import messaging.EventSender;
 import services.CustomerEventService;
 import services.CustomerService;

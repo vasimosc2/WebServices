@@ -1,3 +1,10 @@
+/**
+ * @primary-author Vasileios Moschou (s222566)
+ *
+ *
+ */
+
+
 package services;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +19,6 @@ import jakarta.ws.rs.core.Response;
 import messaging.Event;
 import messaging.EventReceiver;
 import messaging.EventSender;
-import models.BankPay;
 import models.Merchant;
 
 public class MerchantService implements EventReceiver  {

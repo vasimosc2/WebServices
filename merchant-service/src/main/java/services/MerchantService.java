@@ -1,16 +1,15 @@
+/**
+ * @primary-author Vasileios Moschou (s222566)
+ *
+ *
+ */
 package services;
-
-
-
-
 import exceptions.account.AccountExistsException;
 import exceptions.account.AccountNotFoundException;
 import infrastructure.repositories.MerchantsList;
 import infrastructure.repositories.interfaces.IMerchants;
 import models.Merchant;
 import services.interfaces.IMerchantService;
-
-
 import java.util.UUID;
 
 @jakarta.enterprise.context.ApplicationScoped
@@ -37,16 +36,6 @@ public class MerchantService implements IMerchantService {
         
     }
 
-    @Override
-    public Merchant getAccount(String merchantId) throws AccountNotFoundException {
-        Merchant merchant = repo.getById(merchantId);
-
-        if (merchant == null) {
-            throw new AccountNotFoundException("Account with merchantID (" + merchantId + ") is not found!");
-        }
-
-       return merchant;
-    }
 
     @Override
     public Merchant getMerchantById(String merchantId) throws AccountNotFoundException {
