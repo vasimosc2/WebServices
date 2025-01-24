@@ -36,16 +36,6 @@ public class MerchantService implements IMerchantService {
         
     }
 
-    @Override
-    public Merchant getAccount(String merchantId) throws AccountNotFoundException {
-        Merchant merchant = repo.getById(merchantId);
-
-        if (merchant == null) {
-            throw new AccountNotFoundException("Account with merchantID (" + merchantId + ") is not found!");
-        }
-
-       return merchant;
-    }
 
     @Override
     public Merchant getMerchantById(String merchantId) throws AccountNotFoundException {

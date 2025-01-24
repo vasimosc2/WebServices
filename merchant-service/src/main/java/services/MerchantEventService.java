@@ -55,7 +55,7 @@ public class MerchantEventService implements EventReceiver {
                     String merchantId = gson.fromJson(gson.toJson(eventIn.getArguments()[0]), String.class);
                     System.out.println(String.format("I am at MerchnatEventService: %s", merchantId));
 
-                    Merchant Merchant = service.getAccount(merchantId);
+                    Merchant Merchant = service.getMerchantById(merchantId);
                     Event eventOut = new Event(GET_MERCHANT_REQUEST_SUCCESS, new Object[]{Merchant});
                     eventSender.sendEvent(eventOut);
                 } catch (Exception e) {

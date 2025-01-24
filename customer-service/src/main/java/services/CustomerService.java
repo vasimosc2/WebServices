@@ -33,17 +33,6 @@ public class CustomerService implements ICustomerService {
         
     }
 
-    @Override
-    public Customer getAccount(String customerId) throws AccountNotFoundException {
-        Customer customer = repo.getById(customerId);
-
-        if (customer == null) {
-            throw new AccountNotFoundException("Customer with customerID (" + customerId + ") is not found!");
-        }
-
-       return customer;
-    }
-
 
     @Override
     public Customer getCustomerById(String customerId) throws AccountNotFoundException {
