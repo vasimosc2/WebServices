@@ -90,12 +90,14 @@ public class SimpleDtuPaySteps {
     public void the_customer_requests_tokens(int tokenAmount) {
         System.out.println("I am at the tokenRequest");
         tokensrequest = tokensrequest +tokenAmount;
-        System.out.println("The tokens that the customer has requested so far" + tokensrequest);
+        System.out.println("The tokens that the customer has requested so far " + tokensrequest);
         boolean isSuccess = dtupayCustomerFacade.generateTokens(customerId, tokenAmount);
         if(tokensrequest <6){
+            System.out.println("The generation of tokens was "+ isSuccess) ;
             assertTrue(isSuccess);
         }
         else{
+            System.out.println("The generation of tokens was "+ isSuccess) ;
             assertFalse(isSuccess);
         }
         
