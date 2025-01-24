@@ -42,3 +42,4 @@ Feature: Payment
     And the customer retrieves a token
     When the merchant initiates two payments for 100 kr
     Then the payment is fault
+

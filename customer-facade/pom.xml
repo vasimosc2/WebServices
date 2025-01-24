@@ -56,12 +56,6 @@
             <artifactId>rest-assured</artifactId>
             <scope>test</scope>
         </dependency>
-         <dependency>
-            <groupId>com.sun.xml.ws</groupId>
-            <artifactId>jaxws-ri</artifactId>
-            <version>4.0.3</version>
-            <type>pom</type>
-        </dependency>
 
         <dependency>
             <groupId>com.rabbitmq</groupId>
@@ -158,27 +152,6 @@
                         <java.util.logging.manager>org.jboss.logmanager.LogManager</java.util.logging.manager>
                         <maven.home>${maven.home}</maven.home>
                     </systemPropertyVariables>
-                </configuration>
-            </plugin>
-
-            <plugin>
-                <groupId>com.sun.xml.ws</groupId>
-                <artifactId>jaxws-maven-plugin</artifactId>
-                <version>4.0.0</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>wsimport</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                <wsdlUrls>
-                    <wsdlUrl>http://fm-00.compute.dtu.dk/BankService.wsdl.xml</wsdlUrl>
-                </wsdlUrls>
-                <keep>true</keep>
-                <packageName>dtu.ws.fastmoney</packageName>
-                <sourceDestDir>src/main/java</sourceDestDir>
                 </configuration>
             </plugin>
         

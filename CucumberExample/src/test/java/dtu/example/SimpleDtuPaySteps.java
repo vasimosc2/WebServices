@@ -314,7 +314,7 @@ public class SimpleDtuPaySteps {
     public void sucess(){
         assertTrue(successful);
     }
-    @Then("Then the payment is fault")
+    @Then("the payment is fault")
     public void fault(){
         assertFalse(successful);
     }
