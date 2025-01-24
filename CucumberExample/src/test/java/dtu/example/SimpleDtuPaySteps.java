@@ -1,5 +1,6 @@
 package dtu.example;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -229,8 +230,8 @@ public class SimpleDtuPaySteps {
     @When("the merchant initiates a payment for {int} kr")
     public void theMerchantInitiatesAPaymentForKrGivenTheTokenInPosition(int money ) {
         System.out.println("I am ready to initiate a payment");
-        successful = dtupayMerchantFacade.maketransfer(money, customerToken1.getId(), merchantId);
-        System.out.println(successful);
+        successful = dtupayMerchantFacade.maketransfer(money, customerToken.getId(), merchantId);
+        System.out.println("The Single Payment was done :"+successful);
     }
 
     @When("the merchant initiates a payment for {int} kr {int} for both Clients at the same time")
@@ -261,8 +262,9 @@ public class SimpleDtuPaySteps {
     public void theMerchantInitiatesAPaymentWithSameToken(int money ){
             System.out.println("I am ready to initiate a payment");
             successful = dtupayMerchantFacade.maketransfer(money, customerToken1.getId(), merchantId);
+            assertTrue(successful);
             successful = dtupayMerchantFacade.maketransfer(money, customerBankAccountId, merchantId); // Second Time with the same Token
-            System.out.println(successful);
+            assertFalse(successful);
         }
 
 
