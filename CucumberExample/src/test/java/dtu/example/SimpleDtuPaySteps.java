@@ -11,8 +11,10 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import dtu.example.models.Customer;
 import dtu.example.models.Merchant;
+import dtu.example.models.Payment;
 import dtu.example.models.Token;
 import dtu.example.services.CustomerFacadeClient;
+import dtu.example.services.ManagerFacadeClient;
 import dtu.example.services.MerchantFacadeClient;
 import dtu.ws.fastmoney.BankService;
 import dtu.ws.fastmoney.BankServiceException_Exception;
@@ -27,6 +29,7 @@ import io.cucumber.java.en.When;
 import io.cucumber.java.Scenario;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
@@ -36,9 +39,11 @@ public class SimpleDtuPaySteps {
     private Merchant merchant;
     private String customerId,customerId1, customerId2, merchantId, customerBankAccountId, customerBankAccountId1,customerBankAccountId2, merchantBankAccountId;
     private Token customerToken, customerToken1, customerToken2;
+    private List<Payment> listPaymentsManager;
     private int tokensrequest = 0;
     private CustomerFacadeClient dtupayCustomerFacade = new CustomerFacadeClient();
     private MerchantFacadeClient dtupayMerchantFacade = new MerchantFacadeClient();
+    private ManagerFacadeClient dtupayManagerFacade = new ManagerFacadeClient();
 
     private BankService bankService = new BankServiceService().getBankServicePort();
     private boolean successful = false;
@@ -150,7 +155,7 @@ public class SimpleDtuPaySteps {
         assertNotNull(customer1.getCprNumber());
         assertNotNull(customer1.getBankAccount());
         customerId1 = dtupayCustomerFacade.register(customer1);
-        System.out.println("SANTI customer id: " + customerId1);
+        System.out.println("SANTI customer id1: " + customerId1);
     }
 
     @Then("the customer1 generates {int} tokens")
@@ -192,7 +197,7 @@ public class SimpleDtuPaySteps {
         assertNotNull(customer2.getCprNumber());
         assertNotNull(customer2.getBankAccount());
         customerId2 = dtupayCustomerFacade.register(customer2);
-        System.out.println("SANTI customer id: " + customerId2);
+        System.out.println("SANTI customer id2: " + customerId2);
     }
 
     @Then("the customer2 generates {int} tokens")
@@ -264,14 +269,14 @@ public class SimpleDtuPaySteps {
     public void theMerchantInitiatesAPaymentForKrGivenTheTokenInPosition(int money ) {
         System.out.println("I am ready to initiate a payment");
         successful = dtupayMerchantFacade.maketransfer(money, customerToken.getId(), merchantId);
-        System.out.println("The Single Payment was done :"+successful);
+        System.out.println("The Single Payment was done : " + successful);
     }
 
     @When("the merchant with id {string} initiates a payment for {int} kr")
     public void theMerchantInitiatesAPaymentForKrGivenTheTokenInPositionWrongId(String merchantIdcustom, int money ) {
         System.out.println("I am ready to initiate a payment");
         successful = dtupayMerchantFacade.maketransfer(money, customerToken.getId(), merchantIdcustom);
-        System.out.println("The Single Payment was done : "+ successful);
+        System.out.println("The Single Payment was done : " + successful);
     }
 
     @When("the merchant initiates a payment for {int} kr {int} for both Clients at the same time")
@@ -302,10 +307,10 @@ public class SimpleDtuPaySteps {
     public void theMerchantInitiatesAPaymentWithSameToken(int money ){
             System.out.println("I am ready to initiate a payment");
             successful = dtupayMerchantFacade.maketransfer(money, customerToken.getId(), merchantId);
-            System.out.println("FirstTry was "+successful);
+            System.out.println("FirstTry was " + successful);
             assertTrue(successful);
             successful = dtupayMerchantFacade.maketransfer(money, customerToken.getId(), merchantId); // Second Time with the same Token
-            System.out.println("SecondTry was "+successful);
+            System.out.println("SecondTry was " + successful);
             assertFalse(successful);
         }
 
@@ -368,6 +373,28 @@ public class SimpleDtuPaySteps {
             bankService.retireAccount(merchant.getBankAccount());
         }
     }
+
+
+    @And("the manager asks for the report of the payments")
+    public void theManagerAsksForTheReportOfThePayments() {
+        listPaymentsManager = dtupayManagerFacade.getManagerPaymentReport();
+    }
+
+    @Then("the report is shown correctly")
+    public void theReportIsShownCorrectly() {
+        Payment paymentCustomerId1 = new Payment();
+        for ( Payment payment : listPaymentsManager) {
+            if (payment.getCustomerId().equals(customerId)){
+                paymentCustomerId1.setAmount(payment.getAmount());
+                paymentCustomerId1.setCustomerId(payment.getCustomerId());
+                paymentCustomerId1.setMerchantId(payment.getMerchantId());
+                paymentCustomerId1.setTokenId(payment.getTokenId());
+            }
+        }
+        assertEquals(BigDecimal.valueOf(100.0), paymentCustomerId1.getAmount());
+    }
+
+
 
 
     
