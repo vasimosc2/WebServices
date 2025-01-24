@@ -56,5 +56,14 @@ Feature: Payment
     And the customer generates 3 tokens
     And the customer generates 5 tokens
 
-
-  
+  Scenario: Customer Not Enough Funds
+    Given a customer with name "John", last name "Doe", and CPR "1234532632afdasdfadfssa7890reas"
+    And the customer is registered with the bank with an initial balance of 200 kr
+    And the customer is registered with Simple DTU Pay using their bank account
+    And the customer generates 3 tokens
+    Given a merchant with name "Jane", last name "Smith", and CPR "09876543r2r34321afd2bgdshjreadasd"
+    And the merchant is registered with the bank with an initial balance of 300 kr
+    And the merchant is registered with Simple DTU Pay using their bank account
+    And the customer retrieves a token
+    When the merchant initiates a payment for 300 kr
+    Then the payment is fault

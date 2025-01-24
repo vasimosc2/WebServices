@@ -49,7 +49,10 @@ public class PaymentService implements EventReceiver {
                 correlations.get(correlationId).complete(true);
                 break;
             case PAYMENT_REQUEST_FAILED:
-                requestPaymentResult.complete(false);
+                System.out.println("I got failed Payment");
+                correlationId = gson.fromJson(gson.toJson(eventIn.getArguments()[0]), String.class);
+                System.out.println("The correlationId of the Failed Payment is :" + correlationId);
+                correlations.get(correlationId).complete(false);
                 break;
             case GET_CUSTOMER_ID_BY_TOKEN_ID_REQUEST_FAILED:
                 System.out.println("I am at the MerchantFacade/PaymentService and The Token was not valid");
