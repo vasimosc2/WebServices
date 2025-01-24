@@ -16,7 +16,7 @@ import models.PaymentManager;
 import services.ReportingService;
 
 
-@Path("/reports")
+@Path("/managerment")
 public class ManagerResources{
    
 
