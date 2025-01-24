@@ -374,11 +374,8 @@ public class SimpleDtuPaySteps {
         }
     }
 
-    @Given("the previous scenarios have been executed")
-    public void thePreviousScenariosHaveBeenExecuted() {
-    }
 
-    @When("the manager asks for the report of the payments")
+    @And("the manager asks for the report of the payments")
     public void theManagerAsksForTheReportOfThePayments() {
         listPaymentsManager = dtupayManagerFacade.getManagerPaymentReport();
     }
@@ -387,15 +384,14 @@ public class SimpleDtuPaySteps {
     public void theReportIsShownCorrectly() {
         Payment paymentCustomerId1 = new Payment();
         for ( Payment payment : listPaymentsManager) {
-            if (payment.getCustomerId().equals(customerId1)){
+            if (payment.getCustomerId().equals(customerId)){
                 paymentCustomerId1.setAmount(payment.getAmount());
                 paymentCustomerId1.setCustomerId(payment.getCustomerId());
                 paymentCustomerId1.setMerchantId(payment.getMerchantId());
                 paymentCustomerId1.setTokenId(payment.getTokenId());
             }
         }
-        assertEquals(BigDecimal.valueOf(200.0), paymentCustomerId1.getAmount());
-
+        assertEquals(BigDecimal.valueOf(100.0), paymentCustomerId1.getAmount());
     }
 
 
