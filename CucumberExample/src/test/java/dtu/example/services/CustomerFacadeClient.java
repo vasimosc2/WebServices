@@ -3,7 +3,6 @@ package dtu.example.services;
 import dtu.example.models.Customer;
 import dtu.example.models.PaymentCustomer;
 import dtu.example.models.Token;
-import dtu.example.models.TokenInt;
 import jakarta.ws.rs.client.Client;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;

@@ -5,7 +5,6 @@ import java.util.List;
 
 import dtu.example.models.BankPay;
 import dtu.example.models.Merchant;
-import dtu.example.models.PaymentCustomer;
 import dtu.example.models.PaymentMerchant;
 import jakarta.ws.rs.client.Client;
 import jakarta.ws.rs.client.ClientBuilder;

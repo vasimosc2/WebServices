@@ -65,6 +65,7 @@ public class MerchantResources{
     @Path("/payments")
     public Response setBankPayment(BankPay bankpay) throws Exception {
         boolean successful = paymentService.sendPaymentEvent(bankpay);
+        System.out.println("On the Merchant Resources I have "+ successful);
         return Response.ok().entity(successful).build();
     }
 
