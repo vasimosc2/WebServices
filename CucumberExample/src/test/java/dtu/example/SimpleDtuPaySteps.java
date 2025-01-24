@@ -307,6 +307,10 @@ public class SimpleDtuPaySteps {
     public void sucess(){
         assertTrue(successful);
     }
+    @Then("Then the payment is fault")
+    public void fault(){
+        assertFalse(successful);
+    }
 
     @After
     public void cleanupBankAccounts() throws BankServiceException_Exception {
