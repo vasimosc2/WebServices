@@ -46,11 +46,11 @@ public class PaymentService implements IPaymentService {
             throw new PaymentException("Payment failed because of: " + e.getMessage());
         }
 
-        MoneyTransferredObject moneyTransefer = new MoneyTransferredObject(tokenId,customer.getId(),merchant.getId(),money);
+        MoneyTransferredObject moneyTransfer = new MoneyTransferredObject(tokenId, customer.getId(), merchant.getId(), money);
 
-        payments.addMoneyTransferredObject(moneyTransefer);
+        payments.addMoneyTransferredObject(moneyTransfer);
 
-        return moneyTransefer;
+        return moneyTransfer;
     }
 
 

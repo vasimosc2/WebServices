@@ -6,12 +6,15 @@
 
 
 package services;
+
 import com.google.gson.Gson;
 import messaging.Event;
 import messaging.EventReceiver;
 import messaging.EventSender;
 import models.BankPay;
+import models.Customer;
 import models.PaymentManager;
+
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -27,8 +30,6 @@ public class PaymentService implements EventReceiver {
 
     private String correlationId;
 
-
-
     private EventSender eventSender;
     private final Gson gson = new Gson();
 
@@ -39,27 +40,27 @@ public class PaymentService implements EventReceiver {
     @Override
     public void receiveEvent(Event eventIn) throws Exception {
         switch (eventIn.getEventType()) {
-            case PAYMENT_REQUEST_SUCCESS:
-                System.out.println("I got PaymentSuccessful");
+            case PAYMENT_HAS_SUCCEEDED:
+                System.out.println("I got PAYMENT_HAS_SUCCEEDED");
 
                 correlationId = gson.fromJson(gson.toJson(eventIn.getArguments()[0]), String.class);
                 System.out.println("The correlationID is: ");
                 System.out.println(correlationId);
                 correlations.get(correlationId).complete(true);
                 break;
-            case PAYMENT_REQUEST_FAILED:
+            case PAYMENT_HAS_FAILED:
                 System.out.println("I got failed Payment");
                 correlationId = gson.fromJson(gson.toJson(eventIn.getArguments()[0]), String.class);
                 System.out.println("The correlationId of the Failed Payment is :" + correlationId);
                 correlations.get(correlationId).complete(false);
                 break;
-            case GET_CUSTOMER_ID_BY_TOKEN_ID_REQUEST_FAILED:
+            case GET_CUSTOMER_ID_BY_TOKEN_ID_FAILED:
                 System.out.println("I am at the MerchantFacade/PaymentService and The Token was not valid");
                 correlationId = gson.fromJson(gson.toJson(eventIn.getArguments()[0]), String.class);
                 System.out.println("On the failure Token" + correlationId);
                 correlations.get(correlationId).complete(false);
                 break;
-            case GET_MERCHANT_BY_MERCHANT_ID_REQUEST_FAILED:
+            case GET_MERCHANT_BY_MERCHANT_ID_FAILED:
                 System.out.println("I am at the MerchantFacade/PaymentService and The Merchant did not exist at DTU pay");
                 correlationId = gson.fromJson(gson.toJson(eventIn.getArguments()[0]), String.class);
                 System.out.println("On the failure Merchant Service" + correlationId);
@@ -75,23 +76,13 @@ public class PaymentService implements EventReceiver {
         String correlationId = UUID.randomUUID().toString();
         correlations.put(correlationId, new CompletableFuture<>());
 
-        String eventType = PAYMENT_REQUEST;
+        String eventType = PAYMENT_REQUESTED;
         Object[] arguments = new Object[]{bankpay, correlationId};
         Event event = new Event(eventType, arguments);
         eventSender.sendEvent(event);
 
         return correlations.get(correlationId).join();
 
-    }
-
-    public List<PaymentManager> getAllPayments() throws Exception {
-        String eventType = "RequestAllPayments";
-        Object[] arguments = new Object[]{};
-        Event event = new Event(eventType, arguments);
-        ManagerPayments = new CompletableFuture<>();
-        eventSender.sendEvent(event);
-
-        return ManagerPayments.join();
     }
 
 

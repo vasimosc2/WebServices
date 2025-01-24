@@ -9,6 +9,8 @@ package services;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+
+import static java.util.Objects.isNull;
 import static utils.EventTypes.*;
 import static utils.EventTypes.MERCHANT_REGISTERED;
 
@@ -20,8 +22,6 @@ import messaging.EventSender;
 import models.Merchant;
 
 public class MerchantService implements EventReceiver  {
-    private List<String> merchantIds = new ArrayList<>();
-    private CompletableFuture<Boolean> requestPaymentResult;
     private CompletableFuture<String> registerResult;
     private CompletableFuture<Merchant> GetMerchantResult;
     private CompletableFuture<Response> retireMerchant;
@@ -35,9 +35,7 @@ public class MerchantService implements EventReceiver  {
         this.eventSender = eventSender;
     }
 
-    public List<String> getMerchantIds() {
-        return merchantIds;
-    }
+
 
 
     public void receiveEvent(Event eventIn) {
@@ -48,23 +46,23 @@ public class MerchantService implements EventReceiver  {
                 registerResult.complete(merchantId);
                 break;
 
-            case "RegisterMerchantFailed":
+            case REGISTER_MERCHANT_FAILED:
                 registerResult.complete(null);
                 break;
 
-            case "GetMerchantSuccessfull":
-                System.out.println("I got a GetMerchantSucessfull");
+            case MERCHANT_RETRIEVED:
+                System.out.println("I got a MERCHANT_RETRIEVED");
                 Merchant merchant = gson.fromJson(gson.toJson(eventIn.getArguments()[0]), Merchant.class);
                 GetMerchantResult.complete(merchant);
                 break;
 
-            case "GetMerchantFailed":
+            case MERCHANT_NOT_RETRIEVED:
                 GetMerchantResult.complete(null);
                 break;
 
-            case "RetiremerchantByCprSuccessful":
-                System.out.println("I got a RetiremerchantByCprSuccessful");
-                boolean removed = merchantIds.removeIf(c -> c.equals((String) eventIn.getArguments()[0]));
+            case MERCHANT_RETIRED:
+                System.out.println("I got a MERCHANT_RETIRED");
+                boolean removed = !isNull(eventIn.getArguments()[0]);
 
                 if (!removed) {
                     System.out.println("No Merchnat found with CPR: " + eventIn.getArguments()[0]);
@@ -73,16 +71,9 @@ public class MerchantService implements EventReceiver  {
                 retireMerchant.complete(Response.status(200).entity("Delete successful").build());
                 break;
 
-            case "RetiremerchantByCprFailed":
+            case RETIRE_MERCHANT_FAILED:
                 retireMerchant.complete(Response.status(404).entity("Delete successful").build());
                 break;
-            
-            case PAYMENT_REQUEST_SUCCESS:
-                System.out.println("I got PaymentSuccessful");
-                requestPaymentResult.complete(true);
-                break;
-                
-
             default:
                 System.out.println("Ignored event in Rest with type: " + eventIn.getEventType() + ". Event: " + eventIn.toString());
                 break;
@@ -103,14 +94,13 @@ public class MerchantService implements EventReceiver  {
         String merchantId = registerResult.join();
 
         if(merchantId!=null){
-            merchantIds.add(merchantId);
             return merchantId;
         }
         return null;
     }
 
     public Merchant getMerchantByMerchantId(String merchantId) throws Exception {
-        String eventType = GET_MERCHANT_REQUEST;
+        String eventType = GET_MERCHANT_REQUESTED;
         Object[] arguments = new Object[]{merchantId};
         Event event = new Event(eventType,arguments);
         GetMerchantResult = new CompletableFuture<>();
@@ -123,7 +113,7 @@ public class MerchantService implements EventReceiver  {
 
 
     public Response retireAccount(String merchantId) throws Exception {
-        String eventType = RETIRE_MERCHANT_REQUEST;
+        String eventType = RETIRE_MERCHANT_REQUESTED;
         Object[] arguments = new Object[]{merchantId};
         Event event = new Event(eventType,arguments);
         retireMerchant = new CompletableFuture<>();

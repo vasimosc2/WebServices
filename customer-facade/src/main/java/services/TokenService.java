@@ -30,26 +30,20 @@ public class TokenService implements EventReceiver {
     public void receiveEvent(Event eventIn) {
         switch (eventIn.getEventType()) {
             case TOKENS_GENERATED:
-                System.out.println("I got a successfull Generation of Token");
+                System.out.println("I got a TOKENS_GENERATED");
                 requestTokensResult.complete(true);
                 break;
             case TOKENS_REQUEST_FAILED:
                 requestTokensResult.complete(false);
                 break;
             case GET_FIRST_TOKEN_RETRIEVED:
-                System.out.println("I got a successfull Get ONE Token");
+                System.out.println("I got a GET_FIRST_TOKEN_RETRIEVED");
                 Token token = gson.fromJson(gson.toJson(eventIn.getArguments()[0]), Token.class);
                 System.out.println(token.getId());
                 getOneTokenResult.complete(token);
                 break;
-            case GET_FIRST_TOKEN_REQUEST_FAILED:
+            case GET_FIRST_TOKEN_FAILED:
                 getOneTokenResult.complete(null);
-                break;
-            case "CustomerRetirementSuccessful":
-                retireCustomerTokensResult.complete(true);
-                break;
-            case "CustomerRetirementFailed":
-                retireCustomerTokensResult.complete(false);
                 break;
             default:
             System.out.println("Ignored event with type: " + eventIn.getEventType() + ". Event: " + eventIn.toString());
@@ -60,7 +54,7 @@ public class TokenService implements EventReceiver {
 
     public boolean sendGenerateTokensEvent(TokenInt tokenInt) throws Exception{
         String eventType = TOKENS_GENERATION_REQUESTED;
-        System.out.println("we are sending request of token event");
+        System.out.println("we are sending request of TOKENS_GENERATION_REQUESTED event");
         Object[] arguments = new Object[]{tokenInt};
         Event event = new Event(eventType, arguments);
         requestTokensResult = new CompletableFuture<>();
@@ -71,7 +65,7 @@ public class TokenService implements EventReceiver {
     }
 
     public Token sendGetOneTokenEvent(String customerId) throws Exception{
-        System.out.println("I reached RequestGetToken");
+        System.out.println("I reached sendGetOneTokenEvent");
         String eventType = GET_FIRST_TOKEN_REQUESTED;
         Object[] arguments = new Object[]{customerId};
         Event event = new Event(eventType, arguments);

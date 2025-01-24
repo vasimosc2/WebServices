@@ -11,11 +11,10 @@ import messaging.EventSender;
 import models.Customer;
 import jakarta.ws.rs.core.Response;
 
+import static java.util.Objects.isNull;
 import static utils.EventTypes.*;
 
 public class CustomerService implements EventReceiver {
-
-    private List<String> customerIds = new ArrayList<>();
     private CompletableFuture<String> registerResult;
     private CompletableFuture<Customer> getCustomerResult;
     private CompletableFuture<Response> retireCustomer;
@@ -29,38 +28,34 @@ public class CustomerService implements EventReceiver {
 
 
 
-    public List<String> getCustomers() {
-        return customerIds;
-    }
-
 
     public void receiveEvent(Event eventIn) {
         switch (eventIn.getEventType()) {
-            case REGISTER_CUSTOMER_REQUEST_SUCCESS:
-                System.out.println("I got a RegisterCustomerSuccessfull");
-                String customerId = gson.fromJson(gson.toJson(eventIn.getArguments()[0]), String.class);
+            case CUSTOMER_REGISTERED:
+                System.out.println("I got a CUSTOMER_REGISTERED");
+                String customerId = (String) eventIn.getArguments()[0];
                 registerResult.complete(customerId); 
                 break;
 
-            case REGISTER_CUSTOMER_REQUEST_FAILED:
+            case REGISTER_CUSTOMER_FAILED:
                 System.out.println("I got a Failed RegisterCustomer");
                 String errormessage = gson.fromJson(gson.toJson(eventIn.getArguments()[0]), String.class);
                 registerResult.complete(errormessage);
                 break;
 
-            case GET_CUSTOMER_REQUEST_SUCCESS:
-                System.out.println("I got a GetCustomerSucessfull");
+            case CUSTOMER_RETRIEVED:
+                System.out.println("I got a CUSTOMER_RETRIEVED");
                 Customer customer = gson.fromJson(gson.toJson(eventIn.getArguments()[0]), Customer.class);
                 getCustomerResult.complete(customer);
                 break;
 
-            case GET_CUSTOMER_REQUEST_FAILED:
+            case CUSTOMER_NOT_RETRIEVED:
                 getCustomerResult.complete(null);
                 break;
 
-            case RETIRE_CUSTOMER_REQUEST_SUCCESS:
-                System.out.println("I got a RetireCustomerByCprSuccessfull");
-                boolean removed = customerIds.removeIf(c -> c.equals((String) eventIn.getArguments()[0]));
+            case CUSTOMER_RETIRED:
+                System.out.println("I got a CUSTOMER_RETIRED");
+                boolean removed = !isNull(eventIn.getArguments()[0]);
 
                 if (!removed) {
                     System.out.println("No customer found with CPR: " + eventIn.getArguments()[0]);
@@ -68,7 +63,7 @@ public class CustomerService implements EventReceiver {
                 retireCustomer.complete(Response.status(200).entity("Delete successful").build());
                 break;
 
-            case RETIRE_CUSTOMER_REQUEST_FAILED:
+            case RETIRE_CUSTOMER_FAILED:
                 retireCustomer.complete(Response.status(404).entity("Delete not successful").build());
                 break;
 
@@ -84,7 +79,7 @@ public class CustomerService implements EventReceiver {
 
 
     public String sendRegisterEvent(Customer customer) throws Exception{
-        String eventType = REGISTER_CUSTOMER_REQUEST;
+        String eventType = REGISTER_CUSTOMER_REQUESTED;
         Object[] arguments = new Object[]{customer};
         Event event = new Event(eventType, arguments);
         registerResult = new CompletableFuture<>();
@@ -95,7 +90,6 @@ public class CustomerService implements EventReceiver {
     
 
         if(customerId!=null){
-            customerIds.add(customerId);
             return customerId;
         }
         return null;
@@ -104,7 +98,7 @@ public class CustomerService implements EventReceiver {
 
 
     public Customer getCustomerByCustomerId(String customerId) throws Exception {
-        String eventType = GET_CUSTOMER_REQUEST;
+        String eventType = GET_CUSTOMER_REQUESTED;
         Object[] arguments = new Object[]{customerId};
         Event event = new Event(eventType,arguments);
         getCustomerResult = new CompletableFuture<>();
@@ -117,7 +111,7 @@ public class CustomerService implements EventReceiver {
 
 
     public Response retireAccount(String customerId) throws Exception {
-        String eventType = RETIRE_CUSTOMER_REQUEST;
+        String eventType = RETIRE_CUSTOMER_REQUESTED;
         Object[] arguments = new Object[]{customerId};
         Event event = new Event(eventType,arguments);
         retireCustomer = new CompletableFuture<>();

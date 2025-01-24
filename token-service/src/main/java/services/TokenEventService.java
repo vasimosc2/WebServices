@@ -20,6 +20,7 @@ import java.util.logging.Logger;
 import jakarta.ws.rs.core.Response;
 
 import static utils.EventTypes.*;
+import static utils.EventTypes.CUSTOMER_RETIRED;
 
 public class TokenEventService implements EventReceiver {
 
@@ -40,7 +41,7 @@ public class TokenEventService implements EventReceiver {
         switch (eventIn.getEventType()) {
             case TOKENS_GENERATION_REQUESTED:
                 try {
-                    System.out.println("Hello from RequestTokens");
+                    System.out.println("Hello from TOKENS_GENERATION_REQUESTED");
                     TokenInt tokenInt = gson.fromJson(gson.toJson(eventIn.getArguments()[0]), TokenInt.class);
                     
                     System.out.println(tokenInt.getCustomerId());
@@ -65,24 +66,24 @@ public class TokenEventService implements EventReceiver {
                     Event eventOut = new Event(GET_FIRST_TOKEN_RETRIEVED, new Object[]{Token});
                     eventSender.sendEvent(eventOut);
                 } catch (Exception e) {
-                    Event eventOut = new Event(GET_FIRST_TOKEN_NOT_RETRIEVED, new Object[]{e.getMessage()});
+                    Event eventOut = new Event(GET_FIRST_TOKEN_FAILED, new Object[]{e.getMessage()});
                     eventSender.sendEvent(eventOut);
                 }
                 break;
 
-            case PAYMENT_REQUEST:
+            case PAYMENT_REQUESTED:
                 try {
-                    System.out.println("Hello from PaymentRequested in Token_Service");
+                    System.out.println("Hello from PAYMENT_REQUESTED in Token_Service");
                     BankPay bankPay = gson.fromJson(gson.toJson(eventIn.getArguments()[0]), BankPay.class);
                     String correlationId = gson.fromJson(gson.toJson(eventIn.getArguments()[1]), String.class);
                     if (service.isTokenValid(bankPay.getTokenId())) {
                         String customerId = service.getCustomerIdByTokenIdForPayment(bankPay.getTokenId());
-                        Event eventOut = new Event(GET_CUSTOMER_BY_CUSTOMER_ID_REQUEST, new Object[]{customerId,correlationId});
+                        Event eventOut = new Event(GET_CUSTOMER_BY_CUSTOMER_ID_REQUESTED, new Object[]{customerId,correlationId});
                         System.out.println("I am contacting Customer Service ...");
                         eventSender.sendEvent(eventOut);
                     } else {
                         System.out.println("Token Not Valid");
-                        Event eventOut = new Event(GET_CUSTOMER_ID_BY_TOKEN_ID_REQUEST_FAILED, new Object[]{correlationId});
+                        Event eventOut = new Event(GET_CUSTOMER_ID_BY_TOKEN_ID_FAILED, new Object[]{correlationId});
                         eventSender.sendEvent(eventOut);
                     }
                 } catch (Exception e) {
@@ -90,7 +91,7 @@ public class TokenEventService implements EventReceiver {
                     eventSender.sendEvent(eventOut);
                 }
                 break;
-            case RETIRE_CUSTOMER_REQUEST_SUCCESS:
+            case CUSTOMER_RETIRED:
                 System.out.println(" I got a Retire Customer so I have to delete his tokens From DtuPay");
                 String customerId = gson.fromJson(gson.toJson(eventIn.getArguments()[0]), String.class);
                 service.deleteToken(customerId);

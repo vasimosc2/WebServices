@@ -47,13 +47,13 @@ public class PaymentEventService implements EventReceiver {
     @Override
     public void receiveEvent(Event eventIn) throws Exception {
         switch (eventIn.getEventType()) {
-            case PAYMENT_REQUEST:
+            case PAYMENT_REQUESTED:
                 handlePaymentRequest(eventIn);
                 break;
-            case GET_CUSTOMER_BY_CUSTOMER_ID_REQUEST_SUCCESS:
+            case CUSTOMER_BY_CUSTOMER_ID_RETRIEVED:
                 handleCustomerSuccess(eventIn);
                 break;
-            case GET_MERCHANT_BY_MERCHANT_ID_REQUEST_SUCCESS:
+            case MERCHANT_BY_MERCHANT_ID_RETRIEVED:
                 handleMerchantSuccess(eventIn);
                 break;
             default:
@@ -62,9 +62,9 @@ public class PaymentEventService implements EventReceiver {
         }
     }
 
-    private void handlePaymentRequest(Event eventIn) {
+    private void handlePaymentRequest(Event eventIn) throws Exception{
         try {
-            System.out.println("Hello from RequestPayment at the PaymentService");
+            System.out.println("Hello from PAYMENT_REQUESTED at the PaymentService");
             BankPay bankPay = gson.fromJson(gson.toJson(eventIn.getArguments()[0]), BankPay.class);
             String correlationId = gson.fromJson(gson.toJson(eventIn.getArguments()[1]), String.class);
 
@@ -96,7 +96,7 @@ public class PaymentEventService implements EventReceiver {
                     MoneyTransferredObject moneyTransfer = service.requestPayment(customer, merchant, bankPay.getMoney(), bankPay.getTokenId());
 
                     // Send success events
-                    Event eventOut1 = new Event(PAYMENT_REQUEST_SUCCESS, new Object[]{correlationId});
+                    Event eventOut1 = new Event(PAYMENT_HAS_SUCCEEDED, new Object[]{correlationId});
                     Event eventOut2 = new Event(MONEY_TRANSFERRED, new Object[]{moneyTransfer});
 
                     System.out.println("I am sending a PaymentSuccessful to Report and MerchantFacade ....");
@@ -106,7 +106,7 @@ public class PaymentEventService implements EventReceiver {
                         System.out.println("Payment failed: " + e.getMessage());
 
                         // Send a bad request event
-                        Event badRequestEvent = new Event(PAYMENT_REQUEST_FAILED, new Object[]{correlationId});
+                        Event badRequestEvent = new Event(PAYMENT_HAS_FAILED, new Object[]{correlationId});
                         System.out.println("I am sending a PaymentFailed event due to: " + e.getMessage());
                         eventSender.sendEvent(badRequestEvent);
                 }
@@ -119,12 +119,14 @@ public class PaymentEventService implements EventReceiver {
                 }
             });
         } catch (Exception e) {
-            System.err.println("Error during RequestPayment: " + e.getMessage());
+            System.err.println("Error during PAYMENT_REQUESTED: " + e.getMessage());
+            Event eventOut = new Event(PAYMENT_HAS_FAILED, new Object[]{e.getMessage()});
+            eventSender.sendEvent(eventOut);
         }
     }
 
     private void handleCustomerSuccess(Event eventIn) {
-        System.out.println("Hello from the SuccessfullGotCustomerForCustomerId");
+        System.out.println("Hello from the CUSTOMER_BY_CUSTOMER_ID_RETRIEVED");
         Customer customer = gson.fromJson(gson.toJson(eventIn.getArguments()[0]), Customer.class);
         String correlationId = gson.fromJson(gson.toJson(eventIn.getArguments()[1]), String.class);
 
@@ -137,7 +139,7 @@ public class PaymentEventService implements EventReceiver {
     }
 
     private void handleMerchantSuccess(Event eventIn) {
-        System.out.println("Hello from the SuccessfullGetMerchantByMerchantId");
+        System.out.println("Hello from the MERCHANT_BY_MERCHANT_ID_RETRIEVED");
         Merchant merchant = gson.fromJson(gson.toJson(eventIn.getArguments()[0]), Merchant.class);
         String correlationId = gson.fromJson(gson.toJson(eventIn.getArguments()[1]), String.class);
 

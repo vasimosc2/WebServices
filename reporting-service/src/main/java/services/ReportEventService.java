@@ -37,7 +37,7 @@ public class ReportEventService implements EventReceiver {
                 service.addMoneyTransferredToRepos(moneyTransferredObject);
                 break;
             case CUSTOMER_REPORTS_REQUESTED:
-                System.out.println("Hello from CustomerReportsRequested Event");
+                System.out.println("Hello from CUSTOMER_REPORTS_REQUESTED");
                 String customerId = gson.fromJson(gson.toJson(eventIn.getArguments()[0]), String.class);
                 List<PaymentCustomer> customerPaymentsReport = service.getCustomerPaymentReport(customerId);
                 for (PaymentCustomer paymentCustomer : customerPaymentsReport) {
@@ -49,7 +49,7 @@ public class ReportEventService implements EventReceiver {
                 eventSender.sendEvent(eventOut);
                 break;
             case MERCHANT_REPORTS_REQUESTED:
-                System.out.println("Hello from MerchantReportsRequested Event");
+                System.out.println("Hello from MERCHANT_REPORTS_REQUESTED");
                 String merchantId = gson.fromJson(gson.toJson(eventIn.getArguments()[0]), String.class);
                 List<PaymentMerchant> merchantPaymentsReport = service.getMerchantPaymentReport(merchantId);
                 Event eventOut2 = new Event(MERCHANT_REPORTS_GENERATED, new Object[]{merchantPaymentsReport});
