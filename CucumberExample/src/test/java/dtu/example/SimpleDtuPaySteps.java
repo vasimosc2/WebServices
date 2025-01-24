@@ -86,7 +86,7 @@ public class SimpleDtuPaySteps {
         System.out.println("SANTI customer id: " + customerId);
     }
 
-    @And("the customer is registered with Simple DTU Pay using their bank account")
+    @And("the customer is registered with Simple DTU Pay using their bank account error")
     public void theCustomerIsRegisteredWithSimpleDTUPayUsingTheirBankAccountError() {
         assertNotNull(customer.getCprNumber());
         assertNotNull(customer.getBankAccount());
