@@ -115,6 +115,10 @@ public class SimpleDtuPaySteps {
         
     }
 
+    @When("the customer unregister from Simple DTU Pay")
+    public void unRegisterCustomerFromDTUPay(){
+        dtupayCustomerFacade.unregister(customerId);
+    }
 
 
     // ------------  Register Customer 1 for Correlation  ---------------------------- 

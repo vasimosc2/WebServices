@@ -90,6 +90,10 @@ public class TokenEventService implements EventReceiver {
                     eventSender.sendEvent(eventOut);
                 }
                 break;
+            case RETIRE_CUSTOMER_REQUEST_SUCCESS:
+                System.out.println(" I got a Retire Customer so I have to delete his tokens From DtuPay");
+                String customerId = gson.fromJson(gson.toJson(eventIn.getArguments()[0]), String.class);
+                service.deleteToken(customerId);
             default:
                 LOGGER.log(Level.WARNING, "Ignored event with type: " + eventIn.getEventType() + ". Event: " + eventIn.toString());
                 break;

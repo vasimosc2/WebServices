@@ -83,9 +83,6 @@ public class TokenService implements ITokenService {
                                     .findFirst()
                                     .orElseThrow(() -> new TokenException("No unused tokens found for customer with ID: " + customerId));
 
-        // token should be invalidated only after it has been used in a successfull payment
-        // tokenmap.invalidateToken(customerId,tokenToReturn);
-
         return tokenToReturn;
     }
 
@@ -98,6 +95,10 @@ public class TokenService implements ITokenService {
     @Override
     public boolean isTokenValid(String tokenId) throws TokenException {
         return tokenmap.checkTokenIsValid(tokenId);
+    }
+    @Override
+    public void deleteToken(String customerId){
+        tokenmap.deleteCustomerTokens(customerId);
     }
 
 

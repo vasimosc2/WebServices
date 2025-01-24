@@ -90,6 +90,17 @@ public class TokenMap implements ITokens {
         throw new TokenException("Token with ID: " + tokenId + " not found");
     }
 
+
+    @Override
+    public void deleteCustomerTokens(String customerId) {
+        if (tokenStore.containsKey(customerId)) {
+            tokenStore.remove(customerId);
+            System.out.println("Tokens for customer " + customerId + " have been deleted.");
+        } else {
+            System.out.println("No tokens found for customer " + customerId + ". Nothing to delete.");
+        }
+    }
+
    
 
 }

@@ -31,7 +31,15 @@ public class CustomerFacadeClient {
             return null;
         }
 
-    
+        public void unregister(String customerId){
+           Response response =  target.path("customers/" + customerId).request().delete();
+           if(response.getStatus() == 200){
+                System.out.println("Delete was successfull");
+           }
+           else{
+            System.out.println("Delete was : " + response.getStatus());
+           }
+        }
     
         public boolean generateTokens(String customerId, int tokenAmount) {
             

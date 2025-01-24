@@ -5,7 +5,6 @@
  */
 package services;
 import com.google.gson.Gson;
-
 import exceptions.account.AccountExistsException;
 import models.Customer;
 import messaging.Event;
@@ -94,7 +93,7 @@ public class CustomerEventService implements EventReceiver {
             case RETIRE_CUSTOMER_REQUEST:
                 try {
                     System.out.println("Hello from RetireCustomer");
-                    String customerId = (String) eventIn.getArguments()[0];
+                    String customerId = gson.fromJson(gson.toJson(eventIn.getArguments()[0]), String.class);
                     String customerIDResponse = service.retireAccount(customerId);
                     System.out.println("customerId input: " + customerId + " customerId output: " + customerIDResponse);
 
