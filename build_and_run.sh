@@ -8,6 +8,7 @@ echo "Current directory: $(pwd)"
 
 ./customer-facade/launch_service.sh
 ./merchant-facade/launch_service.sh
+./manager-facade/launch_service.sh
 # ./AccountFacade/launch_service.sh
 
 # Services
