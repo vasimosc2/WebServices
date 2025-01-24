@@ -25,7 +25,7 @@ public class CustomerService implements ICustomerService {
     public String register(Customer customer) throws AccountExistsException {
 
         if (isRegistered(customer)) {
-            throw new AccountExistsException("Customer with cpr (" + customer.getCprNumber() + ") already exists!");
+            throw new AccountExistsException("Customer with cpr (" + customer.getCprNumber() + ") already exists!"); // here I have to catch this and send a message back 
         }
         customer.setId("CUST-"+ UUID.randomUUID());
         repo.add(customer);

@@ -67,3 +67,8 @@ Feature: Payment
     And the customer retrieves a token
     When the merchant initiates a payment for 300 kr
     Then the payment is fault
+
+  Scenario: Try to add another Customer with the Same CPR number
+    Given a customer with name "John", last name "Dofe", and CPR "1afsdafdadf234532632afdasdfadfssa7890reas"
+    And the customer is registered with the bank with an initial balance of 200 kr
+    And the customer is registered with Simple DTU Pay using their bank account error

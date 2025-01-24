@@ -5,6 +5,8 @@
  */
 package services;
 import com.google.gson.Gson;
+
+import exceptions.account.AccountExistsException;
 import models.Customer;
 import messaging.Event;
 import messaging.EventReceiver;
@@ -33,19 +35,28 @@ public class CustomerEventService implements EventReceiver {
         switch (eventIn.getEventType()) {
             case REGISTER_CUSTOMER_REQUEST:
                 try {
-                    System.out.println("Hello from RegisterCustomer");
-                    Customer customer = gson.fromJson(gson.toJson(eventIn.getArguments()[0]), Customer.class);
-                    System.out.println(customer.getFirstName());
-                    String customerId = service.register(customer);
-                    System.out.println(customerId);
-                    Event eventOut = new Event(REGISTER_CUSTOMER_REQUEST_SUCCESS, new Object[]{customerId});
+                System.out.println("Hello from RegisterCustomer");
+                Customer customer = gson.fromJson(gson.toJson(eventIn.getArguments()[0]), Customer.class);
+                System.out.println(customer.getFirstName());
 
+                String customerId = service.register(customer);
+                System.out.println(customerId);
+
+                Event eventOut = new Event(REGISTER_CUSTOMER_REQUEST_SUCCESS, new Object[]{customerId});
+                eventSender.sendEvent(eventOut);
+
+                } catch (AccountExistsException ex) {
+                    System.out.println("Registration failed: " + ex.getMessage());
+                    Event eventOut = new Event(REGISTER_CUSTOMER_REQUEST_FAILED, new Object[]{"Registration Failed"});
                     eventSender.sendEvent(eventOut);
+
                 } catch (Exception e) {
+                    // Handle other general exceptions
+                    System.err.println("Unexpected error: " + e.getMessage());
                     Event eventOut = new Event("RegisterCustomerFailed", new Object[]{e.getMessage()});
                     eventSender.sendEvent(eventOut);
                 }
-                break;
+            break;
             case GET_CUSTOMER_REQUEST:
                 try {
                     System.out.println("Hello from GetCustomer");

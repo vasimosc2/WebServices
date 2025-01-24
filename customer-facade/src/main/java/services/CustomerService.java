@@ -38,12 +38,14 @@ public class CustomerService implements EventReceiver {
         switch (eventIn.getEventType()) {
             case REGISTER_CUSTOMER_REQUEST_SUCCESS:
                 System.out.println("I got a RegisterCustomerSuccessfull");
-                String customerId = (String) eventIn.getArguments()[0];
+                String customerId = gson.fromJson(gson.toJson(eventIn.getArguments()[0]), String.class);
                 registerResult.complete(customerId); 
                 break;
 
             case REGISTER_CUSTOMER_REQUEST_FAILED:
-                registerResult.complete(null);
+                System.out.println("I got a Failed RegisterCustomer");
+                String errormessage = gson.fromJson(gson.toJson(eventIn.getArguments()[0]), String.class);
+                registerResult.complete(errormessage);
                 break;
 
             case GET_CUSTOMER_REQUEST_SUCCESS:

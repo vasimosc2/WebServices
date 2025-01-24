@@ -86,6 +86,18 @@ public class SimpleDtuPaySteps {
         System.out.println("SANTI customer id: " + customerId);
     }
 
+    @And("the customer is registered with Simple DTU Pay using their bank account")
+    public void theCustomerIsRegisteredWithSimpleDTUPayUsingTheirBankAccountError() {
+        assertNotNull(customer.getCprNumber());
+        assertNotNull(customer.getBankAccount());
+        customerId = dtupayCustomerFacade.register(customer);
+        System.out.println("SANTI customer id: " + customerId);
+        assertEquals(customerId, "Registration Failed");
+    }
+
+
+
+
     @Then("the customer generates {int} tokens")
     public void the_customer_requests_tokens(int tokenAmount) {
         System.out.println("I am at the tokenRequest");
